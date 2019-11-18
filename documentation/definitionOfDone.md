@@ -1,6 +1,13 @@
 # Definition of Done
 
-### When a developer thinks a feature is completed
+Koodi on versionhallinnassa ja toinen henkilö on hyväksynyt sen.
 
-* Developer makes the tests he/she thinks are required.
-* Another developer reviews the code. If approved, the feature is done.
+Vaatimuksen hyväksymiskriteerit täyttyvät.
+
+Koodi on kommentoitua.
+
+Yksikkötestit sekä integraatiotestit on tehty (JUnit) ja testit menevät läpi. 
+
+Automaattinen järjestelmätestaus (Cucumber) on suoritettu. 
+
+Vaatimus on integroitu muuhun ohjelmistoon. 
