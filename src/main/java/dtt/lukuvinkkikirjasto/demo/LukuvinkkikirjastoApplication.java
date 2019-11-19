@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 public class LukuvinkkikirjastoApplication {
 
 	public static void main(String[] args) {
-                String dbName = "./build/lukusuositukset.sql";
+                String dbName = "./build/lukusuositukset.db";
 		Database database = new Database(dbName);
 		database.doFlyWayMigration();
                 BookDao bookDao = new BookDao(database);
