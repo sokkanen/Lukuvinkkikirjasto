@@ -1,13 +1,15 @@
 # Definition of Done
 
-Koodi on versionhallinnassa ja toinen henkilö on hyväksynyt sen.
+- Koodi on versionhallinnassa ja koodi on katselmoitu toisen kehittäjän toimesta sekä liitetty masteriin.
 
-Vaatimuksen hyväksymiskriteerit täyttyvät.
+- Vaatimuksen hyväksymiskriteerit täyttyvät.
 
-Koodi on kommentoitua.
+- Koodi on kommentoitua.
 
-Yksikkötestit sekä integraatiotestit on tehty (JUnit) ja testit menevät läpi. 
+- Yksikkötestit sekä integraatiotestit on tehty (JUnit) ja testit menevät läpi. 
 
-Automaattinen järjestelmätestaus (Cucumber) on suoritettu. 
+- Testikattavuusmittaus on suoritettu (JaCoCo) ja rivi- sekä haaraumakattavuus on vähintään 80 %. 
 
-Vaatimus on integroitu muuhun ohjelmistoon. 
+- Automaattinen järjestelmätestaus (Cucumber) on suoritettu. 
+
+- Vaatimus on integroitu muuhun ohjelmistoon. 
