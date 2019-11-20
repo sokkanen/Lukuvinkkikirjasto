@@ -9,15 +9,21 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 	id "org.flywaydb.flyway" version "6.0.8"
-        id 'application'
+	id 'application'
 }
 
 group = 'dtt.lukuvinkkikirjasto'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+project.ext {
+	cucumberVersion = '4.7.4'
+	junitVersion = '4.12'
+}
+
 repositories {
 	mavenCentral()
+        jcenter()
 }
 
 dependencies {
@@ -27,6 +33,9 @@ dependencies {
 	}
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	testCompile 'io.cucumber:cucumber-java:' + cucumberVersion
+	testCompile 'io.cucumber:cucumber-junit:' + cucumberVersion
+	testCompile 'junit:junit:' + junitVersion
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 	compile "org.flywaydb:flyway-core:6.0.8"
 	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
