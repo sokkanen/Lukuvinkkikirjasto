@@ -1,6 +1,7 @@
 package dtt.lukuvinkkikirjasto.demo;
 
 import dtt.lukuvinkkikirjasto.demo.database.Database;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,11 @@ public class BaseTest {
         connection = database.getConnection();
     }
 
+    @AfterAll
+    static void tearDown() throws SQLException{
+        connection.close();
+    }
+
     /**
      * Imports clear-all-tables.sql from /test/resources/
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
@@ -48,11 +54,19 @@ public class BaseTest {
         File file = new File(classLoader.getResource("clear-all-tables.sql").getFile());
         BufferedReader reader  = new BufferedReader(new FileReader(file));
         while (reader.read() > 0) {
-            String sqlStatement = reader.readLine();
-            logger.info("Executed SQL-script \"{}\"", sqlStatement);
-            PreparedStatement stmt = connection.prepareStatement(sqlStatement);
-            stmt.executeUpdate();
-            stmt.close();
+            try {
+                String sqlStatement = reader.readLine();
+                PreparedStatement stmt = connection.prepareStatement(sqlStatement);
+                stmt.executeUpdate();
+                logger.info("Executed SQL-script \"{}\"", sqlStatement);
+                stmt.close();
+            } catch (IOException e){
+                logger.warn("IO Exception with clear-all-tables: \"{}\"", e.getMessage());
+                throw e;
+            } catch (SQLException ee){
+                logger.warn("SQL Exception with clear-all-tables: \"{}\"", ee.getMessage());
+                throw ee;
+            }
         }
         reader.close();
     }
