@@ -13,4 +13,5 @@ Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentam
 
 ### [Definition of Done](https://github.com/sokkanen/Lukuvinkkikirjasto/blob/master/documentation/definition_of_done.md)
 
-
+[![CircleCI](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto.svg?style=svg)](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto)
+[![codecov](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto/branch/master/graph/badge.svg)](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto)
