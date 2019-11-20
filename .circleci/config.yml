@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
-      # - image: circleci/postgres:9.4 Left here intentionally if DB results in problems...
 
     working_directory: ~/repo
 

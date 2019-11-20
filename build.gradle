@@ -19,7 +19,6 @@ sourceCompatibility = '1.8'
 
 project.ext {
 	cucumberVersion = '4.7.4'
-	junitVersion = '4.12'
 }
 
 repositories {
@@ -36,7 +35,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	testCompile 'io.cucumber:cucumber-java:' + cucumberVersion
 	testCompile 'io.cucumber:cucumber-junit:' + cucumberVersion
-	testCompile 'junit:junit:' + junitVersion
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 	compile "org.flywaydb:flyway-core:6.0.8"
 	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
