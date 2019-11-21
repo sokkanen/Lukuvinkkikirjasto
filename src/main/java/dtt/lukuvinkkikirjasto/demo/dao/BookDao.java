@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author milla
  */
+@Component
 public class BookDao implements Dao<Book, Integer> {
 
     private final Database database;
@@ -28,54 +28,48 @@ public class BookDao implements Dao<Book, Integer> {
      * Creates new book to database
      *
      * @param book
+     * @throws java.sql.SQLException
      */
     @Override
-    public void create(Book book) {
+    public void create(Book book) throws SQLException {
 
-        try {
-            Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
-            PreparedStatement statement;
+        PreparedStatement statement;
 
-            statement = connection.prepareStatement("INSERT INTO Book (author,title, isbn, "
-                    + "read) VALUES (?, ?, ?, ?)");
-            statement.setString(1, book.getAuthor());
-            statement.setString(2, book.getTitle());
-            statement.setString(3, book.getIsbn());
-            statement.setBoolean(4, false);
+        statement = connection.prepareStatement("INSERT INTO Book (author,title, isbn, "
+                + "read) VALUES (?, ?, ?, ?)");
+        statement.setString(1, book.getAuthor());
+        statement.setString(2, book.getTitle());
+        statement.setString(3, book.getIsbn());
+        statement.setBoolean(4, false);
 
-            statement.executeUpdate();
-            statement.close();
+        statement.executeUpdate();
+        statement.close();
 
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        connection.close();
+
 
     }
 
     @Override
-    public List<Book> list() {
+    public List<Book> list() throws SQLException {
 
         ArrayList<Book> bookList = new ArrayList();
-        try {
-            Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Book;");
-            ResultSet resultSet = statement.executeQuery();
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Book;");
+        ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                Book book = getBook(resultSet);
-                bookList.add(book);
+        while (resultSet.next()) {
+            Book book = getBook(resultSet);
+            bookList.add(book);
 
-            }
-            statement.close();
-            resultSet.close();
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        statement.close();
+        resultSet.close();
+        connection.close();
+        
         return bookList;
     }
 
