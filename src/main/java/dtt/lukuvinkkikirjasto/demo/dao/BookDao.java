@@ -69,6 +69,8 @@ public class BookDao implements Dao<Book, Integer> {
                 bookList.add(book);
 
             }
+            statement.close();
+            resultSet.close();
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
