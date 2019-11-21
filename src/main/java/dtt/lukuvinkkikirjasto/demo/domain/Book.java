@@ -17,7 +17,7 @@ public class Book {
         this.author = author;
         this.title = title;
         this.isbn = isbn;
-        this.read = false;
+        this.read = read;
     }
 
     public boolean isRead() {
