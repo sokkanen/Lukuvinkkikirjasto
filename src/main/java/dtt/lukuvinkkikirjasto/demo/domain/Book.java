@@ -1,10 +1,13 @@
 
 package dtt.lukuvinkkikirjasto.demo.domain;
 
+import javax.persistence.Entity;
+
 /**
  *
  * @author milla
  */
+@Entity
 public class Book {
     
     private String author;
