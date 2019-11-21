@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EntityScan( basePackages = {"lukuvinkkikirjasto"} )
 @ComponentScan
 public class LukuvinkkikirjastoApplication {
 
