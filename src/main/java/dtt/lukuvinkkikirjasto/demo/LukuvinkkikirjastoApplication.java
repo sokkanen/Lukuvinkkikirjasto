@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EntityScan( basePackages = {"lukuvinkkikirjasto"} )
-@ComponentScan(basePackages = {"lukuvinkkikirjasto"})
+@ComponentScan
 public class LukuvinkkikirjastoApplication {
 
 	public static void main(String[] args) {
