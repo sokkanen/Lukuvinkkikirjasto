@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-@Entity
+@Service
 public class Database {
 
     private final String url;
@@ -16,7 +18,7 @@ public class Database {
     private final Flyway flyway;
     
 
-    public Database(String url){
+    public Database(@Value("./build/lukusuositukset.db") String url){
         this.url = "jdbc:sqlite:file:"+url;
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
         init();
