@@ -1,6 +1,5 @@
 package dtt.lukuvinkkikirjasto.demo.dao;
 
-import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.sql.SQLException;
 import java.util.List;
 

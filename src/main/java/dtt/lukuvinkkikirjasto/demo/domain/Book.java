@@ -1,6 +1,8 @@
 
 package dtt.lukuvinkkikirjasto.demo.domain;
 
+import javax.persistence.Entity;
+
 /**
  *
  * @author milla

@@ -38,6 +38,7 @@ dependencies {
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 	compile "org.flywaydb:flyway-core:6.0.8"
 	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
 }
 
 flyway {
@@ -46,7 +47,7 @@ flyway {
 }
 
 application {
-mainClassName = 'dtt.lukuvinkkikirjasto.demo.LukuvinkkikirjastoApplication'
+    mainClassName = 'dtt.lukuvinkkikirjasto.demo.LukuvinkkikirjastoApplication'
 }
 test {
 	useJUnitPlatform()
