@@ -26,7 +26,7 @@ public class BookController {
         this.bookDao = dao;
     }
     
-    @GetMapping("/books")
+    @GetMapping("/")
     public String getAllBooks(Model model) throws SQLException {
         model.addAttribute("list", bookDao.list());
         return "books";
@@ -36,7 +36,7 @@ public class BookController {
     public String saveBook(@RequestParam String name, @RequestParam String author, @RequestParam String isbn) throws SQLException {
         Book b = new Book(author, name, isbn, false);
         bookDao.create(b);
-        return "redirect:/books";
+        return "redirect:/";
     }
     
 }
