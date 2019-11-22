@@ -34,7 +34,7 @@ public class BookController {
 
 
     @GetMapping("/")
-    public String frontPage(Model model) throws SQLException {
+    public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
         model.addAttribute("list", bookDao.list());
         return "books";
     }
@@ -42,7 +42,7 @@ public class BookController {
     @PostMapping("/books")
     public String saveBook(@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
         if(bindingResult.hasErrors()) {
-            return "redirect:/";
+            return "books";
         }
 
 

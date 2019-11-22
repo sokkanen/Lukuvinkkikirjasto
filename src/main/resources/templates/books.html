@@ -14,8 +14,9 @@
             </li>
         </ul>
         <h2>Add book</h2>
-        <form th:action="@{/books}" method="POST">
+        <form th:action="@{/books}" method="POST" th:object="${book}">
             Title: <input type="text" name="title" id="title" /><br />
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages:</td> <br/>
             Author: <input type="text" name="author" id ="author" /><br />
             ISBN: <input type="text" name="isbn" id="isbn" /><br />
             <input type="submit" value="Submit"/>
