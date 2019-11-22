@@ -2,25 +2,36 @@
 package dtt.lukuvinkkikirjasto.demo.domain;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author milla
  */
 public class Book {
-    
+
     private String author;
+
+    @NotEmpty
+    @Size(min = 2, max = 30)
     private String title;
+
     private String isbn;
+
     private boolean read;
     
     
-    public Book(String author, String title, String isbn, boolean read) {
+    public Book(String author, String title, String isbn) {
         this.author = author;
         this.title = title;
         this.isbn = isbn;
-        this.read = read;
+        this.read = false;
     }
+
+
+
 
     public boolean isRead() {
         return read;

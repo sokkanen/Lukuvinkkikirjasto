@@ -10,9 +10,13 @@ import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.sql.SQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 
 /**
  *
@@ -25,17 +29,24 @@ public class BookController {
     public BookController(BookDao dao) {
         this.bookDao = dao;
     }
-    
+
+
+
+
     @GetMapping("/")
-    public String getAllBooks(Model model) throws SQLException {
+    public String frontPage(Model model) throws SQLException {
         model.addAttribute("list", bookDao.list());
         return "books";
     }
     
     @PostMapping("/books")
-    public String saveBook(@RequestParam String name, @RequestParam String author, @RequestParam String isbn) throws SQLException {
-        Book b = new Book(author, name, isbn, false);
-        bookDao.create(b);
+    public String saveBook(@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+        if(bindingResult.hasErrors()) {
+            return "redirect:/";
+        }
+
+
+        bookDao.create(book);
         return "redirect:/";
     }
     
