@@ -37,12 +37,10 @@ public class BookDao implements Dao<Book, Integer> {
 
         PreparedStatement statement;
 
-        statement = connection.prepareStatement("INSERT INTO Book (author,title, isbn, "
-                + "read) VALUES (?, ?, ?, ?)");
+        statement = connection.prepareStatement("INSERT INTO Book (author,title, isbn) VALUES (?, ?, ?)");
         statement.setString(1, book.getAuthor());
         statement.setString(2, book.getTitle());
         statement.setString(3, book.getIsbn());
-        statement.setBoolean(4, false);
 
         statement.executeUpdate();
         statement.close();
@@ -77,8 +75,7 @@ public class BookDao implements Dao<Book, Integer> {
         Book book = new Book(
                 rs.getString("author"),
                 rs.getString("title"),
-                rs.getString("isbn"),
-                rs.getBoolean("read")
+                rs.getString("isbn")
         );
         return book;
     }
