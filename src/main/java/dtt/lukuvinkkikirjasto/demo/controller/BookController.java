@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -30,9 +29,6 @@ public class BookController {
         this.bookDao = dao;
     }
 
-
-
-
     @GetMapping("/")
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
         model.addAttribute("list", bookDao.list());
@@ -44,7 +40,6 @@ public class BookController {
         if(bindingResult.hasErrors()) {
             return "books";
         }
-
 
         bookDao.create(book);
         return "redirect:/";

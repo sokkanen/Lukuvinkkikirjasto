@@ -1,15 +1,14 @@
 package dtt.lukuvinkkikirjasto.demo.database;
 
 import org.flywaydb.core.Flyway;
-import javax.persistence.Entity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 
-@Service
+@Configuration
 public class Database {
 
     private final String url;
@@ -22,12 +21,12 @@ public class Database {
         this.url = "jdbc:sqlite:file:"+url;
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
         init();
+        flyway.migrate();
     }
 
     public void doFlyWayMigration(){
         flyway.migrate();
     }
-
     
     /**
      * Opens connection to database
