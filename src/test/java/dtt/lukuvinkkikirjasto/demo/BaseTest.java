@@ -1,5 +1,6 @@
 package dtt.lukuvinkkikirjasto.demo;
 
+import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.database.Database;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -23,8 +24,10 @@ import java.sql.SQLException;
  */
 public class BaseTest {
 
-    // Packet-visibility to enable usage in extended test-classes
-    static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    // Public-visibility to enable usage in extended test-classes
+    public static BookDao bookDao;
+
+    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     static Connection connection;
     static Database database;
 
@@ -37,6 +40,7 @@ public class BaseTest {
         database = new Database("./build/lukuvinkkitest.db");
         database.doFlyWayMigration();
         connection = database.getConnection();
+        bookDao = new BookDao(database);
     }
 
     @AfterAll
