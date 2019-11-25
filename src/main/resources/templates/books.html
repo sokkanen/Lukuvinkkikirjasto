@@ -5,12 +5,14 @@
     </head>
 
     <body>
-        <h1>Books</h1>
-        <ul>
+
+        <span th:if="${list.size() == 0}">You have no reading tips</span>
+        <ul th:unless="${list.size() == 0}">
+            <h1>Books</h1>
             <li th:each="alkio : ${list}">
-                <span th:text="${'Title: '+ alkio.title}">Title</span>
-                <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
-                <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN:' + ${alkio.isbn}">ISBN</span>
+                Title: <span th:text="${alkio.title}">Title</span>,
+                / Author: <span th:text="${alkio.author}">Author</span>,
+                / ISBN: <span th:text="${alkio.isbn}">ISBN</span>
             </li>
         </ul>
         <h2>Add book</h2>
