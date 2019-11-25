@@ -17,21 +17,15 @@ public class Book {
     @NotEmpty
     @Size(min = 2, max = 30)
     private String title;
-
     private String isbn;
-
     private boolean read;
-    
-    
+
     public Book(String author, String title, String isbn) {
         this.author = author;
         this.title = title;
         this.isbn = isbn;
         this.read = false;
     }
-
-
-
 
     public boolean isRead() {
         return read;
@@ -41,7 +35,6 @@ public class Book {
         this.read = read;
     }
 
-   
     public String getAuthor() {
         return author;
     }
@@ -65,5 +58,5 @@ public class Book {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-    
+
 }
