@@ -22,7 +22,6 @@ class ServerRule extends ExternalResource{
 
     @Override
     protected void after() {
-        System.setProperty("url", "./build/lukusuositukset.db");
         app.close();
     }
 }
