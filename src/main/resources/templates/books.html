@@ -6,6 +6,7 @@
 
     <body>
         <h1>Books</h1>
+        <p th:if="${list!=null}">You have no saved books.</p>
         <ul>
             <li th:each="alkio : ${list}">
                 Title: <span th:text="${alkio.title}">Title</span>, 
