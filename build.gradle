@@ -21,7 +21,6 @@ project.ext {
 	cucumberVersion = '4.7.4'
 	seleniumVersion = '3.14.0'
 	fluentleniumVersion = '4.3.0'
-	springBootVersion = '2.1.3.RELEASE'
 }
 
 repositories {
