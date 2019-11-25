@@ -1,6 +1,5 @@
 package dtt.lukuvinkkikirjasto.demo;
 
-import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import org.junit.rules.ExternalResource;
 import spark.Spark;
 

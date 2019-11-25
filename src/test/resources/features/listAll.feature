@@ -1,10 +1,10 @@
 Feature: All reading tips can be listed
 
-#  Scenario: empty list can be listed
-#    Given command list all is selected
-#    When  database is empty
-#    Then  system will respond with "you have no reading tips"
-#
+  Scenario: empty list can be listed
+    Given command list all is selected
+    When  database is empty
+    Then  system will respond with "you have no reading tips"
+
 #  Scenario: list with one book can be listed
 #    Given command list all is selected
 #    When  book with title "The super coder", author "GirlCoder" and ISBN "9519854894" is added to reading tips

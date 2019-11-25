@@ -62,6 +62,8 @@ application {
 }
 test {
 	useJUnitPlatform()
+	testLogging.showStandardStreams = true
+	systemProperties System.getProperties()
 }
 
 jacocoTestReport {
