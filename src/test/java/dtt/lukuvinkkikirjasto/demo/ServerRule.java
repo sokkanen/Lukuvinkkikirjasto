@@ -16,11 +16,13 @@ class ServerRule extends ExternalResource{
 
     @Override
     protected void before() throws Throwable {
+        System.setProperty("url", "./build/lukuvinkkitest.db");
         this.app = SpringApplication.run(LukuvinkkikirjastoApplication.class);
     }
 
     @Override
     protected void after() {
+        System.setProperty("url", "./build/lukusuositukset.db");
         app.close();
     }
 }

@@ -18,7 +18,12 @@ public class Database {
     
 
     public Database(@Value("./build/lukusuositukset.db") String url){
-        this.url = "jdbc:sqlite:file:"+url;
+        String extension = url;
+        if (System.getProperty("url") != null){
+            extension = System.getProperty("url");
+        }
+        System.out.println(extension);
+        this.url = "jdbc:sqlite:file:" + extension;
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
         init();
         flyway.migrate();
