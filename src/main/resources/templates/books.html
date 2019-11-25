@@ -11,8 +11,8 @@
             <h1>Books</h1>
             <li th:each="alkio : ${list}">
                 Title: <span th:text="${alkio.title}">Title</span>,
-                Author: <span th:text="${alkio.author}">Author</span>, 
-                ISBN: <span th:text="${alkio.isbn}">ISBN</span>
+                / Author: <span th:text="${alkio.author}">Author</span>,
+                / ISBN: <span th:text="${alkio.isbn}">ISBN</span>
             </li>
         </ul>
         <h2>Add book</h2>
