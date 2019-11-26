@@ -5,8 +5,11 @@ import dtt.lukuvinkkikirjasto.demo.database.Database;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.test.context.event.annotation.AfterTestExecution;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,7 +47,7 @@ public class BaseTest {
     }
 
     @AfterAll
-    static void tearDown() throws SQLException{
+    static void tearDown() throws SQLException {
         connection.close();
     }
 
@@ -52,7 +55,8 @@ public class BaseTest {
      * Imports clear-all-tables.sql from /test/resources/
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
-    @AfterEach
+    @AfterTestExecution
+    @BeforeEach
     public void removeTestData() throws IOException, SQLException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("clear-all-tables.sql").getFile());

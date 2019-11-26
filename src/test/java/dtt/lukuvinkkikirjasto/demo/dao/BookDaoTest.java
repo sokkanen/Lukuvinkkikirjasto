@@ -3,6 +3,7 @@ package dtt.lukuvinkkikirjasto.demo.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import dtt.lukuvinkkikirjasto.demo.BaseTest;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import org.junit.jupiter.api.BeforeAll;
