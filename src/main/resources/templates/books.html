@@ -5,17 +5,17 @@
     </head>
 
     <body>
-
+        <h1>Books</h1>
         <span th:if="${list.size() == 0}">You have no reading tips</span>
         <ul th:unless="${list.size() == 0}">
-            <h1>Books</h1>
             <li th:each="alkio : ${list}">
-                Title: <span th:text="${alkio.title}">Title</span>,
-                / Author: <span th:text="${alkio.author}">Author</span>,
+                Title: <span th:text="${alkio.title}">Title</span>
+                / Author: <span th:text="${alkio.author}">Author</span>
                 / ISBN: <span th:text="${alkio.isbn}">ISBN</span>
             </li>
         </ul>
         <h2>Add book</h2>
+        <span th:text="${error}">&nbsp;</span>
         <form th:action="@{/books}" method="POST" th:object="${book}">
             Title: <input type="text" name="title" id="title" /><br />
             <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages:</td> <br/>
