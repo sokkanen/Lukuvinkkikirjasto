@@ -10,8 +10,8 @@
         <ul th:unless="${list.size() == 0}">
             <li th:each="alkio : ${list}">
                 Title: <span th:text="${alkio.title}">Title</span>
-                / Author: <span th:text="${alkio.author}">Author</span>
-                / ISBN: <span th:text="${alkio.isbn}">ISBN</span>
+                <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
+                <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN:' + ${alkio.isbn}">ISBN</span>
             </li>
         </ul>
         <h2>Add book</h2>
