@@ -74,6 +74,26 @@ public class BookDao implements Dao<Book, Integer> {
         
         return bookList;
     }
+    
+    public Book findByIsbn(String isbn) throws SQLException {
+        Connection conn = database.getConnection();
+        
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE isbn = ?");
+        statement.setString(1, isbn);
+        ResultSet res = statement.executeQuery();
+        if(!res.next()) {
+            return null;
+        }
+        Book onebook = getBook(res);
+        logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
+        
+        statement.close();
+        res.close();
+        
+        conn.close();
+        return onebook;
+    }
+    
 
     public Book getBook(ResultSet rs) throws SQLException {
         Book book = new Book(
