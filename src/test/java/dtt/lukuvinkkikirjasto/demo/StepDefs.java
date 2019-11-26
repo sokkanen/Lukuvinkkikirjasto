@@ -23,7 +23,7 @@ public class StepDefs extends BaseTest {
     @Before
     public void setUp() throws SQLException {
         driver = new HtmlUnitDriver();
-        baseUrl = "http://localhost:8081";
+        baseUrl = "http://localhost:8080";
         initialize();
     }
 
