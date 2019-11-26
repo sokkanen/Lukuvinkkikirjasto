@@ -18,8 +18,8 @@ public class BookDaoTest extends BaseTest {
 
     @BeforeAll
     public static void setUp() {
-        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123");
-        testBook2 = new Book("Raimo Haakana", "Minä ja Mussolini", "321-321");
+        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123-123");
+        testBook2 = new Book("Raimo Haakana", "Minä ja Mussolini", "321-321-321");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class BookDaoTest extends BaseTest {
         List<Book> fromDb = bookDao.list();
         assertEquals("Jorma Kinnunen", fromDb.get(0).getAuthor());
         assertEquals("Keihäsmies", fromDb.get(0).getTitle());
-        assertEquals("123-123", fromDb.get(0).getIsbn());
+        assertEquals("123-123-123", fromDb.get(0).getIsbn());
         assertFalse(fromDb.get(0).isRead());
     }
 
@@ -39,11 +39,11 @@ public class BookDaoTest extends BaseTest {
         List<Book> fromDb = bookDao.list();
         assertEquals("Jorma Kinnunen", fromDb.get(0).getAuthor());
         assertEquals("Keihäsmies", fromDb.get(0).getTitle());
-        assertEquals("123-123", fromDb.get(0).getIsbn());
+        assertEquals("123-123-123", fromDb.get(0).getIsbn());
         assertFalse(fromDb.get(0).isRead());
         assertEquals("Raimo Haakana", fromDb.get(1).getAuthor());
         assertEquals("Minä ja Mussolini", fromDb.get(1).getTitle());
-        assertEquals("321-321", fromDb.get(1).getIsbn());
+        assertEquals("321-321-321", fromDb.get(1).getIsbn());
         assertFalse(fromDb.get(1).isRead());
     }
 }

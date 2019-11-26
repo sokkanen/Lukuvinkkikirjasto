@@ -12,11 +12,14 @@ import javax.validation.constraints.Size;
  */
 public class Book {
 
-    private String author;
-
-    @NotEmpty
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 30, message="Title must be between 2 and 30 characters")
     private String title;
+    
+    @Size(min = 2, max = 30, message="Author name must be between 2 and 30 characters")
+    private String author;
+    
+    
+    @Size(min = 10, max = 13, message="ISBN length must be between 10 and 13 ")
     private String isbn;
     private boolean read;
 
