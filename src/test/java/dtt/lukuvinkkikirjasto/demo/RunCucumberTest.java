@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         snippets = SnippetType.CAMELCASE
 )
 
-public class RunCucumberTest {
+public class RunCucumberTest{
     @ClassRule
     public static ServerRule server = new ServerRule(8080);
 }
