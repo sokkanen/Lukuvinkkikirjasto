@@ -12,9 +12,7 @@ import javax.validation.constraints.Size;
  * @author milla
  */
 public class Book {
-
-    String regex = "^(?:ISBN(?:-10)?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$)[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";
-
+    
     @Size(min = 2, max = 30, message="Title must be between 2 and 30 characters")
     private String title;
 
