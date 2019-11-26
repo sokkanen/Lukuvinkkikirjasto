@@ -46,6 +46,7 @@ public class BookController {
             model.addAttribute("error", "Book with this ISBN already added.");
             model.addAttribute("list", bookDao.list());
             return "books";
+
         } 
 
         bookDao.create(book);

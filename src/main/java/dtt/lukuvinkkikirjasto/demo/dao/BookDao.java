@@ -76,6 +76,9 @@ public class BookDao implements Dao<Book, Integer> {
     }
     
     public Book findByIsbn(String isbn) throws SQLException {
+        if (isbn.isEmpty()) {
+            return null;
+        }
         Connection conn = database.getConnection();
         
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE isbn = ?");
@@ -84,6 +87,8 @@ public class BookDao implements Dao<Book, Integer> {
         if(!res.next()) {
             return null;
         }
+
+
         Book onebook = getBook(res);
         logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
         

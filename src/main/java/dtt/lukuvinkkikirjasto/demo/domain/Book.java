@@ -4,6 +4,7 @@ package dtt.lukuvinkkikirjasto.demo.domain;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -11,15 +12,15 @@ import javax.validation.constraints.Size;
  * @author milla
  */
 public class Book {
-
+    
     @Size(min = 2, max = 30, message="Title must be between 2 and 30 characters")
     private String title;
-    
-    @Size(min = 2, max = 30, message="Author name must be between 2 and 30 characters")
+
     private String author;
-    
-    
-    @Size(min = 10, max = 13, message="ISBN length must be between 10 and 13 ")
+
+
+    @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$"
+    , message = "Put valid ISBN")
     private String isbn;
     private boolean read;
 
