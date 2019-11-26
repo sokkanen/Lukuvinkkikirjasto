@@ -20,7 +20,9 @@
             Title: <input type="text" name="title" id="title" /><br />
             <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages:</td> <br/>
             Author: <input type="text" name="author" id ="author" /><br />
+            <td th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Title error messages:</td> <br/>
             ISBN: <input type="text" name="isbn" id="isbn" /><br />
+            <td th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">Title error messages:</td> <br/>
             <input type="submit" value="Submit"/>
         </form>
     </body>
