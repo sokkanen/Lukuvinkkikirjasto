@@ -9,6 +9,7 @@ package dtt.lukuvinkkikirjasto.demo.controller;
  *
  * @author sebserge
  */
+import dtt.lukuvinkkikirjasto.demo.BaseTest;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.util.List;
@@ -25,12 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BookControllerTest {
+public class BookControllerTest extends BaseTest {
     
     @Autowired
     private MockMvc mockMvc;
     
-    private BookDao dao;
+    @Autowired
+    private BookController controller;
     
     @Test
     public void statusOk() throws Exception {
@@ -47,18 +49,26 @@ public class BookControllerTest {
     
     @Test
     public void postAddsBookToDatabase() throws Exception {
+        controller.setDao(bookDao);
         MvcResult res = mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "123-123-32")).andReturn();
-        MvcResult res2 = mockMvc.perform(get("/")).andReturn();
-        String content = res2.getResponse().getContentAsString();
-        Assert.assertTrue(content.contains("123-123-32"));
+        
+        Book book = bookDao.findByIsbn("123-123-32");
+        
+        Assert.assertEquals(book.getIsbn(), "123-123-32");
     }
     
     @Test
     public void cantAddTwoSameISBN() throws Exception {
-        mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "123-123-32")).andReturn();
-        mockMvc.perform(post("/books").param("title", "test").param("author", "kalle").param("isbn", "123-123-32")).andReturn();
+        controller.setDao(bookDao);
+        
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "123-123-323")).andReturn();
+        mockMvc.perform(post("/books").param("title", "test").param("author", "kalle").param("isbn", "123-123-323")).andReturn();
+        
         MvcResult res2 = mockMvc.perform(get("/")).andReturn();
+        
         String content = res2.getResponse().getContentAsString();
+        
         Assert.assertFalse(content.contains("kalle"));
+        Assert.assertTrue(content.contains("nakki"));
     }
 }
