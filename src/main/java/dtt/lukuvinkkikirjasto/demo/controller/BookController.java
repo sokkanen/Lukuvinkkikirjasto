@@ -52,4 +52,8 @@ public class BookController {
         return "redirect:/";
     }
     
+    public void setDao(BookDao dao) {
+        this.bookDao = dao;
+    }
+    
 }
