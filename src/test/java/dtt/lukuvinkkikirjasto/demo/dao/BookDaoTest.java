@@ -19,17 +19,18 @@ public class BookDaoTest extends BaseTest {
 
     @BeforeAll
     public static void setUp() {
-        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123-123");
-        testBook2 = new Book("Raimo Haakana", "Minä ja Mussolini", "321-321-321");
+        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "951-98548-9-7");
+        testBook2 = new Book("Raimo Haakana", "Minä ja Mussolini", "951-98548-9-6");
     }
 
     @Test
     public void aSingleBookCanBeInserted() throws SQLException {
         bookDao.create(testBook);
+
         List<Book> fromDb = bookDao.list();
         assertEquals("Jorma Kinnunen", fromDb.get(0).getAuthor());
         assertEquals("Keihäsmies", fromDb.get(0).getTitle());
-        assertEquals("123-123-123", fromDb.get(0).getIsbn());
+        assertEquals("951-98548-9-7", fromDb.get(0).getIsbn());
         assertFalse(fromDb.get(0).isRead());
     }
 
@@ -38,13 +39,14 @@ public class BookDaoTest extends BaseTest {
         bookDao.create(testBook);
         bookDao.create(testBook2);
         List<Book> fromDb = bookDao.list();
+        System.out.println(fromDb);
         assertEquals("Jorma Kinnunen", fromDb.get(0).getAuthor());
         assertEquals("Keihäsmies", fromDb.get(0).getTitle());
-        assertEquals("123-123-123", fromDb.get(0).getIsbn());
+        assertEquals("951-98548-9-7", fromDb.get(0).getIsbn());
         assertFalse(fromDb.get(0).isRead());
         assertEquals("Raimo Haakana", fromDb.get(1).getAuthor());
         assertEquals("Minä ja Mussolini", fromDb.get(1).getTitle());
-        assertEquals("321-321-321", fromDb.get(1).getIsbn());
+        assertEquals("951-98548-9-6", fromDb.get(1).getIsbn());
         assertFalse(fromDb.get(1).isRead());
     }
     
@@ -54,6 +56,6 @@ public class BookDaoTest extends BaseTest {
         bookDao.create(testBook2);
         Book book = bookDao.findByIsbn(testBook.getIsbn());
         assertEquals("Jorma Kinnunen", book.getAuthor());
-        assertEquals("123-123-123", book.getIsbn());
+        assertEquals("951-98548-9-7", book.getIsbn());
     }
 }

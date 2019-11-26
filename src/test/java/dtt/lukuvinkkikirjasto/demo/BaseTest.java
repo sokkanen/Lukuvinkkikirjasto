@@ -55,7 +55,7 @@ public class BaseTest {
      * Imports clear-all-tables.sql from /test/resources/
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
-    @AfterTestExecution
+    @AfterEach
     @BeforeEach
     public void removeTestData() throws IOException, SQLException {
         ClassLoader classLoader = getClass().getClassLoader();
