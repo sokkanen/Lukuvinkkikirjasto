@@ -5,9 +5,9 @@ import dtt.lukuvinkkikirjasto.demo.database.Database;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
-
+import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -27,7 +27,6 @@ public class BaseTest {
     // Public-visibility to enable usage in extended test-classes
     public static BookDao bookDao;
 
-    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     static Connection connection;
     static Database database;
 
@@ -44,7 +43,7 @@ public class BaseTest {
     }
 
     @AfterAll
-    static void tearDown() throws SQLException{
+    static void tearDown() throws SQLException {
         connection.close();
     }
 
@@ -53,8 +52,15 @@ public class BaseTest {
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
     @AfterEach
+    @BeforeEach
+    public void cleanUp() throws IOException, SQLException {
+        removeTestData();
+
+    }
+
     public void removeTestData() throws IOException, SQLException {
-        ClassLoader classLoader = getClass().getClassLoader();
+        Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         File file = new File(classLoader.getResource("clear-all-tables.sql").getFile());
         BufferedReader reader  = new BufferedReader(new FileReader(file));
         while (reader.read() > 0) {
