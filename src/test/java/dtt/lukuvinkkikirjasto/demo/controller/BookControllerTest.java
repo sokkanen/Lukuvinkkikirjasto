@@ -51,18 +51,23 @@ public class BookControllerTest extends BaseTest {
     public void postAddsBookToDatabase() throws Exception {
         controller.setDao(bookDao);
         MvcResult res = mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "123-123-32")).andReturn();
-        System.out.println(res.getResponse());
+        
         Book book = bookDao.findByIsbn("123-123-32");
+        
         Assert.assertEquals(book.getIsbn(), "123-123-32");
     }
     
     @Test
     public void cantAddTwoSameISBN() throws Exception {
         controller.setDao(bookDao);
+        
         mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "123-123-323")).andReturn();
         mockMvc.perform(post("/books").param("title", "test").param("author", "kalle").param("isbn", "123-123-323")).andReturn();
+        
         MvcResult res2 = mockMvc.perform(get("/")).andReturn();
+        
         String content = res2.getResponse().getContentAsString();
+        
         Assert.assertFalse(content.contains("kalle"));
         Assert.assertTrue(content.contains("nakki"));
     }
