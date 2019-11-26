@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.SQLException;
+
 import static junit.framework.TestCase.assertTrue;
 
 @SpringBootTest
@@ -19,9 +21,10 @@ public class StepDefs extends BaseTest {
     String baseUrl;
 
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException {
         driver = new HtmlUnitDriver();
-        baseUrl = "http://localhost:8080";
+        baseUrl = "http://localhost:8081";
+        initialize();
     }
 
     @Given("command new is selected")
@@ -42,8 +45,9 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with {string}")
-    public void systemWillRespondWith(String string) {
+    public void systemWillRespondWith(String string) throws Exception{
         assertTrue(driver.getPageSource().contains(string));
+        removeTestData();
     }
 
     @When("title, author and ISBN is empty")
@@ -104,10 +108,11 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
-    public void systemWillRespondWithBookInfo(String title, String author, String isbn) {
+    public void systemWillRespondWithBookInfo(String title, String author, String isbn) throws Exception {
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         assertTrue(driver.getPageSource().contains(isbn));
+        removeTestData();
     }
 
     private void sleep(int seconds) {
