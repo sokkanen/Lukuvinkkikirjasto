@@ -14,16 +14,7 @@
                 <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
             </li>
         </ul>
-        <h2>Add book</h2>
-        <span th:text="${error}">&nbsp;</span>
-        <form th:action="@{/books}" method="POST" th:object="${book}">
-            Title: <input type="text" name="title" id="title" /><br />
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages</td> <br/>
-            Author: <input type="text" name="author" id ="author" /><br />
-            <td th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author error messages</td> <br/>
-            ISBN: <input type="text" name="isbn" id="isbn" /><br />
-            <td th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">ISBN error messages</td> <br/>
-            <input type="submit" name="submit" id="submit" value="Submit"/>
-        </form>
+        <!--/*/ <th:block th:include="fragments/form.html :: form">
+        </th:block> /*/-->
     </body>
 </html>
