@@ -25,7 +25,7 @@
                 <li th:each="alkio : ${list}">
                     Title: <span th:text="${alkio.title}">Title</span>
                     <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
-                    <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+                    <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
                 </li>
             </ul>
         </div>

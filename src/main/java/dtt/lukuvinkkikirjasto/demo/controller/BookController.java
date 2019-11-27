@@ -37,6 +37,11 @@ public class BookController {
     
     @PostMapping("/books")
     public String saveBook(Model model,@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+
+        if (book.getIsbn().equals("error")) {
+            bindingResult.rejectValue("isbn", "error.book", "Invalid ISBN.");
+        }
+
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
