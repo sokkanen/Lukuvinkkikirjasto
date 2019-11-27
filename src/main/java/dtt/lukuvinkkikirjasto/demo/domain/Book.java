@@ -10,13 +10,13 @@ import javax.validation.constraints.Size;
 public class Book {
 
     private int id;
+
     @Size(min = 2, max = 30, message = "Title must be between 2 and 30 characters")
     private String title;
 
     private String author;
 
-    @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$",
-             message = "Invalid ISBN")
+    @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$",message = "Invalid ISBN")
     private String isbn;
     private boolean read;
 
@@ -80,7 +80,7 @@ public class Book {
             return false;
         }
         String tempIsbn;
-        //remove any hyphens
+        //remove hyphens
         tempIsbn = isbn.replaceAll("-", "");
 
         //must be a 10 digit ISBN
@@ -102,7 +102,7 @@ public class Book {
 
             return checksum.equals(tempIsbn.substring(9));
         } catch (NumberFormatException nfe) {
-            //to catch invalid ISBNs that have non-numeric characters in them
+            //to catch invalid ISBNs
             return false;
         }
     }
@@ -112,7 +112,7 @@ public class Book {
             return false;
         }
         String tempIsbn;
-        //remove any hyphens
+        //remove hyphens
         tempIsbn = isbn.replaceAll("-", "");
 
         //must be a 13 digit ISBN
@@ -127,7 +127,6 @@ public class Book {
                 tot += (i % 2 == 0) ? digit * 1 : digit * 3;
             }
 
-            //checksum must be 0-9. If calculated as 10 then = 0
             int checksum = 10 - (tot % 10);
             if (checksum == 10) {
                 checksum = 0;
@@ -135,7 +134,7 @@ public class Book {
 
             return checksum == Integer.parseInt(tempIsbn.substring(12));
         } catch (NumberFormatException nfe) {
-            //to catch invalid ISBNs that have non-numeric characters in them
+            //to catch invalid ISBN
             return false;
         }
     }
