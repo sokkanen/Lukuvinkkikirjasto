@@ -36,10 +36,7 @@ public class BaseTest {
      */
     @BeforeAll
     static void setup() throws SQLException{
-        database = new Database("./build/lukuvinkkitest.db");
-        database.doFlyWayMigration();
-        connection = database.getConnection();
-        bookDao = new BookDao(database);
+        initialize();
     }
 
     @AfterAll
@@ -52,10 +49,16 @@ public class BaseTest {
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
     @AfterEach
-    @BeforeEach
     public void cleanUp() throws IOException, SQLException {
         removeTestData();
 
+    }
+
+    public static void initialize() throws SQLException{
+        database = new Database("./build/lukuvinkkitest.db");
+        database.doFlyWayMigration();
+        connection = database.getConnection();
+        bookDao = new BookDao(database);
     }
 
     public void removeTestData() throws IOException, SQLException {
