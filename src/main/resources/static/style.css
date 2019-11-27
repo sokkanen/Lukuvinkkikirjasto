@@ -1,0 +1,12 @@
+body{
+    background: #1a2a6c; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+} /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+.main-content {
+    background: rgba(255, 255, 255, 0.85);
+    margin: 50px;
+    padding: 50px;
+    border-radius: 25px;
+}
