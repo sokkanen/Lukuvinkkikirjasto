@@ -49,7 +49,6 @@ public class BaseTest {
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
     @AfterEach
-    @BeforeEach
     public void cleanUp() throws IOException, SQLException {
         removeTestData();
 
