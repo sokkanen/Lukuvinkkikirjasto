@@ -5,12 +5,11 @@
     <span th:text="${error}">&nbsp;</span>
     <form th:action="@{/books}" method="POST" th:object="${book}">
         <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/><br />
-        <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages</td>
+        <div th:errors="*{title}" th:if="${#fields.hasErrors('title')}"  class="alert alert-warning" role="alert"></div>
         <input type="text" name="author" id ="author" th:field="*{author}" class="form-control" placeholder="Author"/><br />
-        <td th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author error messages</td>
+        <div th:errors="*{author}" th:if="${#fields.hasErrors('author')}"  class="alert alert-warning" role="alert"></div>
         <input type="text" name="isbn" id="isbn" th:field="*{isbn}" class="form-control" placeholder="ISBN"/><br />
-        <td th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">ISBN error messages</td>
-        <input type="submit" name="submit" id="submit" value="Submit"/>
-    </form>
+        <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
+        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary"/>    </form>
 </div>
 </html>

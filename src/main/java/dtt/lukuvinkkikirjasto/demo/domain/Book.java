@@ -76,12 +76,12 @@ public class Book {
         {
             return false;
         }
-
+        String tempIsbn;
         //remove any hyphens
-        isbn = isbn.replaceAll( "-", "" );
+        tempIsbn = isbn.replaceAll( "-", "" );
 
         //must be a 10 digit ISBN
-        if ( isbn.length() != 10 )
+        if ( tempIsbn.length() != 10 )
         {
             return false;
         }
@@ -91,7 +91,7 @@ public class Book {
             int tot = 0;
             for ( int i = 0; i < 9; i++ )
             {
-                int digit = Integer.parseInt( isbn.substring( i, i + 1 ) );
+                int digit = Integer.parseInt( tempIsbn.substring( i, i + 1 ) );
                 tot += ((10 - i) * digit);
             }
 
@@ -101,7 +101,7 @@ public class Book {
                 checksum = "X";
             }
 
-            return checksum.equals( isbn.substring( 9 ) );
+            return checksum.equals( tempIsbn.substring( 9 ) );
         }
         catch ( NumberFormatException nfe )
         {
@@ -116,12 +116,12 @@ public class Book {
         {
             return false;
         }
-
+        String tempIsbn;
         //remove any hyphens
-        isbn = isbn.replaceAll( "-", "" );
+        tempIsbn = isbn.replaceAll( "-", "" );
 
         //must be a 13 digit ISBN
-        if ( isbn.length() != 13 )
+        if ( tempIsbn.length() != 13 )
         {
             return false;
         }
@@ -131,7 +131,7 @@ public class Book {
             int tot = 0;
             for ( int i = 0; i < 12; i++ )
             {
-                int digit = Integer.parseInt( isbn.substring( i, i + 1 ) );
+                int digit = Integer.parseInt( tempIsbn.substring( i, i + 1 ) );
                 tot += (i % 2 == 0) ? digit * 1 : digit * 3;
             }
 
@@ -142,7 +142,7 @@ public class Book {
                 checksum = 0;
             }
 
-            return checksum == Integer.parseInt( isbn.substring( 12 ) );
+            return checksum == Integer.parseInt( tempIsbn.substring( 12 ) );
         }
         catch ( NumberFormatException nfe )
         {

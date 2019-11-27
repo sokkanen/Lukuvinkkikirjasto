@@ -37,21 +37,20 @@ public class BookController {
     
     @PostMapping("/books")
     public String saveBook(Model model,@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+
         if (book.getIsbn().equals("error")) {
-            //tähän bindingresult error
+            bindingResult.rejectValue("isbn", "error.book", "Invalid ISBN.");
         }
+
+        if (bookDao.findByIsbn(book.getIsbn()) != null) {
+            bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
+        }
+
         if(bindingResult.hasErrors()) {
             model.addAttribute("list", bookDao.list());
             model.addAttribute("book", book);
             return "books";
         }
-        
-        if (bookDao.findByIsbn(book.getIsbn()) != null) {
-            model.addAttribute("error", "Book with this ISBN already added.");
-            model.addAttribute("list", bookDao.list());
-            model.addAttribute("book", book);
-            return "books";
-        } 
 
         bookDao.create(book);
         return "redirect:/";
