@@ -2,28 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Your saved books</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css"/>
+
     </head>
 
     <body>
-        <h1>Books</h1>
-        <span th:if="${list.size() == 0}">You have no reading tips</span>
-        <ul th:unless="${list.size() == 0}">
-            <li th:each="alkio : ${list}">
-                Title: <span th:text="${alkio.title}">Title</span>
-                <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
-                <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
-            </li>
-        </ul>
-        <h2>Add book</h2>
-        <span th:text="${error}">&nbsp;</span>
-        <form th:action="@{/books}" method="POST" th:object="${book}">
-            Title: <input type="text" name="title" id="title" /><br />
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error messages</td> <br/>
-            Author: <input type="text" name="author" id ="author" /><br />
-            <td th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author error messages</td> <br/>
-            ISBN: <input type="text" name="isbn" id="isbn" /><br />
-            <td th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">ISBN error messages</td> <br/>
-            <input type="submit" name="submit" id="submit" value="Submit"/>
-        </form>
+    <div class="container main-content">
+        <div class="col-md-6">
+            <h1>Books</h1>
+            <span th:if="${list.size() == 0}">You have no reading tips</span>
+            <ul th:unless="${list.size() == 0}">
+                <li th:each="alkio : ${list}">
+                    Title: <span th:text="${alkio.title}">Title</span>
+                    <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
+                    <span th:if= "${alkio.isbn !=''}"  th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <!--/*/ <th:block th:include="fragments/form.html :: form">
+                </th:block> /*/-->
+        </div>
     </body>
 </html>
