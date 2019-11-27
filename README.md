@@ -4,6 +4,9 @@ Ohjelmistotuotantokurssin (syksy 2019) DROP TABLE teams; -ryhmän miniprojekti. 
 
 Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentamiseen ja hakemiseen sekä järjestyksessä pitämiseen.   
 
+####[Lukuvinkkikirjaston viimeisin versio](https://dtt-lukuvinkkikirjasto.herokuapp.com/)
+
+---
 
 ### [Product backlog](https://docs.google.com/spreadsheets/d/e/2PACX-1vRtArwOkcOSHCPa9aGrmr1WRB6tpawjR36xHHiJ0vmOBMZE7XWPP0Bb2xKf27EJQVuIabL2UxIJRfu1/pubhtml?gid=1&single=true)
 
