@@ -39,14 +39,15 @@ public class BookController {
     public String saveBook(Model model,@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
         if(bindingResult.hasErrors()) {
             model.addAttribute("list", bookDao.list());
+            model.addAttribute("book", book);
             return "books";
         }
         
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             model.addAttribute("error", "Book with this ISBN already added.");
             model.addAttribute("list", bookDao.list());
+            model.addAttribute("book", book);
             return "books";
-
         } 
 
         bookDao.create(book);
