@@ -1,2 +1,2 @@
-INSERT INTO Book (TITLE, AUTHOR, ISBN) values ("Juoksijat", "Petteri Uljas","951-98548-9-4");
-INSERT INTO Book (TITLE, AUTHOR, ISBN) values ("Kukkahattutäti", "Lemmikki Poutanen","951-98548-9-2");
+INSERT INTO Book (TITLE, AUTHOR, ISBN) values ("Kellomies", "Joona Vuorenpää","9789513161699");
+INSERT INTO Book (TITLE, AUTHOR, ISBN) values ("Idiootit ympärilläni", "Thomas Erikson","9789523003217");
