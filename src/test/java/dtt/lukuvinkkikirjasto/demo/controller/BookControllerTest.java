@@ -10,11 +10,8 @@ package dtt.lukuvinkkikirjasto.demo.controller;
  * @author sebserge
  */
 import dtt.lukuvinkkikirjasto.demo.BaseTest;
-import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
-import java.util.List;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
