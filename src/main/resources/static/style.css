@@ -5,6 +5,10 @@ body{
     cursor: url('unicorn2.png'), auto;	
 } 
 
+body, html {
+    height: 100%;
+  }
+
 li {
     margin-left: -20px;
 }
@@ -16,6 +20,21 @@ li {
 h2 {
     font-family: 'Chewy', cursive;
     
+}
+
+.editlink {
+    text-decoration: none;
+    color: black;
+}
+
+a.editlink:hover {
+    text-decoration: none;
+    color: black;
+}
+
+a.editlink:visited {
+    text-decoration: none;
+    color: black;
 }
 
 .main-content {

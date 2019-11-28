@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="/style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Chewy|Noto+Sans+JP&display=swap" rel="stylesheet">
-        <script type="text/javascript" src="js/jquery.1.11.1.js"></script>
+        <script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
 
     </head>
 
@@ -29,6 +29,7 @@
                     <b><span th:text="${alkio.title}">Title</span></b>
                     <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+                    <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">✎</a>
                 </li>
             </ul>
         </div>
