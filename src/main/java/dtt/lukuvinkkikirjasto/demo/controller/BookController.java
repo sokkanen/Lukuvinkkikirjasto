@@ -39,9 +39,14 @@ public class BookController {
     
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
-
         if (book.getIsbn().equals("error")) {
             bindingResult.rejectValue("isbn", "error.book", "Invalid ISBN.");
+        }
+
+        Book findBook = bookDao.findById(book.getId());
+        if (findBook != null) {
+            bookDao.delete(findBook);
+            
         }
 
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
@@ -62,6 +67,9 @@ public class BookController {
     public String editBook(Model model, @PathVariable(value="id") String id) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(id));
         if(book != null) {
+            if(book.getIsbn() == "error"){
+                book.setIsbn("");
+            }
             model.addAttribute("book", book);
             model.addAttribute("list", bookDao.list());
             return "books";
