@@ -115,6 +115,12 @@ public class StepDefs extends BaseTest {
         removeTestData();
     }
 
+    @When("book with title {string} is deleted")
+    public void bookWithTitleIsDeleted(String title) {
+        WebElement element = driver.findElement(By.id("deleteBook_" + title));
+        element.submit();
+    }
+
     private void sleep(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
