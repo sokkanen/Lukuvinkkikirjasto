@@ -124,6 +124,30 @@ public class BookDao implements Dao<Book> {
         conn.close();
         return onebook;
     }
+
+    public Book findById(Integer id) throws SQLException {
+        if (id == null) {
+            return null;
+        }
+        Connection conn = database.getConnection();
+        
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE id = ?");
+        statement.setString(1, Integer.toString(id));
+        ResultSet res = statement.executeQuery();
+        if(!res.next()) {
+            return null;
+        }
+
+
+        Book onebook = getBook(res);
+        logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
+        
+        statement.close();
+        res.close();
+        
+        conn.close();
+        return onebook;
+    }
     
 
     public Book getBook(ResultSet rs) throws SQLException {
@@ -132,6 +156,7 @@ public class BookDao implements Dao<Book> {
                 rs.getString("title"),
                 rs.getString("isbn")
         );
+        book.setId(rs.getInt("id"));
         return book;
     }
 

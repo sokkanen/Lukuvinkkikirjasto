@@ -8,11 +8,13 @@ package dtt.lukuvinkkikirjasto.demo.controller;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.sql.SQLException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -36,10 +38,15 @@ public class BookController {
     }
     
     @PostMapping("/books")
-    public String saveBook(Model model,@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
-
+    public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
         if (book.getIsbn().equals("error")) {
             bindingResult.rejectValue("isbn", "error.book", "Invalid ISBN.");
+        }
+
+        Book findBook = bookDao.findById(book.getId());
+        if (findBook != null) {
+            bookDao.delete(findBook);
+            
         }
 
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
@@ -54,6 +61,20 @@ public class BookController {
 
         bookDao.create(book);
         return "redirect:/";
+    }
+
+    @GetMapping("/books/edit/{id}")
+    public String editBook(Model model, @PathVariable(value="id") String id) throws SQLException {
+        Book book = bookDao.findById(Integer.parseInt(id));
+        if(book != null) {
+            if(book.getIsbn() == "error"){
+                book.setIsbn("");
+            }
+            model.addAttribute("book", book);
+            model.addAttribute("list", bookDao.list());
+            return "books";
+        }
+            return "redirect:/";
     }
     
     public void setDao(BookDao dao) {
