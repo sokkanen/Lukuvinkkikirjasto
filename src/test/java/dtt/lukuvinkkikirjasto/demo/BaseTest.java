@@ -44,6 +44,7 @@ public class BaseTest {
     @BeforeAll
     public static void initialInitialization() throws SQLException, IOException{
         initialize();
+        removeTestData();
     }
 
     /**
@@ -53,12 +54,7 @@ public class BaseTest {
     @BeforeEach()
     public void initialization() throws SQLException, IOException{
         removeTestData();
-    }
-
-    @AfterAll
-    public static void tearDown() throws SQLException {
-        System.setProperty("test", "false");
-        connection.close();
+        System.setProperty("testing", "true");
     }
 
     /**
@@ -70,15 +66,19 @@ public class BaseTest {
         removeTestData();
     }
 
+    @AfterAll
+    public static void tearDown() throws SQLException {
+        System.setProperty("test", "false");
+        connection.close();
+    }
+
     public static void initialize() throws SQLException{
-        System.setProperty("test", "true");
-        System.setProperty("default_test_url", "jdbc:sqlite:file:./build/lukuvinkkitest.db");
-        database = new Database(true);
+        database = Database.from("jdbc:sqlite:file:./build/lukuvinkkitest.db");
         connection = database.getConnection();
         bookDao = new BookDao(database);
     }
 
-    public void removeTestData() throws IOException, SQLException {
+    public static void removeTestData() throws IOException, SQLException {
         Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         File file = new File(classLoader.getResource("clear-all-tables.sql").getFile());
