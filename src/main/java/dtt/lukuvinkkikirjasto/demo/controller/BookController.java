@@ -55,14 +55,14 @@ public class BookController {
         }
 
         bookDao.create(book);
-        return "redirect:/books";
+        return "redirect:/";
     }
 
-    @PostMapping("/books/delete/{bookId}")
+    @GetMapping("/books/delete/{bookId}")
     public String deleteBook(@PathVariable String bookId) throws SQLException {
-        Book book = bookDao.findById();
+        Book book = bookDao.findById(Integer.parseInt(bookId));
         bookDao.delete(book);
-        return "redirect:/books";
+        return "redirect:/";
     }
 
     @GetMapping("/books/edit/{id}")
