@@ -49,6 +49,30 @@ public class BookDaoTest extends BaseTest {
         assertEquals("978-1-4028-9462-6", fromDb.get(1).getIsbn());
         assertFalse(fromDb.get(1).isRead());
     }
+
+    @Test
+    public void aSingleBookCanBeDeleted() throws SQLException {
+        bookDao.create(testBook);
+        List<Book> fromDb = bookDao.list();
+        assertEquals(1, fromDb.size());
+
+        bookDao.delete(testBook);
+        fromDb = bookDao.list();
+        assertEquals(0, fromDb.size());
+    }
+
+    @Test
+    public void aBookCanBeDeletedWhenThereAreMultipleBooksInDatabase() throws SQLException {
+        bookDao.create(testBook);
+        bookDao.create(testBook2);
+        bookDao.create(new Book("Darth Vader", "How to love your son", "978-1-40834-737-9"));
+        List<Book> fromDb = bookDao.list();
+        assertEquals(3, fromDb.size());
+
+        bookDao.delete(testBook2);
+        fromDb = bookDao.list();
+        assertEquals(2, fromDb.size());
+    }
     
     @Test
     public void returnOneBook() throws SQLException {

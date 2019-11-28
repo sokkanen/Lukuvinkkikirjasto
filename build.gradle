@@ -43,8 +43,6 @@ dependencies {
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
 	testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: fluentleniumVersion
 	testCompile group: 'org.fluentlenium', name: 'fluentlenium-assertj', version: fluentleniumVersion
-	compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:seleniumVersion
-	compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:seleniumVersion
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion
 	compile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.33.0'

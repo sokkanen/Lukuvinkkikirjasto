@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @author milla
  */
 @Repository
-public class BookDao implements Dao<Book, Integer> {
+public class BookDao implements Dao<Book> {
 
     Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Database database;
@@ -62,6 +62,23 @@ public class BookDao implements Dao<Book, Integer> {
         connection.close();
         
     }
+
+    @Override
+    public void delete(Book book) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement statement;
+        String sql = "DELETE FROM Book WHERE book.id = ?";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1, book.getId());
+
+        logger.info("Deleting book {} by {} from Database", book.getTitle(), book.getAuthor());
+        statement.executeUpdate();
+        logger.info("Book deletion completed successfully");
+
+        statement.close();
+        connection.close();
+    }
+
 
     @Override
     public List<Book> list() throws SQLException {

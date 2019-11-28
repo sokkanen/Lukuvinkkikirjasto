@@ -8,13 +8,13 @@ import java.util.List;
  *
  * @author milla
  */
-public interface Dao<T, K> {
+public interface Dao<T> {
 
     void create(T t) throws SQLException;
 
     List<T> list() throws SQLException;
 
     //void update(T t);
-    //void delete(K key);
+    void delete(T t) throws SQLException;
     
 }
