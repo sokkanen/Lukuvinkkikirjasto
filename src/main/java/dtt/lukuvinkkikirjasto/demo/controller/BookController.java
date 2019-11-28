@@ -60,7 +60,7 @@ public class BookController {
 
     @GetMapping("/books/edit/{id}")
     public String editBook(Model model, @PathVariable(value="id") String id) throws SQLException {
-        book = bookDao.findById(Integer.parseInt(id));
+        Book book = bookDao.findById(Integer.parseInt(id));
         if(book != null) {
             model.addAttribute("book", book);
             model.addAttribute("list", bookDao.list());
