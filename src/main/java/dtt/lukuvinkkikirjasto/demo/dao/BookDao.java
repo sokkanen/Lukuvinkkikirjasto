@@ -138,7 +138,7 @@ public class BookDao implements Dao<Book> {
         Connection conn = database.getConnection();
         
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE id = ?");
-        statement.setString(1, Integer.toString(id));
+        statement.setInt(1, id);
         ResultSet res = statement.executeQuery();
         if(!res.next()) {
             return null;
