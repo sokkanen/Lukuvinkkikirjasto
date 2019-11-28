@@ -15,29 +15,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Database {
 
-    private final String url;
-    private final String userName = "sa";
-    private final String password = "";
+    private String url;
+    private final String userName;
+    private final String password;
     private final Flyway flyway;
 
     private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public Database(@Value("./build/lukusuositukset.db") String url){
-        String extension = url;
-        if (System.getProperty("url") != null){
-            extension = System.getProperty("url");
+    public Database(@Value("true") boolean test) {
+        this.url = test ? System.getProperty("JDBC_DATABASE_TEST_URL") : System.getProperty("JDBC_DATABASE_URL");
+        this.userName = System.getProperty("JDBC_DATABASE_USERNAME");
+        this.password = System.getProperty("JDBC_DATABASE_PASSWORD");
+        if (System.getProperty("test").equals("true")){
+            this.url = System.getProperty("default_test_url");
         }
-        this.url = "jdbc:sqlite:file:" + extension;
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
-        init();
+        boolean usingLocally = this.url.contains("build");
+        initializeDbConnection(usingLocally);
         logger.info("Established database-connection to '{}'", this.url);
-        flyway.migrate();
+        doFlyWayMigration();
     }
 
     public void doFlyWayMigration(){
+        logger.info("FLYWAY URL: {}", this.url);
         flyway.migrate();
     }
-    
+
     /**
      * Opens connection to database
      * @return connection
@@ -46,13 +49,21 @@ public class Database {
         Connection connection = DriverManager.getConnection(url, userName, password);
         return connection;
     }
-    
-    public void init() {
+
+    private void initializeDbConnection(boolean usingLocally) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            getConnection();
+            if (usingLocally){
+                Class.forName("org.sqlite.JDBC");
+                logger.info("Connecting to SqLite");
+                getConnection();
+            } else {
+                Class.forName("org.postgresql.Driver");
+                logger.info("Connecting to PostgreSQL");
+                getConnection();
+            }
         } catch (Exception e) {
             System.out.println("Error in database connection");
+            logger.warn("Error in database connection: {}", e.getMessage());
         }
     }
 }
