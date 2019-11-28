@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -34,24 +35,32 @@ public class BookDao implements Dao<Book, Integer> {
      * @param book
      * @throws java.sql.SQLException
      */
-    @Override
+        @Override
     public void create(Book book) throws SQLException {
-
+        
         Connection connection = database.getConnection();
-
+        
         PreparedStatement statement;
-
-        statement = connection.prepareStatement("INSERT INTO Book (author,title, isbn) VALUES (?, ?, ?)");
+        String sql = "INSERT INTO Book (author,title, isbn) VALUES (?, ?, ?)";
+        statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, book.getAuthor());
         statement.setString(2, book.getTitle());
         statement.setString(3, book.getIsbn());
-
+        
         logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor());
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
+        
+        ResultSet rs = statement.getGeneratedKeys();
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            book.setId(id);
+        }
+        
         statement.close();
-
+        
         connection.close();
+        
     }
 
     @Override
