@@ -118,4 +118,31 @@ public class BookDao implements Dao<Book, Integer> {
         return book;
     }
 
+    @Override
+    public void delete(Book book) throws SQLException {
+        Connection connection = database.getConnection();
+        
+        PreparedStatement statement;
+        String sql = "DELETE FROM Book WHERE author=? AND title=? AND isbn=?";
+        statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, book.getAuthor());
+        statement.setString(2, book.getTitle());
+        statement.setString(3, book.getIsbn());
+        
+        logger.info("Deleting book {} by {} from Database", book.getTitle(), book.getAuthor());
+        statement.executeQuery();
+        logger.info("Book removed successfully");
+        
+        ResultSet rs = statement.getGeneratedKeys();
+        if (rs.next()) {
+            int id = rs.getInt(1);
+            book.setId(id);
+        }
+        
+        statement.close();
+        
+        connection.close();
+
+    }
+
 }

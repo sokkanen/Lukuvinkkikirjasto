@@ -26,6 +26,7 @@
                     Title: <span th:text="${alkio.title}">Title</span>
                     <span th:if= "${alkio.author != ''}" th:text="'/ Author: ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+                    <input type="button" name="edit" id="edit" value="Edit" class="btn btn-edit"/>
                 </li>
             </ul>
         </div>

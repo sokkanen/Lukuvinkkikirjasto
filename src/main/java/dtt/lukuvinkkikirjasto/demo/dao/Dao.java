@@ -14,7 +14,9 @@ public interface Dao<T, K> {
 
     List<T> list() throws SQLException;
 
+    void delete(T t) throws SQLException;
+
     //void update(T t);
-    //void delete(K key);
+    
     
 }

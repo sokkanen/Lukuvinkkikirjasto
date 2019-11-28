@@ -34,7 +34,7 @@ public class BookController {
         model.addAttribute("list", bookDao.list());
         return "books";
     }
-    
+
     @PostMapping("/books")
     public String saveBook(Model model,@Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
 
