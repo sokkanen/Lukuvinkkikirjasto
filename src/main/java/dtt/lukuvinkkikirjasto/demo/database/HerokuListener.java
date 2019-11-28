@@ -27,9 +27,10 @@ public class HerokuListener implements ApplicationListener<ApplicationEnvironmen
     }
 
     private boolean setLocalProperties(ConfigurableEnvironment env){
-        System.setProperty("JDBC_DATABASE_URL", "./build/lukusuositukset.db");
+        System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukusuositukset.db");
         System.setProperty("JDBC_DATABASE_USERNAME", "sa");
         System.setProperty("JDBC_DATABASE_PASSWORD", "");
+        System.setProperty("JDBC_DATABASE_TEST_URL", "jdbc:sqlite:file:./build/lukuvinkkitest.db");
         return false;
     }
 }

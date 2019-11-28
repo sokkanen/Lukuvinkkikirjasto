@@ -1,13 +1,19 @@
 package dtt.lukuvinkkikirjasto.demo;
 
+import dtt.lukuvinkkikirjasto.demo.controller.BookController;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.database.Database;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ActiveProfiles;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,11 +28,12 @@ import java.sql.SQLException;
  *
  * Extend your test-class from BaseTest to enable db-operations in your tests..
  */
+@SpringBootTest()
+@ActiveProfiles("test")
 public class BaseTest {
 
     // Public-visibility to enable usage in extended test-classes
     public static BookDao bookDao;
-
     static Connection connection;
     static Database database;
 
@@ -35,12 +42,22 @@ public class BaseTest {
      * @throws SQLException
      */
     @BeforeAll
-    static void setup() throws SQLException{
+    public static void initialInitialization() throws SQLException, IOException{
         initialize();
     }
 
+    /**
+     * Imports clear-all-tables.sql from /test/resources/
+     * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
+     */
+    @BeforeEach()
+    public void initialization() throws SQLException, IOException{
+        removeTestData();
+    }
+
     @AfterAll
-    static void tearDown() throws SQLException {
+    public static void tearDown() throws SQLException {
+        System.setProperty("test", "false");
         connection.close();
     }
 
@@ -49,15 +66,14 @@ public class BaseTest {
      * Runs every line in the file as a SQL-script to remove all data from test-db after each test.
      */
     @AfterEach
-    @BeforeEach
     public void cleanUp() throws IOException, SQLException {
         removeTestData();
-
     }
 
     public static void initialize() throws SQLException{
-        database = new Database("./build/lukuvinkkitest.db");
-        database.doFlyWayMigration();
+        System.setProperty("test", "true");
+        System.setProperty("default_test_url", "jdbc:sqlite:file:./build/lukuvinkkitest.db");
+        database = new Database(true);
         connection = database.getConnection();
         bookDao = new BookDao(database);
     }
