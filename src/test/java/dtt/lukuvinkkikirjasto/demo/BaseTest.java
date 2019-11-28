@@ -27,8 +27,8 @@ public class BaseTest {
     // Public-visibility to enable usage in extended test-classes
     public static BookDao bookDao;
 
-    static Connection connection;
-    static Database database;
+    public static Connection connection;
+    public static Database database;
 
     /**
      * Creates test-database and initializes database-connection.
