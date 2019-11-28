@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.assertTrue;
@@ -46,6 +47,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String string) throws Exception{
+        System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(string));
         removeTestData();
     }
@@ -92,7 +94,8 @@ public class StepDefs extends BaseTest {
     }
 
     @When("database is empty")
-    public void databaseIsEmpty() {
+    public void databaseIsEmpty() throws IOException, SQLException {
+        removeTestData();
     }
 
     @When("book with title {string}, author {string} and ISBN {string} is added to reading tips")
