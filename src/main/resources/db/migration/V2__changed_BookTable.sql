@@ -1,1 +1,1 @@
-ALTER TABLE Book ADD read BOOLEAN;
+ALTER TABLE book ADD read_already boolean;
