@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @author milla
  */
 @Repository
-public class BookDao implements Dao<Book, Integer> {
+public class BookDao implements Dao<Book> {
 
     Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Database database;
@@ -62,6 +62,23 @@ public class BookDao implements Dao<Book, Integer> {
         connection.close();
         
     }
+
+    @Override
+    public void delete(Book book) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement statement;
+        String sql = "DELETE FROM Book WHERE book.id = ?";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1, book.getId());
+
+        logger.info("Deleting book {} by {} from Database", book.getTitle(), book.getAuthor());
+        statement.executeUpdate();
+        logger.info("Book deletion completed successfully");
+
+        statement.close();
+        connection.close();
+    }
+
 
     @Override
     public List<Book> list() throws SQLException {
@@ -107,6 +124,30 @@ public class BookDao implements Dao<Book, Integer> {
         conn.close();
         return onebook;
     }
+
+    public Book findById(Integer id) throws SQLException {
+        if (id == null) {
+            return null;
+        }
+        Connection conn = database.getConnection();
+        
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE id = ?");
+        statement.setString(1, Integer.toString(id));
+        ResultSet res = statement.executeQuery();
+        if(!res.next()) {
+            return null;
+        }
+
+
+        Book onebook = getBook(res);
+        logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
+        
+        statement.close();
+        res.close();
+        
+        conn.close();
+        return onebook;
+    }
     
 
     public Book getBook(ResultSet rs) throws SQLException {
@@ -115,6 +156,7 @@ public class BookDao implements Dao<Book, Integer> {
                 rs.getString("title"),
                 rs.getString("isbn")
         );
+        book.setId(rs.getInt("id"));
         return book;
     }
 
