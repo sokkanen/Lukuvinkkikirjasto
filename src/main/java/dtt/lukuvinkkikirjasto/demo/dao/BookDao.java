@@ -60,7 +60,6 @@ public class BookDao implements Dao<Book> {
         statement.close();
         
         connection.close();
-        
     }
 
     @Override
