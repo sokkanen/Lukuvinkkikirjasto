@@ -14,8 +14,26 @@ public class HerokuListener implements ApplicationListener<ApplicationEnvironmen
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment env = event.getEnvironment();
-        logger.info("HELLO! APP STARTING :D SUCH WOW LUKUKIRJASTO!");
-        logger.info("This would be a great time to add system properties. :)");
+        boolean inCloud = env.getProperty("DYNO") != null ? setHerokuProperties(env) : setLocalProperties(env);
+        if (inCloud){
+            logger.info("Properties for Cloud environment set.");
+        } else {
+            logger.info("Properties for Local environment set");
+        }
+    }
 
+    private boolean setHerokuProperties(ConfigurableEnvironment env){
+        logger.info("Found HEROKU environment. Setting System properties.");
+        System.setProperty("JDBC_DATABASE_URL", env.getProperty("JDBC_DATABASE_URL"));
+        System.setProperty("JDBC_DATABASE_USERNAME", env.getProperty("JDBC_DATABASE_USERNAME"));
+        System.setProperty("JDBC_DATABASE_PASSWORD", env.getProperty("JDBC_DATABASE_PASSWORD"));
+        return true;
+    }
+
+    private boolean setLocalProperties(ConfigurableEnvironment env){
+        System.setProperty("JDBC_DATABASE_URL", "./build/lukusuositukset.db");
+        System.setProperty("JDBC_DATABASE_USERNAME", "sa");
+        System.setProperty("JDBC_DATABASE_PASSWORD", "");
+        return false;
     }
 }
