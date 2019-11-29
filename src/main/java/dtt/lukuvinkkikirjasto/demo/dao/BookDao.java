@@ -39,13 +39,19 @@ public class BookDao implements Dao<Book> {
     public void create(Book book) throws SQLException {
         
         Connection connection = database.getConnection();
+
+        List<Book> books = list();
+
+        int newId = books.size() == 0 ? 1 : books.get(books.size()-1).getId() +1;
         
         PreparedStatement statement;
-        String sql = "INSERT INTO Book (author,title, isbn) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO book (id, author, title, isbn, read_already) VALUES (?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        statement.setString(1, book.getAuthor());
-        statement.setString(2, book.getTitle());
-        statement.setString(3, book.getIsbn());
+        statement.setInt(1, newId);
+        statement.setString(2, book.getAuthor());
+        statement.setString(3, book.getTitle());
+        statement.setString(4, book.getIsbn());
+        statement.setBoolean(5, false);
         
         logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor());
         statement.executeUpdate();
@@ -67,7 +73,7 @@ public class BookDao implements Dao<Book> {
     public void delete(Book book) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement statement;
-        String sql = "DELETE FROM Book WHERE book.id = ?";
+        String sql = "DELETE FROM book WHERE book.id = ?";
         statement = connection.prepareStatement(sql);
         statement.setInt(1, book.getId());
 
@@ -86,7 +92,7 @@ public class BookDao implements Dao<Book> {
         ArrayList<Book> bookList = new ArrayList();
         Connection connection = database.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Book;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM book;");
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
@@ -107,7 +113,7 @@ public class BookDao implements Dao<Book> {
         }
         Connection conn = database.getConnection();
         
-        PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE isbn = ?");
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE isbn = ?");
         statement.setString(1, isbn);
         ResultSet res = statement.executeQuery();
         if(!res.next()) {
@@ -131,8 +137,8 @@ public class BookDao implements Dao<Book> {
         }
         Connection conn = database.getConnection();
         
-        PreparedStatement statement = conn.prepareStatement("SELECT * FROM Book WHERE id = ?");
-        statement.setString(1, Integer.toString(id));
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE id = ?");
+        statement.setInt(1, id);
         ResultSet res = statement.executeQuery();
         if(!res.next()) {
             return null;
