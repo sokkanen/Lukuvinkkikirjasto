@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-@SpringBootTest
 public class StepDefs extends BaseTest {
 
     WebDriver driver;
@@ -96,7 +95,6 @@ public class StepDefs extends BaseTest {
 
     @When("database is empty")
     public void databaseIsEmpty() throws IOException, SQLException {
-        removeTestData();
     }
 
     @When("book with title {string}, author {string} and ISBN {string} is added to reading tips")

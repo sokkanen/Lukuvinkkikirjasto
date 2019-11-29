@@ -64,17 +64,4 @@ public class Database {
         }
     }
 
-    public static Database from(String url){
-        return new Database(url);
-    }
-
-    private Database(String url){
-        this.url = url;
-        this.userName = "sa";
-        this.password = "";
-        this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
-        initializeDbConnection(true);
-        logger.info("Established database-connection to '{}'", this.url);
-        doFlyWayMigration();
-    }
 }

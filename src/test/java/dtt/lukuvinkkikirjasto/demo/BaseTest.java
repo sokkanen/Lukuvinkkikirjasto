@@ -25,7 +25,7 @@ import java.sql.SQLException;
  *
  * Extend your test-class from BaseTest to enable db-operations in your tests..
  */
-@SpringBootTest()
+@SpringBootTest(properties = {"selenium:true"})
 @ActiveProfiles("test")
 public class BaseTest {
 
@@ -70,7 +70,7 @@ public class BaseTest {
     }
 
     public static void initialize() throws SQLException{
-        database = Database.from("jdbc:sqlite:file:./build/lukuvinkkitest.db");
+        database = new Database();
         connection = database.getConnection();
         bookDao = new BookDao(database);
     }
