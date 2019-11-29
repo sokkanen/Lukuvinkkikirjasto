@@ -12,7 +12,6 @@
         <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
 
         <input type="hidden" name="id" id="id" th:field="*{id}" />
-        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary"/>    </form>
-
+        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" />    </form>
     </div>
 </html>
