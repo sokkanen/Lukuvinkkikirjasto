@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
 
 @Configuration
 public class Database {
@@ -22,13 +22,10 @@ public class Database {
 
     private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public Database(@Value("true") boolean test) {
-        this.url = test ? System.getProperty("JDBC_DATABASE_TEST_URL") : System.getProperty("JDBC_DATABASE_URL");
+    public Database() {
+        this.url = System.getProperty("JDBC_DATABASE_URL");
         this.userName = System.getProperty("JDBC_DATABASE_USERNAME");
         this.password = System.getProperty("JDBC_DATABASE_PASSWORD");
-        if (System.getProperty("test").equals("true")){
-            this.url = System.getProperty("default_test_url");
-        }
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
         boolean usingLocally = this.url.contains("build");
         initializeDbConnection(usingLocally);
@@ -65,5 +62,19 @@ public class Database {
             System.out.println("Error in database connection");
             logger.warn("Error in database connection: {}", e.getMessage());
         }
+    }
+
+    public static Database from(String url){
+        return new Database(url);
+    }
+
+    private Database(String url){
+        this.url = url;
+        this.userName = "sa";
+        this.password = "";
+        this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
+        initializeDbConnection(true);
+        logger.info("Established database-connection to '{}'", this.url);
+        doFlyWayMigration();
     }
 }
