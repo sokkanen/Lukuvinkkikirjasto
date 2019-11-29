@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+
+<script type="text/javascript">
+    function deleteConfirm(form) {
+        if (confirm("Delete this book?")) {
+            form.submit();
+        }
+    }
+</script>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Saved books</title>
@@ -20,6 +29,7 @@
     </head>
 
     <body>
+
     <div class="container main-content">
         <div class="col-md-6">
             <h2>Books</h2>
@@ -29,9 +39,9 @@
                     <b><span th:text="${alkio.title}">Title</span></b>
                     <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
-                    <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">✎</a>
+                    <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">🖊</a>
                     <form th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
-                        <input type="submit" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="💔" class="deleteLink" />
+                        <input type="button" th:onClick="deleteConfirm(this.form)" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="🗑️" class="deleteLink" />
                     </form>
                 </li>
             </ul>
@@ -42,3 +52,5 @@
         </div>
     </body>
 </html>
+
+
