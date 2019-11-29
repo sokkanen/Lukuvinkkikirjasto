@@ -18,6 +18,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,17 +44,34 @@ public class BookControllerTest extends BaseTest {
         MvcResult res = mockMvc.perform(get("/")).andReturn();
         
         String content = res.getResponse().getContentAsString();
-        Assert.assertTrue(content.contains("Books"));
+        assertTrue(content.contains("Books"));
     }
     
     @Test
     public void postAddsBookToDatabase() throws Exception {
         controller.setDao(bookDao);
-        MvcResult res = mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "9789521439087")).andReturn();
         
         Book book = bookDao.findByIsbn("9789521439087");
         
-        Assert.assertEquals(book.getIsbn(), "9789521439087");
+        assertEquals(book.getIsbn(), "9789521439087");
+    }
+
+    @Test
+    public void deleteRemovesBookFromDatabase() throws Exception {
+        controller.setDao(bookDao);
+        mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "9789521439087")).andReturn();
+        MvcResult res = mockMvc.perform(get("/")).andReturn();
+        String content = res.getResponse().getContentAsString();
+        assertTrue(content.contains("pasi"));
+
+        Book book = bookDao.findByIsbn("9789521439087");
+        int id = book.getId();
+        mockMvc.perform(post("/books/delete/" + id)).andReturn();
+        res = mockMvc.perform(get("/")).andReturn();
+        content = res.getResponse().getContentAsString();
+
+        assertFalse(content.contains("pasi"));
     }
     
     @Test
@@ -66,7 +85,7 @@ public class BookControllerTest extends BaseTest {
         
         String content = res2.getResponse().getContentAsString();
         
-        Assert.assertFalse(content.contains("kalle"));
-        Assert.assertTrue(content.contains("nakki"));
+        assertFalse(content.contains("kalle"));
+        assertTrue(content.contains("nakki"));
     }
 }

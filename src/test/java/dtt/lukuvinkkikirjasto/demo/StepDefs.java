@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @SpringBootTest
 public class StepDefs extends BaseTest {
@@ -46,7 +47,7 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with {string}")
-    public void systemWillRespondWith(String string) throws Exception{
+    public void systemWillRespondWith(String string) throws SQLException, IOException {
         System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(string));
         removeTestData();
@@ -111,10 +112,22 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
-    public void systemWillRespondWithBookInfo(String title, String author, String isbn) throws Exception {
+    public void systemWillRespondWithBookInfo(String title, String author, String isbn) throws SQLException, IOException {
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         assertTrue(driver.getPageSource().contains(isbn));
+        removeTestData();
+    }
+
+    @When("book with title {string} is deleted")
+    public void bookWithTitleIsDeleted(String title) {
+        WebElement element = driver.findElement(By.id("deleteBook_" + title));
+        element.submit();
+    }
+
+    @Then("system does not respond with book title {string}")
+    public void systemDoesNotRespondWithBookTitle(String title) throws SQLException, IOException {
+        assertFalse(driver.getPageSource().contains(title));
         removeTestData();
     }
 

@@ -37,6 +37,33 @@ a.editlink:visited {
     color: black;
 }
 
+.inline {
+    display: inline;
+}
+
+.deleteLink {
+    text-decoration: none;
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: serif;
+}
+
+a.deleteLink:hover {
+    text-decoration: none;
+    color: black;
+}
+
+a.deleteLink:visited {
+    text-decoration: none;
+    color: black;
+}
+.deleteLink:focus {
+    outline: none;
+}
+
 .main-content {
     background: rgba(255, 255, 255, 0.85);
     margin-top: 5%;
