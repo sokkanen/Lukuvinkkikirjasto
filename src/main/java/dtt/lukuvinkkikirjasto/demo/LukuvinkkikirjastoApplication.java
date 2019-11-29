@@ -1,7 +1,7 @@
 package dtt.lukuvinkkikirjasto.demo;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -9,6 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 public class LukuvinkkikirjastoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LukuvinkkikirjastoApplication.class, args);
+		new SpringApplicationBuilder(LukuvinkkikirjastoApplication.class)
+				.profiles("dev")
+				.properties("selenium:false")
+				.application()
+				.run(args);
 	}
 }
