@@ -19,6 +19,7 @@ public class Database {
     private final String userName;
     private final String password;
     private final Flyway flyway;
+    private final String defaultTestDbForCircle = "jdbc:sqlite:file:./build/lukuvinkkitest.db";
 
     private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -26,6 +27,9 @@ public class Database {
         this.url = System.getProperty("JDBC_DATABASE_URL");
         this.userName = System.getProperty("JDBC_DATABASE_USERNAME");
         this.password = System.getProperty("JDBC_DATABASE_PASSWORD");
+        if (this.url == null) {
+            this.url = defaultTestDbForCircle;
+        }
         this.flyway = Flyway.configure().dataSource(this.url, userName, password).load();
         boolean usingLocally = this.url.contains("build");
         initializeDbConnection(usingLocally);
@@ -33,7 +37,7 @@ public class Database {
         doFlyWayMigration();
     }
 
-    public void doFlyWayMigration(){
+    public void doFlyWayMigration() {
         logger.info("FLYWAY URL: {}", this.url);
         flyway.migrate();
     }
