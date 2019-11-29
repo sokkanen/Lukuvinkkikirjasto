@@ -1,9 +1,8 @@
 package dtt.lukuvinkkikirjasto.demo;
 
 import org.junit.rules.ExternalResource;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-
 
 class ServerRule extends ExternalResource{
 
@@ -16,8 +15,12 @@ class ServerRule extends ExternalResource{
 
     @Override
     protected void before() throws Throwable {
-        System.setProperty("url", "./build/lukuvinkkitest.db");
-        this.app = SpringApplication.run(LukuvinkkikirjastoApplication.class);
+        app = new SpringApplicationBuilder(LukuvinkkikirjastoApplication.class)
+                .profiles("test")
+                .properties("selenium:true")
+                .headless(true)
+                .application()
+                .run();
     }
 
     @Override

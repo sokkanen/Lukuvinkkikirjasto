@@ -7,6 +7,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.lang.invoke.MethodHandles;
 public class HerokuListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
     private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment env = event.getEnvironment();
@@ -27,7 +28,11 @@ public class HerokuListener implements ApplicationListener<ApplicationEnvironmen
     }
 
     private boolean setLocalProperties(ConfigurableEnvironment env){
-        System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukusuositukset.db");
+        if (env.getProperty("selenium") == "true"|| env.getActiveProfiles()[0].equals("test")){
+            System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukuvinkkitest.db");
+        } else {
+            System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukusuositukset.db");
+        }
         System.setProperty("JDBC_DATABASE_USERNAME", "sa");
         System.setProperty("JDBC_DATABASE_PASSWORD", "");
         return false;
