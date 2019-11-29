@@ -63,6 +63,13 @@ public class BookController {
         return "redirect:/";
     }
 
+    @PostMapping("/books/delete/{bookId}")
+    public String deleteBook(@PathVariable String bookId) throws SQLException {
+        Book book = bookDao.findById(Integer.parseInt(bookId));
+        bookDao.delete(book);
+        return "redirect:/";
+    }
+
     @GetMapping("/books/edit/{id}")
     public String editBook(Model model, @PathVariable(value="id") String id) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(id));
