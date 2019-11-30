@@ -106,7 +106,7 @@ public class BookControllerTest extends BaseTest {
         mockMvc.perform(post("/books").param("title", "test").param("author", "nakki")).andReturn();
         MvcResult result = mockMvc.perform(get("/books/edit/1")).andReturn();
         String content = result.getResponse().getContentAsString();
-        System.out.println(content);
+
         assertTrue(content.contains("Edit book"));
         assertTrue(content.contains("placeholder=\"Title\" value=\"test\""));
         assertTrue(content.contains("placeholder=\"ISBN\" value=\"\"/>"));
