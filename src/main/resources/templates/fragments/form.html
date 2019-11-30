@@ -1,18 +1,46 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="form">
-    <h2 th:if="${editmode}">Edit book</h2>
-    <h2 th:unless="${editmode}">Add book</h2>
-    <span th:text="${error}">&nbsp;</span>
-    <form th:action="@{/books}" method="POST" th:object="${book}">
-        <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/>
-        <div th:errors="*{title}" th:if="${#fields.hasErrors('title')}"  class="alert alert-warning" role="alert"></div>
-        <input type="text" name="author" id ="author" th:field="*{author}" class="form-control" placeholder="Author"/>
-        <div th:errors="*{author}" th:if="${#fields.hasErrors('author')}"  class="alert alert-warning" role="alert"></div>
-        <input type="text" name="isbn" id="isbn" th:field="*{isbn}" class="form-control" placeholder="ISBN"/>
-        <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
 
-        <input type="hidden" name="id" id="id" th:field="*{id}" />
-        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" />    </form>
+<script type="text/javascript">
+    function deleteConfirm(form) {
+        if (confirm("Delete this book?")) {
+            form.submit();
+        }
+    }
+</script>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="form">
+        
+        <h2 th:if="${editmode}">Edit book</h2>
+        <h2 th:unless="${editmode}">Add book</h2>
+        
+        <span th:text="${error}">&nbsp;</span>
+        
+        <form th:action="@{/books}" method="POST" th:object="${book}">
+            <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/>
+            <div th:errors="*{title}" th:if="${#fields.hasErrors('title')}"  class="alert alert-warning" role="alert"></div>
+
+            <input type="text" name="author" id ="author" th:field="*{author}" class="form-control" placeholder="Author"/>
+            <div th:errors="*{author}" th:if="${#fields.hasErrors('author')}"  class="alert alert-warning" role="alert"></div>
+
+            <input type="text" name="isbn" id="isbn" th:field="*{isbn}" class="form-control" placeholder="ISBN"/>
+            <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
+            
+            <!-- if editmode buttons -->
+            <div th:if="${editmode}">
+                <input type="hidden" name="id" id="id" th:field="*{id}" />
+                <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" /> 
+                <a href="/" class="btn btn-primary">Stop edit</a>
+<!--                <button class="btn btn-primary">
+                    Stop edit</a>
+                </button>-->
+            </div>
+            <!-- normal mode buttons -->
+            <div th:unless="${editmode}">
+                <input type="hidden" name="id" id="id" th:field="*{id}" />
+                <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" /> 
+            </div>
+
+        </form>
     </div>
 </html>

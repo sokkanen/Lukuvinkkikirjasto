@@ -80,6 +80,7 @@ public class BookController {
             model.addAttribute("editmode", true);
             model.addAttribute("book", book);
             model.addAttribute("list", bookDao.list());
+            
             return "books";
         }
             return "redirect:/";

@@ -28,7 +28,7 @@ public class HerokuListener implements ApplicationListener<ApplicationEnvironmen
     }
 
     private boolean setLocalProperties(ConfigurableEnvironment env){
-        if (env.getProperty("selenium") == "true"|| env.getActiveProfiles()[0].equals("test")){
+        if (env.getProperty("selenium").equals("true") || env.getActiveProfiles()[0].equals("test")){
             System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukuvinkkitest.db");
         } else {
             System.setProperty("JDBC_DATABASE_URL", "jdbc:sqlite:file:./build/lukusuositukset.db");
