@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 
@@ -46,7 +47,6 @@ public class BookController {
         Book findBook = bookDao.findById(book.getId());
         if (findBook != null) {
             bookDao.delete(findBook);
-            
         }
 
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
@@ -80,7 +80,7 @@ public class BookController {
             model.addAttribute("editmode", true);
             model.addAttribute("book", book);
             model.addAttribute("list", bookDao.list());
-            
+
             return "books";
         }
             return "redirect:/";
@@ -88,6 +88,30 @@ public class BookController {
     
     public void setDao(BookDao dao) {
         this.bookDao = dao;
+    }
+
+    /**
+     * Skeleton model / POC for restful book editing.
+     * @param model
+     * @param book New book parameters, old id
+     * @return Books
+     * @throws SQLException
+     */
+    @PutMapping("/books/edit/{id}")
+    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book) throws SQLException {
+        // New ISBN or Title is not valid
+        if (!Book.validate(book)){
+            // Return error to the client.
+        }
+        // Tries to edit book. If not successful, returns original instead.
+        boolean bookSuccessfullyEdited = bookDao.editBook(book);
+        if (!bookSuccessfullyEdited){
+            // Error in book creation. Return original model
+            return "books";
+        }
+        // model.addAttribute("book", potentiallyEditedBook);
+        // model.addAttribute("list", bookDao.list());
+        return "books";
     }
     
 }

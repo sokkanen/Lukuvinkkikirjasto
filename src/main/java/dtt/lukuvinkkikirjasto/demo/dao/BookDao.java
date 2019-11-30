@@ -35,15 +35,27 @@ public class BookDao implements Dao<Book> {
      * @param book
      * @throws java.sql.SQLException
      */
-        @Override
+    @Override
     public void create(Book book) throws SQLException {
-        
+        create(book, false);
+    }
+
+    /**
+     * Used by book creation and editing
+     *
+     * @param book book to be inserted
+     * @param edited true when editing an existing book, false when creating totally new
+     * @throws SQLException
+     */
+    public void create(Book book, boolean edited) throws SQLException{
         Connection connection = database.getConnection();
-
-        List<Book> books = list();
-
-        int newId = books.size() == 0 ? 1 : books.get(books.size()-1).getId() +1;
-        
+        int newId;
+        if (edited){
+            newId = book.getId();
+        } else {
+            List<Book> books = list();
+            newId = books.size() == 0 ? 1 : books.get(books.size()-1).getId() +1;
+        }
         PreparedStatement statement;
         String sql = "INSERT INTO book (id, author, title, isbn, read_already) VALUES (?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -52,19 +64,19 @@ public class BookDao implements Dao<Book> {
         statement.setString(3, book.getTitle());
         statement.setString(4, book.getIsbn());
         statement.setBoolean(5, false);
-        
+
         logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor());
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
-        
+
         ResultSet rs = statement.getGeneratedKeys();
         if (rs.next()) {
             int id = rs.getInt(1);
             book.setId(id);
         }
-        
+
         statement.close();
-        
+
         connection.close();
     }
 
@@ -152,6 +164,18 @@ public class BookDao implements Dao<Book> {
         
         conn.close();
         return onebook;
+    }
+
+    // This should be @Transactional, but needed dependency does not play nice with our application.
+    public boolean editBook(Book book) throws SQLException{
+        try {
+            delete(book);
+            create(book, true);
+            return true;
+        } catch (SQLException e){
+            logger.error(e.getMessage());
+            return false;
+        }
     }
     
 
