@@ -77,6 +77,7 @@ public class BookController {
             if(book.getIsbn() == "error"){
                 book.setIsbn("");
             }
+            model.addAttribute("editmode", true);
             model.addAttribute("book", book);
             model.addAttribute("list", bookDao.list());
             return "books";
