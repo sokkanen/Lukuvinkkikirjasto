@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.*;
+import org.mockito.Mockito;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -85,5 +86,34 @@ public class BookControllerTest extends BaseTest {
         
         assertFalse(content.contains("kalle"));
         assertTrue(content.contains("nakki"));
+    }
+    
+        
+    @Test
+    public void editingBookMovesDataToTheForm() throws Exception {
+        controller.setDao(bookDao);
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        MvcResult result = mockMvc.perform(get("/books/edit/1")).andReturn();
+        String content = result.getResponse().getContentAsString();
+
+        assertTrue(content.contains("Edit book"));
+        assertTrue(content.contains("placeholder=\"Title\" value=\"test\""));
+        assertTrue(content.contains("placeholder=\"ISBN\" value=\"9789521439087\""));
+    }
+    
+    @Test
+    public void editingBookWithoutISBNFieldIsEmpty() throws Exception {
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki")).andReturn();
+        MvcResult result = mockMvc.perform(get("/books/edit/1")).andReturn();
+        String content = result.getResponse().getContentAsString();
+        System.out.println(content);
+        assertTrue(content.contains("Edit book"));
+        assertTrue(content.contains("placeholder=\"Title\" value=\"test\""));
+        assertTrue(content.contains("placeholder=\"ISBN\" value=\"\"/>"));
+    }
+    
+    @Test
+    public void tryToEditBookThatDoesntExistsRedirectsBack() throws Exception {
+        mockMvc.perform(get("/books/edit/100")).andExpect(redirectedUrl("/")).andReturn();
     }
 }
