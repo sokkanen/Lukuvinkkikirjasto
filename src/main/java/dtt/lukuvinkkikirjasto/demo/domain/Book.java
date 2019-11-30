@@ -14,6 +14,7 @@ public class Book {
     @Size(min = 2, max = 30, message = "Title must be between 2 and 30 characters")
     private String title;
 
+    @Size(max = 40, message = "Author name can be max 40 characters")
     private String author;
 
     @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$",message = "Invalid ISBN")
@@ -67,6 +68,7 @@ public class Book {
         this.isbn = isbn;
     }
 
+
     public int getId() {
         return id;
     }
@@ -77,6 +79,7 @@ public class Book {
 
     public boolean validateIsbn10(String isbn) {
         if (isbn == null) {
+
             return false;
         }
         String tempIsbn;
