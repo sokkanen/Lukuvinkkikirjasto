@@ -37,6 +37,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	testCompile 'io.cucumber:cucumber-java:' + cucumberVersion
 	testCompile 'io.cucumber:cucumber-junit:' + cucumberVersion
+	compile group: 'info.cukes', name: 'cucumber-core', version: '1.2.6', ext: 'pom'
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 	compile "org.flywaydb:flyway-core:6.0.8"
