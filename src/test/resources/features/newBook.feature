@@ -27,7 +27,7 @@ Feature: A new book can be created if proper info is given
         Then  system will respond with "Best book ever"
         And   system will respond with "C. reation"
 
-    Scenario: creation fails with invalid ISBN
+    Scenario: creation fails with too long ISBN
         Given command new is selected
         When  title is "Best book ever", author is "C. reation", ISBN is "978-952-5802-04-72"
         Then  system will respond with "Invalid ISBN"

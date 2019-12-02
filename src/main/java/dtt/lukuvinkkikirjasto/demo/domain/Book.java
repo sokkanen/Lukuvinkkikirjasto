@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-
 /**
  *
  * @author milla
@@ -20,7 +19,7 @@ public class Book {
     @Size(max = 40, message = "Author name can be max 40 characters")
     private String author;
 
-    @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$",message = "Invalid ISBN")
+    @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$", message = "Invalid ISBN")
     private String isbn;
     private boolean read;
 
@@ -71,7 +70,6 @@ public class Book {
         this.isbn = isbn;
     }
 
-
     public int getId() {
         return id;
     }
@@ -86,10 +84,10 @@ public class Book {
             return false;
         }
         String tempIsbn;
-        //remove hyphens
+        // remove hyphens
         tempIsbn = isbn.replaceAll("-", "");
 
-        //must be a 10 digit ISBN
+        // must be a 10 digit ISBN
         if (tempIsbn.length() != 10) {
             return false;
         }
@@ -108,7 +106,7 @@ public class Book {
 
             return checksum.equals(tempIsbn.substring(9));
         } catch (NumberFormatException nfe) {
-            //to catch invalid ISBNs
+            // to catch invalid ISBNs
             return false;
         }
     }
@@ -118,10 +116,10 @@ public class Book {
             return false;
         }
         String tempIsbn;
-        //remove hyphens
+        // remove hyphens
         tempIsbn = isbn.replaceAll("-", "");
 
-        //must be a 13 digit ISBN
+        // must be a 13 digit ISBN
         if (tempIsbn.length() != 13) {
             return false;
         }
@@ -140,25 +138,8 @@ public class Book {
 
             return checksum == Integer.parseInt(tempIsbn.substring(12));
         } catch (NumberFormatException nfe) {
-            //to catch invalid ISBN
+            // to catch invalid ISBN
             return false;
         }
-    }
-
-    public static boolean validate(Book book) {
-        String isbn = book.getIsbn();
-        String title = book.getTitle();
-        if (isEmpty(isbn) && !isEmpty(title)) {
-            return true;
-        } else if (isEmpty(title)) {
-            return false;
-        }
-        return validateIsbn10(isbn) || validateIsbn13(isbn);
     }
 }
-
-
-
-
-    
-
