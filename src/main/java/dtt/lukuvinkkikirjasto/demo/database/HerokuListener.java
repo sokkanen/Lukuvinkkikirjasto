@@ -24,6 +24,7 @@ public class HerokuListener implements ApplicationListener<ApplicationEnvironmen
         System.setProperty("JDBC_DATABASE_URL", env.getProperty("JDBC_DATABASE_URL"));
         System.setProperty("JDBC_DATABASE_USERNAME", env.getProperty("JDBC_DATABASE_USERNAME"));
         System.setProperty("JDBC_DATABASE_PASSWORD", env.getProperty("JDBC_DATABASE_PASSWORD"));
+        env.setActiveProfiles("prod");
         return true;
     }
 
