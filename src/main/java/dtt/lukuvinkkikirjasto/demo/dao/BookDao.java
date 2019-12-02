@@ -168,6 +168,9 @@ public class BookDao implements Dao<Book> {
 
     // This should be @Transactional, but needed dependency does not play nice with our application.
     public boolean editBook(Book book) throws SQLException{
+        if (findById(book.getId()) == null) {
+            return false;
+        }
         try {
             delete(book);
             create(book, true);

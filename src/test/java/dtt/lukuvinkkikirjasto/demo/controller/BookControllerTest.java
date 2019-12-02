@@ -140,4 +140,12 @@ public class BookControllerTest extends BaseTest {
         assertFalse(content.contains("testaus"));
         assertFalse(content.contains("nakki5"));
     }
+
+    @Test
+    public void tryToEditABookThatDoesntExistsReturnsError() throws Exception {
+        mockMvc.perform(post("/books/edit/100").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        MvcResult result = mockMvc.perform(get("/books")).andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertFalse(content.contains("nakki"));
+    }
 }
