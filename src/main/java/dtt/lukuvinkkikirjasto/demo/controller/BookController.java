@@ -85,9 +85,11 @@ public class BookController {
     @PostMapping("/books/edit/{id}")
     public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
+
         if (old != null && old.getId() != book.getId()) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
+
         if(bindingResult.hasErrors()) {
             model.addAttribute("list", bookDao.list());
             model.addAttribute("editmode", true);
@@ -97,7 +99,10 @@ public class BookController {
 
         boolean succesfulyEdited = bookDao.editBook(book);
         if (succesfulyEdited) {
-            redirectAttributes.addAttribute("notification", "Book edited successfully.");
+//            redirectAttributes.addAttribute("notification", "Book edited successfully.");
+            model.addAttribute("list", bookDao.list());
+            model.addAttribute("notification", "Book edited successfully.");
+            return "books";
         } else {
             model.addAttribute("list", bookDao.list());
             model.addAttribute("error", "Something went wrong with editing!");
@@ -105,7 +110,7 @@ public class BookController {
             model.addAttribute("book", book);
             return "books";
         }
-        return "redirect:/books";
+//        return "redirect:/books";
     }
     
 }
