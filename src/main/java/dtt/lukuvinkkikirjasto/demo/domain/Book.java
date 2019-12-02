@@ -1,7 +1,10 @@
 package dtt.lukuvinkkikirjasto.demo.domain;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 
 /**
  *
@@ -25,7 +28,7 @@ public class Book {
         this.author = author;
         this.title = title;
 
-        if (this.validateIsbn10(isbn) == true || this.validateIsbn13(isbn) == true) {
+        if (validateIsbn10(isbn) == true || validateIsbn13(isbn) == true) {
             this.isbn = isbn;
         } else if (isbn == null) {
             this.isbn = "";
@@ -77,7 +80,7 @@ public class Book {
         this.id = id;
     }
 
-    public boolean validateIsbn10(String isbn) {
+    public static boolean validateIsbn10(String isbn) {
         if (isbn == null) {
 
             return false;
@@ -110,7 +113,7 @@ public class Book {
         }
     }
 
-    public boolean validateIsbn13(String isbn) {
+    public static boolean validateIsbn13(String isbn) {
         if (isbn == null) {
             return false;
         }
@@ -140,6 +143,17 @@ public class Book {
             //to catch invalid ISBN
             return false;
         }
+    }
+
+    public static boolean validate(Book book) {
+        String isbn = book.getIsbn();
+        String title = book.getTitle();
+        if (isEmpty(isbn) && !isEmpty(title)) {
+            return true;
+        } else if (isEmpty(title)) {
+            return false;
+        }
+        return validateIsbn10(isbn) || validateIsbn13(isbn);
     }
 }
 
