@@ -12,12 +12,11 @@ import java.sql.SQLException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -30,6 +29,7 @@ public class BookController {
     public BookController(BookDao dao) {
         this.bookDao = dao;
     }
+
 
     @RequestMapping(value={"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
@@ -83,7 +83,7 @@ public class BookController {
     }
 
     @PostMapping("/books/edit/{id}")
-    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
         if (old != null && old.getId() != book.getId()) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
@@ -96,17 +96,15 @@ public class BookController {
         }
 
         boolean succesfulyEdited = bookDao.editBook(book);
-//        if (succesfulyEdited) {
-//            model.addAttribute("notification", "Book edited successfully.");
-//            model.addAttribute("list", bookDao.list());
-//            return "books";
-//        } else {
-//            model.addAttribute("list", bookDao.list());
-//            model.addAttribute("error", "Something went wrong with editing!");
-//            model.addAttribute("editmode", true);
-//            model.addAttribute("book", book);
-//            return "books";
-//        }
+        if (succesfulyEdited) {
+            redirectAttributes.addAttribute("notification", "Book edited successfully.");
+        } else {
+            model.addAttribute("list", bookDao.list());
+            model.addAttribute("error", "Something went wrong with editing!");
+            model.addAttribute("editmode", true);
+            model.addAttribute("book", book);
+            return "books";
+        }
         return "redirect:/books";
     }
     
