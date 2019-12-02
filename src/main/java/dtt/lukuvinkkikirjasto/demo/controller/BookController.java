@@ -95,8 +95,18 @@ public class BookController {
             return "books";
         }
 
-        bookDao.editBook(book);
-        
+        boolean succesfulyEdited = bookDao.editBook(book);
+//        if (succesfulyEdited) {
+//            model.addAttribute("notification", "Book edited successfully.");
+//            model.addAttribute("list", bookDao.list());
+//            return "books";
+//        } else {
+//            model.addAttribute("list", bookDao.list());
+//            model.addAttribute("error", "Something went wrong with editing!");
+//            model.addAttribute("editmode", true);
+//            model.addAttribute("book", book);
+//            return "books";
+//        }
         return "redirect:/books";
     }
     

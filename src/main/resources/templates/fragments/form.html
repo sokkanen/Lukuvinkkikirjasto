@@ -6,7 +6,8 @@
         <h2 th:if="${editmode}">Edit book</h2>
         <h2 th:unless="${editmode}">Add book</h2>
         
-        <span th:text="${error}">&nbsp;</span>
+        <span th:if="${notification}" th:text="${notification}" class="alert alert-success"></span>
+        <span th:if="${error}" th:text="${error}" class="alert alert-warning"></span>
         <div th:if="${editmode}">
             <form  th:action="@{/books/edit/__${book.id}__}" method="POST" th:object="${book}">
             <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/>
