@@ -102,7 +102,8 @@ public class BookController {
 //            redirectAttributes.addAttribute("notification", "Book edited successfully.");
             model.addAttribute("list", bookDao.list());
             model.addAttribute("notification", "Book edited successfully.");
-            return "books";
+            //return "books";
+            return "redirect:/books";
         } else {
             model.addAttribute("list", bookDao.list());
             model.addAttribute("error", "Something went wrong with editing!");
