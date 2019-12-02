@@ -116,4 +116,28 @@ public class BookControllerTest extends BaseTest {
     public void tryToEditBookThatDoesntExistsRedirectsBack() throws Exception {
         mockMvc.perform(get("/books/edit/100")).andExpect(redirectedUrl("/")).andReturn();
     }
+
+    @Test
+    public void editingBookUpdatesTheBookWithSameID() throws Exception {
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki")).andReturn();
+        MvcResult result = mockMvc.perform(get("/books")).andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertTrue(content.contains("test"));
+
+        mockMvc.perform(post("/books/edit/1").param("title", "testaus").param("author", "nakki")).andReturn();
+        result = mockMvc.perform(get("/books")).andReturn();
+        content = result.getResponse().getContentAsString();
+        assertTrue(content.contains("testaus"));
+    }
+
+    @Test
+    public void tryToEditBookAndAddSameISBNReturnsError() throws Exception {
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books").param("title", "test2").param("author", "nakki2")).andReturn();
+        mockMvc.perform(post("/books/edit/2").param("title", "testaus2").param("author", "nakki5").param("isbn", "9789521439087")).andReturn();
+        MvcResult result = mockMvc.perform(get("/books")).andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertFalse(content.contains("testaus"));
+        assertFalse(content.contains("nakki5"));
+    }
 }

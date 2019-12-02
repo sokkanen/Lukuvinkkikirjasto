@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -32,23 +31,16 @@ public class BookController {
         this.bookDao = dao;
     }
 
-    @GetMapping("/")
+    @RequestMapping(value={"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
         model.addAttribute("list", bookDao.list());
+        model.addAttribute("editmode", false);
         return "books";
     }
     
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
-        if (book.getIsbn().equals("error")) {
-            bindingResult.rejectValue("isbn", "error.book", "Invalid ISBN.");
-        }
-
-        Book findBook = bookDao.findById(book.getId());
-        if (findBook != null) {
-            bookDao.delete(findBook);
-        }
-
+        
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
@@ -90,28 +82,22 @@ public class BookController {
         this.bookDao = dao;
     }
 
-    /**
-     * Skeleton model / POC for restful book editing.
-     * @param model
-     * @param book New book parameters, old id
-     * @return Books
-     * @throws SQLException
-     */
-    @PutMapping("/books/edit/{id}")
-    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book) throws SQLException {
-        // New ISBN or Title is not valid
-        if (!Book.validate(book)){
-            // Return error to the client.
+    @PostMapping("/books/edit/{id}")
+    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+        Book old = bookDao.findByIsbn(book.getIsbn());
+        if (old != null && old.getId() != book.getId()) {
+            bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
-        // Tries to edit book. If not successful, returns original instead.
-        boolean bookSuccessfullyEdited = bookDao.editBook(book);
-        if (!bookSuccessfullyEdited){
-            // Error in book creation. Return original model
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("list", bookDao.list());
+            model.addAttribute("editmode", true);
+            model.addAttribute("book", book);
             return "books";
         }
-        // model.addAttribute("book", potentiallyEditedBook);
-        // model.addAttribute("list", bookDao.list());
-        return "books";
+
+        bookDao.editBook(book);
+        
+        return "redirect:/books";
     }
     
 }

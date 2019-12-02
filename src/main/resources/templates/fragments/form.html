@@ -7,8 +7,26 @@
         <h2 th:unless="${editmode}">Add book</h2>
         
         <span th:text="${error}">&nbsp;</span>
+        <div th:if="${editmode}">
+            <form  th:action="@{/books/edit/__${book.id}__}" method="POST" th:object="${book}">
+            <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/>
+            <div th:errors="*{title}" th:if="${#fields.hasErrors('title')}"  class="alert alert-warning" role="alert"></div>
+
+            <input type="text" name="author" id ="author" th:field="*{author}" class="form-control" placeholder="Author"/>
+            <div th:errors="*{author}" th:if="${#fields.hasErrors('author')}"  class="alert alert-warning" role="alert"></div>
+
+            <input type="text" name="isbn" id="isbn" th:field="*{isbn}" class="form-control" placeholder="ISBN"/>
+            <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
+
+            <input type="hidden" name="id" id="id" th:field="*{id}" />
+            <input type="submit" name="submit" id="submit" value="Edit" class="btn btn-primary" /> 
+            <a href="/" class="btn btn-primary">Cancel editing</a>
+
+            </form>
+        </div>
         
-        <form th:action="@{/books}" method="POST" th:object="${book}">
+        <div th:unless="${editmode}">
+            <form th:action="@{/books}" method="POST" th:object="${book}">
             <input type="text" name="title" id="title" th:field="*{title}" class="form-control" placeholder="Title"/>
             <div th:errors="*{title}" th:if="${#fields.hasErrors('title')}"  class="alert alert-warning" role="alert"></div>
 
@@ -18,21 +36,10 @@
             <input type="text" name="isbn" id="isbn" th:field="*{isbn}" class="form-control" placeholder="ISBN"/>
             <div th:errors="*{isbn}" th:if="${#fields.hasErrors('isbn')}"  class="alert alert-warning" role="alert"></div>
             
-            <!-- if editmode then 2 buttons -->
-            <div th:if="${editmode}">
-                <input type="hidden" name="id" id="id" th:field="*{id}" />
-                <input type="submit" name="submit" id="submit" value="Edit" class="btn btn-primary" /> 
-                <a href="/" class="btn btn-primary">Cancel editing</a>
-<!--                <button class="btn btn-primary">
-                    Stop edit</a>
-                </button>-->
-            </div>
-            <!-- normal mode button -->
-            <div th:unless="${editmode}">
-                <input type="hidden" name="id" id="id" th:field="*{id}" />
-                <input type="submit" name="submit" id="submit" value="Add" class="btn btn-primary" /> 
-            </div>
-
-        </form>
+            <input type="hidden" name="id" id="id" th:field="*{id}" />
+            <input type="submit" name="submit" id="submit" value="Add" class="btn btn-primary" /> 
+            
+            </form>
+        </div>
     </div>
 </html>
