@@ -24,10 +24,27 @@
 
     <div class="container main-content">
         <div class="col-md-6">
-            <h2>Books</h2>
+            <h2>Unread Books</h2>
             <span th:if="${list.size() == 0}">You have no reading tips</span>
             <ul th:unless="${list.size() == 0}">
                 <li th:each="alkio : ${list}">
+                    <b><span th:text="${alkio.title} ">Title</span></b>
+                    <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
+                    <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+                    <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">🖊</a>
+                    <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
+                        <input type="submit" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="🗑️" class="deleteLink" />
+                    </form>
+                    <form th:onSubmit="return confirm('Mark this book read?')" th:action="@{'/books/editread/' + ${alkio.id}}" class="inline" method="POST">
+                        <input type="submit" th:id="markreadBook_ + ${alkio.title}" th:name="markreadBook_ + ${alkio.title}" value="Mark as read" class="btn btn-outline-info btn-sm"   />
+                    </form>
+                </li>
+            </ul>
+            
+            <h2>Read Books</h2>
+            <span th:if="${listread.size() == 0}">You have no books that have been read</span>
+            <ul th:unless="${listread.size() == 0}">
+                <li th:each="alkio : ${listread}">
                     <b><span th:text="${alkio.title}">Title</span></b>
                     <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
@@ -35,6 +52,7 @@
                     <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
                         <input type="submit" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="🗑️" class="deleteLink" />
                     </form>
+                    
                 </li>
             </ul>
         </div>
