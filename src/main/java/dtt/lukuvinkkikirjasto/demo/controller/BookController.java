@@ -5,10 +5,14 @@
  */
 package dtt.lukuvinkkikirjasto.demo.controller;
 
+import dtt.lukuvinkkikirjasto.demo.bookdata.IsbnApiCaller;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +31,23 @@ public class BookController {
 
     private BookDao bookDao;
 
+    @Autowired
+    IsbnApiCaller isbnApiCaller;
+
     public BookController(BookDao dao) {
         this.bookDao = dao;
     }
+
+    @RequestMapping(value = {"/books/info/{bookId}"})
+    public String infoPage(Model model, @ModelAttribute Book book) throws SQLException {
+        try {
+            isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        return "redirect:/";
+    }
+
 
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
@@ -53,7 +71,7 @@ public class BookController {
             return "books";
         }
         book.setRead(false);
-        bookDao.create(book, false, false);
+        bookDao.create(book);
         return "redirect:/";
     }
 
@@ -120,8 +138,7 @@ public class BookController {
             return "books";
         }
 
-        
-        boolean succesfulyEdited = bookDao.editBook(book);
+        boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
 //            redirectAttributes.addAttribute("notification", "Book edited successfully.");
             model.addAttribute("listread", bookDao.listRead());

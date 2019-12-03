@@ -30,55 +30,30 @@ public class BookDao implements Dao<Book> {
     }
 
     /**
-     * Creates new book to database
+     * Creates a new book to the database
      *
      * @param book
      * @throws java.sql.SQLException
      */
-    @Override
-    public void create(Book book) throws SQLException {
-        
-        create(book, false, book.isRead());
-    }
-
-    /**
-     * Used by book creation and editing
-     *
-     * @param book book to be inserted
-     * @param edited true when editing an existing book, false when creating totally new
-     * @throws SQLException
-     */
-    public void create(Book book, boolean edited, boolean read) throws SQLException{
+    public void create(Book book) throws SQLException{
         
         Connection connection = database.getConnection();
-        int newId;
-        if (edited){
-            newId = book.getId();
-        } else {
-            List<Book> books = list();
-            newId = books.size() == 0 ? 1 : books.get(books.size()-1).getId() +1;
-        }
+        List<Book> books = list();
+        int newId = books.size() == 0 ? 1 : books.get(books.size() - 1).getId() + 1;
         PreparedStatement statement;
         String sql = "INSERT INTO book (id, author, title, isbn, read_already) VALUES (?, ?, ?, ?, ?)";
-        statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        statement = connection.prepareStatement(sql);
         statement.setInt(1, newId);
         statement.setString(2, book.getAuthor());
         statement.setString(3, book.getTitle());
         statement.setString(4, book.getIsbn());
-        statement.setBoolean(5, read);
+        statement.setBoolean(5, false);
 
         logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor(), book.isRead());
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
 
-        ResultSet rs = statement.getGeneratedKeys();
-        if (rs.next()) {
-            int id = rs.getInt(1);
-            book.setId(id);
-        }
-
         statement.close();
-
         connection.close();
     }
 
@@ -98,21 +73,31 @@ public class BookDao implements Dao<Book> {
         connection.close();
     }
     
-     @Override
-    public void update(Book book) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement statement;
-        String sql = "UPDATE book SET read_already = ? WHERE book.id = ?";
-        statement = connection.prepareStatement(sql);
-        statement.setBoolean(1, true);
-        statement.setInt(2, book.getId());
+    @Override
+    public boolean update(Book book) throws SQLException {
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement statement;
+            String sql = "UPDATE book SET author = ?, title = ?, isbn = ?, read_already = ? WHERE id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, book.getAuthor());
+            statement.setString(2, book.getTitle());
+            statement.setString(3, book.getIsbn());
+            statement.setBoolean(4, book.isRead());
+            statement.setInt(5, book.getId());
 
-        logger.info("Updating book {} by {} from Database", book.getTitle(), book.getAuthor());
-        statement.executeUpdate();
-        logger.info("Book read update completed successfully");
+            logger.info("Updating book {} in Database", book.getId());
+            statement.executeUpdate();
+            logger.info("Book update completed successfully");
 
-        statement.close();
-        connection.close();
+            statement.close();
+            connection.close();
+            return true;
+        } catch (SQLException e){
+            logger.warn(e.getMessage());
+            return false;
+        }
+
     }
 
  @Override
@@ -223,23 +208,6 @@ public class BookDao implements Dao<Book> {
         conn.close();
         return onebook;
     }
-
-    // This should be @Transactional, but needed dependency does not play nice with our application.
-    public boolean editBook(Book book) throws SQLException{
-        if (findById(book.getId()) == null) {
-            return false;
-        }
-        try {
-            Book b = findById(book.getId());
-            delete(book);
-            create(book,true,b.isRead());
-            return true;
-        } catch (SQLException e){
-            logger.error(e.getMessage());
-            return false;
-        }
-    }
-    
 
     public Book getBook(ResultSet rs) throws SQLException {
         Book book = new Book(
