@@ -15,9 +15,13 @@ import java.util.List;
 public class BookTest {
 
     private Book testBook;
+    private Book testBookWith10DigitIsbn;
+    private Book testBookWith13DigitIsbn;
 
     public BookTest() {
         testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123");
+        testBookWith10DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "0-7475-3269-9");
+        testBookWith13DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "978-1-4133-0454-1");
     }
 
     @Test
@@ -44,4 +48,18 @@ public class BookTest {
         assertTrue(testBook.isRead());
     }
 
+    @Test
+    public void test10NumberIsbn() {
+        assertEquals("error", testBook.getIsbn());
+    }
+
+    @Test
+    public void testValid10NumberIsbn() {
+        assertEquals("0-7475-3269-9", testBookWith10DigitIsbn.getIsbn());
+    }
+
+    @Test
+    public void test13NumberIsbn() {
+        assertEquals("978-1-4133-0454-1", testBookWith13DigitIsbn.getIsbn());
+    }
 }
