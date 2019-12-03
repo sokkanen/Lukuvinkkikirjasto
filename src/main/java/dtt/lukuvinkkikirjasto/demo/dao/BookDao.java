@@ -65,9 +65,9 @@ public class BookDao implements Dao<Book> {
         statement = connection.prepareStatement(sql);
         statement.setInt(1, book.getId());
 
-        logger.info("Deleting book {} by {} from Database", book.getTitle(), book.getAuthor());
-        statement.executeUpdate();
-        logger.info("Book deletion completed successfully");
+        logger.info("Deleting book with id {}", book.getId());
+        int affectedRows = statement.executeUpdate();
+        logger.info("Book deletion for {} books completed", affectedRows);
 
         statement.close();
         connection.close();
