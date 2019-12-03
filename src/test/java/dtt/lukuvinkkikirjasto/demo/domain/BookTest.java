@@ -19,9 +19,9 @@ public class BookTest {
     private Book testBookWith13DigitIsbn;
 
     public BookTest() {
-        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123");
-        testBookWith10DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "0-7475-3269-9");
-        testBookWith13DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "978-1-4133-0454-1");
+        testBook = new Book("Jorma Kinnunen", "Keihäsmies", "123-123",false);
+        testBookWith10DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "0-7475-3269-9",false);
+        testBookWith13DigitIsbn = new Book("Kirjailija", "Kirjan nimi", "978-1-4133-0454-1",false);
     }
 
     @Test

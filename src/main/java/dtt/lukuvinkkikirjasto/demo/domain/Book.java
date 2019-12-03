@@ -23,7 +23,7 @@ public class Book {
     private String isbn;
     private boolean read;
 
-    public Book(String author, String title, String isbn) {
+    public Book(String author, String title, String isbn, Boolean read) {
         this.author = author;
         this.title = title;
 
@@ -34,8 +34,12 @@ public class Book {
         } else {
             this.isbn = "error";
         }
+        if (read == null) {
+            this.read = false;
+        } else {
+            this.read = read;
+        }
 
-        this.read = false;
     }
 
     public boolean isRead() {
@@ -138,8 +142,19 @@ public class Book {
 
             return checksum == Integer.parseInt(tempIsbn.substring(12));
         } catch (NumberFormatException nfe) {
-            // to catch invalid ISBN
+            //to catch invalid ISBN	          
             return false;
         }
+    }
+
+    public static boolean validate(Book book) {
+        String isbn = book.getIsbn();
+        String title = book.getTitle();
+        if (isEmpty(isbn) && !isEmpty(title)) {
+            return true;
+        } else if (isEmpty(title)) {
+            return false;
+        }
+        return validateIsbn10(isbn) || validateIsbn13(isbn);
     }
 }

@@ -37,7 +37,8 @@ public class BookDao implements Dao<Book> {
      */
     @Override
     public void create(Book book) throws SQLException {
-        create(book, false);
+        
+        create(book, false, book.isRead());
     }
 
     /**
@@ -47,7 +48,8 @@ public class BookDao implements Dao<Book> {
      * @param edited true when editing an existing book, false when creating totally new
      * @throws SQLException
      */
-    public void create(Book book, boolean edited) throws SQLException{
+    public void create(Book book, boolean edited, boolean read) throws SQLException{
+        
         Connection connection = database.getConnection();
         int newId;
         if (edited){
@@ -63,9 +65,9 @@ public class BookDao implements Dao<Book> {
         statement.setString(2, book.getAuthor());
         statement.setString(3, book.getTitle());
         statement.setString(4, book.getIsbn());
-        statement.setBoolean(5, false);
+        statement.setBoolean(5, read);
 
-        logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor());
+        logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor(), book.isRead());
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
 
@@ -95,9 +97,25 @@ public class BookDao implements Dao<Book> {
         statement.close();
         connection.close();
     }
+    
+     @Override
+    public void update(Book book) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement statement;
+        String sql = "UPDATE book SET read_already = ? WHERE book.id = ?";
+        statement = connection.prepareStatement(sql);
+        statement.setBoolean(1, true);
+        statement.setInt(2, book.getId());
 
+        logger.info("Updating book {} by {} from Database", book.getTitle(), book.getAuthor());
+        statement.executeUpdate();
+        logger.info("Book read update completed successfully");
 
-    @Override
+        statement.close();
+        connection.close();
+    }
+
+ @Override
     public List<Book> list() throws SQLException {
 
         ArrayList<Book> bookList = new ArrayList();
@@ -117,6 +135,46 @@ public class BookDao implements Dao<Book> {
         
         return bookList;
     }
+    
+    public List<Book> listRead() throws SQLException {
+
+        ArrayList<Book> bookList = new ArrayList();
+        Connection connection = database.getConnection();
+
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM book WHERE read_already = true;");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Book book = getBook(resultSet);
+            bookList.add(book);
+        }
+        logger.info("Executed a search for all books. Found {} book(s)", bookList.size());
+        statement.close();
+        resultSet.close();
+        connection.close();
+        
+        return bookList;
+    }
+    public List<Book> listUnread() throws SQLException {
+
+        ArrayList<Book> bookList = new ArrayList();
+        Connection connection = database.getConnection();
+
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM book WHERE read_already = false;");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Book book = getBook(resultSet);
+            bookList.add(book);
+        }
+        logger.info("Executed a search for all books. Found {} book(s)", bookList.size());
+        statement.close();
+        resultSet.close();
+        connection.close();
+        
+        return bookList;
+    }
+    
     
     public Book findByIsbn(String isbn) throws SQLException {
         if (isbn.isEmpty()) {
@@ -172,8 +230,9 @@ public class BookDao implements Dao<Book> {
             return false;
         }
         try {
+            Book b = findById(book.getId());
             delete(book);
-            create(book, true);
+            create(book,true,b.isRead());
             return true;
         } catch (SQLException e){
             logger.error(e.getMessage());
@@ -186,7 +245,8 @@ public class BookDao implements Dao<Book> {
         Book book = new Book(
                 rs.getString("author"),
                 rs.getString("title"),
-                rs.getString("isbn")
+                rs.getString("isbn"),
+                rs.getBoolean("read_already")
         );
         book.setId(rs.getInt("id"));
         return book;
