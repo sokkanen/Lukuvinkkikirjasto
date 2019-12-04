@@ -52,7 +52,7 @@
                     <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
                         <input type="submit" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="🗑️" class="deleteLink" />
                     </form>
-                    <form th:onSubmit="return confirm('Mark this book unread?  I don't think you do it will break everything')" th:action="@{'/books/editread/' + ${alkio.id}}" class="inline" method="POST">
+                    <form th:onSubmit="return confirm('Mark this book unread?')" th:action="@{'/books/editread/' + ${alkio.id}}" class="inline" method="POST">
                         <input type="submit" th:id="markreadBook_ + ${alkio.title}" th:name="markreadBook_ + ${alkio.title}" value="✔" class="read-button book-read" alt="mark as unread" />
                     </form>
 

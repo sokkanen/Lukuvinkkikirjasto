@@ -2,8 +2,12 @@ body{
     background: #1a2a6c; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
-    cursor: url('unicorn2.png'), auto;	
 } 
+
+body, input:hover, button {
+    cursor: url('unicorn2.png'), auto;	
+
+}
 
 body, html {
     height: 100%;
