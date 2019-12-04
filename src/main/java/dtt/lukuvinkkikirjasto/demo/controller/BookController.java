@@ -129,7 +129,6 @@ public class BookController {
 
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
-            //book.setRead(book.isRead());
             return "redirect:/books";
         } else {
             model = bookService.returnModelForBook(model, bookDao, book, true);
