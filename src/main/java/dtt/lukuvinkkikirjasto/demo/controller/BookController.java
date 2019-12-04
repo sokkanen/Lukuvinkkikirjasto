@@ -12,6 +12,7 @@ import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import dtt.lukuvinkkikirjasto.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,9 @@ public class BookController {
 
     @Autowired
     IsbnApiCaller isbnApiCaller;
+
+    @Autowired
+    private BookService bookService;
 
     public BookController(BookDao dao) {
         this.bookDao = dao;
@@ -66,9 +70,7 @@ public class BookController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, false);
             return "books";
         }
         book.setRead(false);
@@ -99,10 +101,7 @@ public class BookController {
                 book.setIsbn("");
             }
             
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
+            model = bookService.returnModelForBook(model, bookDao, book, true);
 
             return "books";
         }
@@ -122,10 +121,7 @@ public class BookController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, true);
             return "books";
         }
 
@@ -133,11 +129,7 @@ public class BookController {
         if (succesfulyEdited) {
             return "redirect:/books";
         } else {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("error", "Something went wrong with editing!");
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, true);
             return "books";
         }
     }
