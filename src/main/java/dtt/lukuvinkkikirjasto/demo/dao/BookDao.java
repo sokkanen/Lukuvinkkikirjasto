@@ -117,7 +117,7 @@ public class BookDao implements Dao<Book> {
             String sql = "UPDATE book SET read_already = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
             
-            statement.setBoolean(1, book.getRead());
+            statement.setBoolean(1, book.isRead());
             statement.setInt(2, book.getId());
             
 
