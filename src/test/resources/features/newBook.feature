@@ -3,7 +3,7 @@ Feature: A new book can be created if proper info is given
     Scenario: creation is successful with valid title, author and ISBN
         Given command new is selected
         When  title is "test book", author is "C. reation", ISBN is "978-952-5802-04-7"
-        Then  system will respond with book info: title "test book", author "C. reation" and ISBN "978-952-5802-04-7"
+        Then  system will show book info: title "test book" and author "C. reation"
 
     Scenario: creation fails with empty input
         Given command new is selected
@@ -19,7 +19,6 @@ Feature: A new book can be created if proper info is given
         Given command new is selected
         When  title is "Best book 4ever", author is empty, ISBN is "978-952-5802-04-7"
         Then  system will respond with "Best book 4ever"
-        And   system will respond with "978-952-5802-04-7"
 
     Scenario: creation is successful with empty ISBN
         Given command new is selected
