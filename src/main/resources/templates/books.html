@@ -40,6 +40,9 @@
                     </form>
                 </li>
             </ul>
+            <div th:if="${newbook}"><div id='showMe' class="pyro" ><div class="before"></div>
+    <div class="after"></div></div></div>
+            
             
             <h2>Read Books</h2>
             <span th:if="${listread.size() == 0}">You have no books that have been read</span>

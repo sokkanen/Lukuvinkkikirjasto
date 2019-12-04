@@ -8,6 +8,7 @@ package dtt.lukuvinkkikirjasto.demo.controller;
 import dtt.lukuvinkkikirjasto.demo.bookdata.IsbnApiCaller;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
+import dtt.lukuvinkkikirjasto.demo.domain.Fireworks;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BookController {
 
     private BookDao bookDao;
+    private Fireworks newbookFireworks;
 
     @Autowired
     IsbnApiCaller isbnApiCaller;
@@ -57,7 +59,7 @@ public class BookController {
 
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
-        model = bookService.returnModelForBook(model, bookDao, book, false);
+        model = bookService.returnModelForBook(model, bookDao, book, false,newbookFireworks.isNew());
         return "books";
     }
 
@@ -68,10 +70,12 @@ public class BookController {
         }
 
         if (bindingResult.hasErrors()) {
-            model = bookService.returnModelForBook(model, bookDao, book, false);
+            model = bookService.returnModelForBook(model, bookDao, book, false,false);
             return "books";
         }
         book.setRead(false);
+        newbookFireworks = new Fireworks();
+        model = bookService.returnModelForBook(model, bookDao, book, false,newbookFireworks.isNew());
         bookDao.create(book);
         return "redirect:/";
     }
@@ -101,7 +105,7 @@ public class BookController {
                 book.setIsbn("");
             }
             
-            model = bookService.returnModelForBook(model, bookDao, book, true);
+            model = bookService.returnModelForBook(model, bookDao, book, true, false);
 
             return "books";
         }
@@ -121,15 +125,16 @@ public class BookController {
         }
 
         if (bindingResult.hasErrors()) {
-            model = bookService.returnModelForBook(model, bookDao, book, true);
+            model = bookService.returnModelForBook(model, bookDao, book, true,false);
             return "books";
         }
 
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
+            
             return "redirect:/books";
         } else {
-            model = bookService.returnModelForBook(model, bookDao, book, true);
+            model = bookService.returnModelForBook(model, bookDao, book, true,false);
             return "books";
         }
     }
