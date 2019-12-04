@@ -35,6 +35,9 @@ public class IsbnApiCaller {
     }
 
     public BookDto responseParser(JsonNode node){
+        if (node.get("records") == null){
+            return new BookDto("No additional information found, this must be a naughty book. ;)");
+        }
         final JsonNode firstObject = node.get("records").get(0);
 
         final String title = firstObject.get("title").toString();

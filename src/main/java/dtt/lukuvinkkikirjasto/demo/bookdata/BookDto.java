@@ -1,5 +1,9 @@
 package dtt.lukuvinkkikirjasto.demo.bookdata;
 
+import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
+import dtt.lukuvinkkikirjasto.demo.domain.Book;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookDto {
@@ -26,6 +30,15 @@ public class BookDto {
         this.libraries = libraries;
         this.series = series;
         this.subjects = subjects;
+    }
+
+    public BookDto(String title){
+        this.title = title;
+        this.authors = new ArrayList<>();
+        this.languages = new ArrayList<>();
+        this.libraries = new ArrayList<>();
+        this.series = new ArrayList<>();
+        this.subjects = new ArrayList<>();
     }
 
     public String getTitle() {
