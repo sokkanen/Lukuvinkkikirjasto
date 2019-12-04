@@ -16,8 +16,8 @@
             <span th:if="${list.size() == 0}">You have no unread books</span>
             <ul th:unless="${list.size() == 0}">
                 <li th:each="alkio : ${list}">
-                    <b><span th:text="${alkio.title} ">Title</span></b>
-                    <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
+                    <a class="booklink" th:href="@{'/book/' + ${alkio.id}}"><b><span th:text="${alkio.title}">Title</span></b></a>
+                    <span th:if= "${alkio.author != ''}" th:text="': ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
                     <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">🖊</a>
                     <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
@@ -33,7 +33,7 @@
             <span th:if="${listread.size() == 0}">You have no books that have been read</span>
             <ul th:unless="${listread.size() == 0}">
                 <li th:each="alkio : ${listread}">
-                    <b><span th:text="${alkio.title}">Title</span></b>
+                    <a class="booklink" th:href="@{'/book/' + ${alkio.id}}"><b><span th:text="${alkio.title}">Title</span></b></a>
                     <span th:if= "${alkio.author != ''}" th:text="'/ ' + ${alkio.author}">Author</span>
                     <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
                     <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">🖊</a>

@@ -15,8 +15,6 @@
                 <b><span th:text="${book.title}"></span></b>
                 <span th:if= "${book.author != ''}" th:text="': ' + ${book.author}">Author</span> <br />
                 <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span>
-
-
             </div>
             <div class="col-md-6">
             </div>
