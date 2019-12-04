@@ -1,0 +1,14 @@
+<div th:fragment="options (book, read)">
+    <a th:href="@{'/books/edit/' + ${book.id}}" class="editlink">🖊</a>
+    <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${book.id}}" class="inline" method="POST">
+        <input type="submit" th:id="deleteBook_ + ${book.title}" th:name="deleteBook_ + ${book.title}" value="🗑️" class="deleteLink" />
+    </form>
+    <form th:onSubmit="return confirm('Toggle read status?')" th:action="@{'/books/editread/' + ${book.id}}" class="inline" method="POST">
+        <input type="submit" 
+        th:id="markreadBook_ + ${book.title}" 
+        th:name="markreadBook_ + ${book.title}" 
+        th:title="${read} ? 'Mark as unread' : 'Mark as read'" 
+        th:value="${read} ? 'mark unread' : 'mark read'" 
+        class="btn btn-outline-info btn-sm"   />
+    </form>
+</div>

@@ -13,8 +13,14 @@
         <div class="container main-content">
             <div class="col-md-6">
                 <b><span th:text="${book.title}"></span></b>
-                <span th:if= "${book.author != ''}" th:text="': ' + ${book.author}">Author</span> <br />
-                <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span>
+                <span th:if= "${book.author != ''}" th:text="': ' + ${book.author}">Author</span> 
+                <span class="label label-pill" 
+                    th:text="${book.read} ? 'read' : 'unread'"
+                    th:classappend="${book.read} ? label-success : label-warning"></span>
+                <br />
+                <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span> <br/>
+                <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
+                </th:block> /*/-->
             </div>
             <div class="col-md-6">
             </div>
