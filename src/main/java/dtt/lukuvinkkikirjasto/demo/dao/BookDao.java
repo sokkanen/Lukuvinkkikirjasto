@@ -110,15 +110,14 @@ public class BookDao implements Dao<Book> {
     
     
     public boolean updateRead(Book book) throws SQLException {
-        Book b = findById(book.getId());
-        boolean read = !b.isRead();
+        
         try {
             Connection connection = database.getConnection();
             PreparedStatement statement;
             String sql = "UPDATE book SET read_already = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
             
-            statement.setBoolean(1, read);
+            statement.setBoolean(1, book.getRead());
             statement.setInt(2, book.getId());
             
 
