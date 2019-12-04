@@ -112,7 +112,7 @@ public class BookController {
     public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
         
-         if (!Book.validate(book)){
+        if (!Book.validate(book)){
             bindingResult.rejectValue("isbn", "error.book", "Add correct info");
         }
 
