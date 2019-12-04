@@ -75,6 +75,7 @@ public class BookDao implements Dao<Book> {
     
     @Override
     public boolean update(Book book) throws SQLException {
+        Book b = findById(book.getId());
         try {
             Connection connection = database.getConnection();
             PreparedStatement statement;
@@ -83,7 +84,7 @@ public class BookDao implements Dao<Book> {
             statement.setString(1, book.getAuthor());
             statement.setString(2, book.getTitle());
             statement.setString(3, book.getIsbn());
-            statement.setBoolean(4, book.isRead());
+            statement.setBoolean(4, b.isRead());
             statement.setInt(5, book.getId());
 
             logger.info("Updating book {} in Database", book.getId());
@@ -99,6 +100,34 @@ public class BookDao implements Dao<Book> {
         }
 
     }
+    
+    
+    public boolean updateRead(Book book) throws SQLException {
+        
+        try {
+            Connection connection = database.getConnection();
+            PreparedStatement statement;
+            String sql = "UPDATE book SET read_already = ? WHERE id = ?";
+            statement = connection.prepareStatement(sql);
+            
+            statement.setBoolean(1, true);
+            statement.setInt(2, book.getId());
+            
+
+            logger.info("Updating book {} in Database", book.getId());
+            statement.executeUpdate();
+            logger.info("Book update completed successfully");
+
+            statement.close();
+            connection.close();
+            return true;
+        } catch (SQLException e){
+            logger.warn(e.getMessage());
+            return false;
+        }
+
+    }
+
 
  @Override
     public List<Book> list() throws SQLException {
