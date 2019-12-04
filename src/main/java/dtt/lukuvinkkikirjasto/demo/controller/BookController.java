@@ -5,14 +5,18 @@
  */
 package dtt.lukuvinkkikirjasto.demo.controller;
 
+import dtt.lukuvinkkikirjasto.demo.bookdata.BookDto;
 import dtt.lukuvinkkikirjasto.demo.bookdata.IsbnApiCaller;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 
 import dtt.lukuvinkkikirjasto.demo.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +33,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class BookController {
+
+    Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private BookDao bookDao;
 
@@ -48,9 +54,10 @@ public class BookController {
     @RequestMapping(value = {"/books/info/{bookId}"})
     public String infoPage(Model model, @ModelAttribute Book book) throws SQLException {
         try {
-            isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+            BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+            //return bookDto == null ? "NULLI, EI OO TIETOO" : "ON TIETOO!";
         } catch (IOException e){
-            System.out.println(e.getMessage());
+            logger.warn("Error in fetching book information. {}", e.getMessage());
         }
         return "redirect:/";
     }
