@@ -9,7 +9,6 @@
     </head>
 
     <body>
-
         <div class="container main-content">
             <div class="col-md-6">
                 <b><span th:text="${book.title}"></span></b>
@@ -21,6 +20,30 @@
                 <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span> <br/>
                 <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
                 </th:block> /*/-->
+            </div>
+            <div th:if="${dto}">
+                <h3>Additional information: </h3>
+                <h4 th:text="${dto.title}"></h4>
+                <h5>Authors:</h5>
+                <ul th:each="auth : ${dto.authors}">
+                    <li th:text="${auth}"></li>
+                </ul>
+                <h5>Languages:</h5>
+                <ul th:each="lng : ${dto.languages}">
+                    <li th:text="${lng}"></li>
+                </ul>
+                <h5>Series:</h5>
+                <ul th:each="ser : ${dto.series}">
+                    <li th:text="${ser}"></li>
+                </ul>
+                <h5>Subjects:</h5>
+                <ul th:each="sub : ${dto.subjects}">
+                    <li th:text="${sub}"></li>
+                </ul>
+                <h5>Available from:</h5>
+                <ul th:each="lib : ${dto.libraries}">
+                    <li th:text="${lib}"></li>
+                </ul>
             </div>
             <div class="col-md-6">
             </div>

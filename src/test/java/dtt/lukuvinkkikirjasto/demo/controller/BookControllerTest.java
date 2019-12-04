@@ -10,8 +10,8 @@ package dtt.lukuvinkkikirjasto.demo.controller;
  * @author sebserge
  */
 import dtt.lukuvinkkikirjasto.demo.BaseTest;
+import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.*;
-import org.mockito.Mockito;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,7 +30,7 @@ public class BookControllerTest extends BaseTest {
 
     @Autowired
     private BookController controller;
-    
+
     @Test
     public void statusOk() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk());

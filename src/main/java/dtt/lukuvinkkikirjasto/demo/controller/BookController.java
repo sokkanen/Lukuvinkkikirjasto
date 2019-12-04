@@ -19,11 +19,13 @@ import dtt.lukuvinkkikirjasto.demo.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -53,11 +55,18 @@ public class BookController {
         this.bookDao = dao;
     }
 
+    @Cacheable("bookdata")
     @RequestMapping(value = {"/books/info/{bookId}"})
-    public String infoPage(Model model, @ModelAttribute Book book) throws SQLException {
+    public String infoPage(Model model, @PathVariable String bookId) throws SQLException {
         try {
+            Book book = bookDao.findById(Integer.parseInt(bookId));
+            if (book.getIsbn().equals("error") || book.getIsbn().equals("")){
+                return "redirect:/book/" + bookId;
+            }
             BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
-            //return bookDto == null ? "NULLI, EI OO TIETOO" : "ON TIETOO!";
+            model.addAttribute("dto", bookDto);
+            model.addAttribute("book", book);
+            return "book";
         } catch (IOException e){
             logger.warn("Error in fetching book information. {}", e.getMessage());
         }

@@ -1,42 +1,54 @@
 package dtt.lukuvinkkikirjasto.demo.bookdata;
 
+import java.util.List;
+
 public class BookDto {
 
-    private String name;
-    private Author[] authors;
-    private String[] languages;
-    private String[] libraries;
-    private String[] categories;
-    private String[] series;
-    private String[] subjects;
+    private String title;
+    private List<String> authors;
+    private List<String> languages;
+    private List<String> libraries;
+    private List<String> series;
+    private List<String> subjects;
 
     public BookDto(
-            String name,
-            Author[] authors,
-            String[] languages,
-            String[] libraries,
-            String[] categories,
-            String[] series,
-            String[] subjects
+            String title,
+            List<String> authors,
+            List<String> languages,
+            List<String> libraries,
+            List<String> series,
+            List<String> subjects
 
     ) {
-        this.name = name;
+        this.title = title;
         this.authors = authors;
         this.languages = languages;
         this.libraries = libraries;
-        this.categories = categories;
         this.series = series;
         this.subjects = subjects;
     }
-}
 
+    public String getTitle() {
+        return title;
+    }
 
-class Author {
-    public final String name;
-    public final String role;
+    public List<String> getAuthors() {
+        return authors;
+    }
 
-    public Author(String name, String role){
-        this.name = name;
-        this.role = role;
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public List<String> getLibraries() {
+        return libraries;
+    }
+
+    public List<String> getSeries() {
+        return series;
+    }
+
+    public List<String> getSubjects() {
+        return subjects;
     }
 }

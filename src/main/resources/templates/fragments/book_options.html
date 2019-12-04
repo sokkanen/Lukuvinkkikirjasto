@@ -11,4 +11,11 @@
         th:value="${read} ? 'mark unread' : 'mark read'" 
         class="btn btn-outline-info btn-sm"   />
     </form>
+    <form th:onSubmit="return confirm('Pressing this button might cause data charges')" th:action="@{'/books/info/' + ${book.id}}" class="inline" method="POST">
+        <input type="submit"
+               th:id="infoPage_ + ${book.title}"
+               title="Get additional information"
+               value="ℹ"
+               class="btn btn-outline-info btn-sm"   />
+    </form>
 </div>
