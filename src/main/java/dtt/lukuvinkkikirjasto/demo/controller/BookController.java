@@ -88,8 +88,10 @@ public class BookController {
     @PostMapping("/books/editread/{bookId}")
     public String markreadBook(Model model, @PathVariable String bookId) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(bookId));
+
         book.setRead(!book.isRead());
-        bookDao.update(book);
+        bookDao.updateRead(book);
+
         return "redirect:/";
     }
 
@@ -115,7 +117,7 @@ public class BookController {
         if (!Book.validate(book)){
             bindingResult.rejectValue("isbn", "error.book", "Add correct info");
         }
-
+        
         if (old != null && old.getId() != book.getId()) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
@@ -127,6 +129,7 @@ public class BookController {
 
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
+            //book.setRead(book.isRead());
             return "redirect:/books";
         } else {
             model = bookService.returnModelForBook(model, bookDao, book, true);
