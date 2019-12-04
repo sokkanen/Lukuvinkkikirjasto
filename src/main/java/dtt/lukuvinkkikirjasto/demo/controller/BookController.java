@@ -61,7 +61,6 @@ public class BookController {
 
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
-        book.setRead(false);
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
@@ -89,12 +88,6 @@ public class BookController {
         Book book = bookDao.findById(Integer.parseInt(bookId));
         book.setRead(!book.isRead());
         bookDao.update(book);
-        
-        model.addAttribute("book", book);
-        model.addAttribute("listread", bookDao.listRead());
-        model.addAttribute("list", bookDao.listUnread());
-
-      
         return "redirect:/";
     }
 
