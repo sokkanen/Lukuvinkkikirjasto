@@ -1,0 +1,23 @@
+<div th:fragment="list (list, read)">
+
+<span th:if="${list.size() == 0}" th:text="${read} ? 'You have not marked any books as read yet' : 'You have no unread books'"></span>
+<ul th:unless="${list.size() == 0}">
+    <li th:each="alkio : ${list}">
+        <a class="booklink" th:href="@{'/book/' + ${alkio.id}}"><b><span th:text="${alkio.title}">Title</span></b></a>
+        <span th:if= "${alkio.author != ''}" th:text="': ' + ${alkio.author}">Author</span>
+        <span th:if= "${alkio.isbn !='' and alkio.isbn !='error'}" th:text="'/ ISBN: ' + ${alkio.isbn}">ISBN</span>
+        <a th:href="@{'/books/edit/' + ${alkio.id}}" class="editlink">🖊</a>
+        <form th:onSubmit="return confirm('Delete this book?')" th:action="@{'/books/delete/' + ${alkio.id}}" class="inline" method="POST">
+            <input type="submit" th:id="deleteBook_ + ${alkio.title}" th:name="deleteBook_ + ${alkio.title}" value="🗑️" class="deleteLink" />
+        </form>
+        <form th:onSubmit="return confirm('Toggle read status?')" th:action="@{'/books/editread/' + ${alkio.id}}" class="inline" method="POST">
+            <input type="submit" 
+            th:id="markreadBook_ + ${alkio.title}" 
+            th:name="markreadBook_ + ${alkio.title}" 
+            th:title="${read} ? 'Mark as unread' : 'Mark as read'" 
+            th:value="${read} ? 'mark unread' : 'mark read'" 
+            class="btn btn-outline-info btn-sm"   />
+        </form>
+    </li>
+</ul>
+</div>
