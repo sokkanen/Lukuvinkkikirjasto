@@ -43,7 +43,7 @@ public class BookControllerTest extends BaseTest {
         MvcResult res = mockMvc.perform(get("/")).andReturn();
         
         String content = res.getResponse().getContentAsString();
-        assertTrue(content.contains("Books"));
+        assertTrue(content.contains("books"));
     }
     
     @Test

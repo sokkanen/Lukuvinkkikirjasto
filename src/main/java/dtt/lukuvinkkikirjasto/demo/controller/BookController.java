@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BookController {
 
     private BookDao bookDao;
-    private Fireworks newbookFireworks;
+    private Fireworks newbookFireworks = new Fireworks();
 
     @Autowired
     IsbnApiCaller isbnApiCaller;
@@ -55,6 +55,13 @@ public class BookController {
             System.out.println(e.getMessage());
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = {"/book/{bookId}"})
+    public String singleBook(Model model, @PathVariable String bookId) throws SQLException {
+        Book book = bookDao.findById(Integer.parseInt(bookId));
+        model.addAttribute("book", book);
+        return "book";
     }
 
     @RequestMapping(value = {"/", "/books"})
