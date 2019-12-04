@@ -38,8 +38,7 @@ public class BookDao implements Dao<Book> {
     public void create(Book book) throws SQLException{
         
         Connection connection = database.getConnection();
-        List<Book> books = list();
-        int newId = books.size() == 0 ? 1 : books.get(books.size() - 1).getId() + 1;
+        
         PreparedStatement statement;
         String sql = "INSERT INTO book (author, title, isbn, read_already) VALUES ( ?, ?, ?, ?)";
         statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
