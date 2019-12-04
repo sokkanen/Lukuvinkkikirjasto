@@ -86,7 +86,7 @@ public class BookController {
     public String markreadBook(Model model, @PathVariable String bookId) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(bookId));
         book.setRead(true);
-        bookDao.update(book);
+        bookDao.updateRead(book);
         
         model.addAttribute("book", book);
         model.addAttribute("listread", bookDao.listRead());
@@ -125,7 +125,7 @@ public class BookController {
          if (!Book.validate(book)){
             bindingResult.rejectValue("isbn", "error.book", "Add correct info");
         }
-
+        
         if (old != null && old.getId() != book.getId()) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
@@ -141,6 +141,7 @@ public class BookController {
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
 //            redirectAttributes.addAttribute("notification", "Book edited successfully.");
+book.setRead(book.isRead());
             model.addAttribute("listread", bookDao.listRead());
             model.addAttribute("list", bookDao.listUnread());
             model.addAttribute("notification", "Book edited successfully.");
