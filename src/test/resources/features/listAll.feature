@@ -3,7 +3,7 @@ Feature: All reading tips can be listed
   Scenario: empty list can be listed
     Given command list all is selected
     When  database is empty
-    Then  system will respond with "You have no reading tips"
+    Then  system will respond with "You have no books that have been read"
 
   Scenario: list with one book can be listed
     Given command list all is selected
