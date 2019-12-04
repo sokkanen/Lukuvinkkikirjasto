@@ -12,6 +12,7 @@ import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import dtt.lukuvinkkikirjasto.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,13 @@ public class BookController {
     @Autowired
     IsbnApiCaller isbnApiCaller;
 
+    @Autowired
+    private BookService bookService;
+
     public BookController(BookDao dao) {
+        this.bookDao = dao;
+    }
+    public void setDao(BookDao dao) {
         this.bookDao = dao;
     }
 
@@ -48,26 +55,20 @@ public class BookController {
         return "redirect:/";
     }
 
-
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
-        model.addAttribute("listread", bookDao.listRead());
-        model.addAttribute("list", bookDao.listUnread());
-        model.addAttribute("editmode", false);
+        model = bookService.returnModelForBook(model, bookDao, book, false);
         return "books";
     }
 
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
-        book.setRead(false);
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, false);
             return "books";
         }
         book.setRead(false);
@@ -85,14 +86,10 @@ public class BookController {
     @PostMapping("/books/editread/{bookId}")
     public String markreadBook(Model model, @PathVariable String bookId) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(bookId));
-        book.setRead(true);
-        bookDao.updateRead(book);
-        
-        model.addAttribute("book", book);
-        model.addAttribute("listread", bookDao.listRead());
-        model.addAttribute("list", bookDao.listUnread());
 
-      
+        book.setRead(!book.isRead());
+        bookDao.updateRead(book);
+
         return "redirect:/";
     }
 
@@ -104,25 +101,18 @@ public class BookController {
                 book.setIsbn("");
             }
             
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
+            model = bookService.returnModelForBook(model, bookDao, book, true);
 
             return "books";
         }
         return "redirect:/";
     }
 
-    public void setDao(BookDao dao) {
-        this.bookDao = dao;
-    }
-
     @PostMapping("/books/edit/{id}")
     public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
         
-         if (!Book.validate(book)){
+        if (!Book.validate(book)){
             bindingResult.rejectValue("isbn", "error.book", "Add correct info");
         }
         
@@ -131,31 +121,16 @@ public class BookController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, true);
             return "books";
         }
 
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
-//            redirectAttributes.addAttribute("notification", "Book edited successfully.");
-book.setRead(book.isRead());
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("notification", "Book edited successfully.");
-            //return "books";
             return "redirect:/books";
         } else {
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("error", "Something went wrong with editing!");
-            model.addAttribute("editmode", true);
-            model.addAttribute("book", book);
+            model = bookService.returnModelForBook(model, bookDao, book, true);
             return "books";
         }
-//        return "redirect:/books";
     }
-
 }
