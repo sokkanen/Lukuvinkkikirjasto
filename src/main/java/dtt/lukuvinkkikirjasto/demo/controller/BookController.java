@@ -57,9 +57,7 @@ public class BookController {
 
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
-        model.addAttribute("listread", bookDao.listRead());
-        model.addAttribute("list", bookDao.listUnread());
-        model.addAttribute("editmode", false);
+        model = bookService.returnModelForBook(model, bookDao, book, false);
         return "books";
     }
 
