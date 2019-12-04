@@ -55,8 +55,9 @@ public class BookDaoTest extends BaseTest {
         List<Book> fromDb = bookDao.list();
         assertEquals(1, fromDb.size());
 
-        bookDao.delete(testBook);
+        bookDao.delete(fromDb.get(0));
         fromDb = bookDao.list();
+
         assertEquals(0, fromDb.size());
     }
 
@@ -64,6 +65,8 @@ public class BookDaoTest extends BaseTest {
     public void aBookCanBeDeletedWhenThereAreMultipleBooksInDatabase() throws SQLException {
         bookDao.create(testBook);
         bookDao.create(testBook2);
+        testBook.setId(1);
+        testBook2.setId(2);
         bookDao.create(new Book("Darth Vader", "How to love your son", "978-1-40834-737-9",false));
         List<Book> fromDb = bookDao.list();
         assertEquals(3, fromDb.size());
