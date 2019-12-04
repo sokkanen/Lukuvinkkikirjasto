@@ -37,6 +37,9 @@ public class BookController {
     public BookController(BookDao dao) {
         this.bookDao = dao;
     }
+    public void setDao(BookDao dao) {
+        this.bookDao = dao;
+    }
 
     @RequestMapping(value = {"/books/info/{bookId}"})
     public String infoPage(Model model, @ModelAttribute Book book) throws SQLException {
@@ -47,7 +50,6 @@ public class BookController {
         }
         return "redirect:/";
     }
-
 
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
@@ -85,7 +87,7 @@ public class BookController {
     @PostMapping("/books/editread/{bookId}")
     public String markreadBook(Model model, @PathVariable String bookId) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(bookId));
-        book.setRead(true);
+        book.setRead(!book.isRead());
         bookDao.update(book);
         
         model.addAttribute("book", book);
@@ -114,10 +116,6 @@ public class BookController {
         return "redirect:/";
     }
 
-    public void setDao(BookDao dao) {
-        this.bookDao = dao;
-    }
-
     @PostMapping("/books/edit/{id}")
     public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
@@ -140,11 +138,6 @@ public class BookController {
 
         boolean succesfulyEdited = bookDao.update(book);
         if (succesfulyEdited) {
-//            redirectAttributes.addAttribute("notification", "Book edited successfully.");
-            model.addAttribute("listread", bookDao.listRead());
-            model.addAttribute("list", bookDao.listUnread());
-            model.addAttribute("notification", "Book edited successfully.");
-            //return "books";
             return "redirect:/books";
         } else {
             model.addAttribute("listread", bookDao.listRead());
@@ -154,7 +147,5 @@ public class BookController {
             model.addAttribute("book", book);
             return "books";
         }
-//        return "redirect:/books";
     }
-
 }
