@@ -38,25 +38,22 @@ public class BookDao implements Dao<Book> {
     public void create(Book book) throws SQLException{
         
         Connection connection = database.getConnection();
-        
+         List<Book> books = list();
+        int newId = books.size() == 0 ? 1 : books.get(books.size() - 1).getId() + 1;
         PreparedStatement statement;
-        String sql = "INSERT INTO book (author, title, isbn, read_already) VALUES ( ?, ?, ?, ?)";
-        statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        
-        statement.setString(1, book.getAuthor());
-        statement.setString(2, book.getTitle());
-        statement.setString(3, book.getIsbn());
-        statement.setBoolean(4, false);
+        String sql = "INSERT INTO book (id, author, title, isbn, read_already) VALUES ( ?, ?, ?, ?, ?)";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1, newId);
+        statement.setString(2, book.getAuthor());
+        statement.setString(3, book.getTitle());
+        statement.setString(4, book.getIsbn());
+        statement.setBoolean(5, false);
 
         logger.info("Inserting new book {} by {} to Database", book.getTitle(), book.getAuthor(), book.isRead());
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
 
-        ResultSet rs = statement.getGeneratedKeys();	
-        if (rs.next()) {	
-            int id = rs.getInt(1);	
-            book.setId(id);	
-        }
+      
         
         statement.close();
         connection.close();
@@ -81,6 +78,11 @@ public class BookDao implements Dao<Book> {
     @Override
     public boolean update(Book book) throws SQLException {
         Book b = findById(book.getId());
+        if (b == null) {	
+            return false;	
+        }
+        
+        ;
         try {
             Connection connection = database.getConnection();
             PreparedStatement statement;

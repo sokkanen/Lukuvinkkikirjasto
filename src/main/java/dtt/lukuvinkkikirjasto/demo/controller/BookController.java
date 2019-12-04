@@ -125,7 +125,7 @@ public class BookController {
          if (!Book.validate(book)){
             bindingResult.rejectValue("isbn", "error.book", "Add correct info");
         }
-
+        
         if (old != null && old.getId() != book.getId()) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
