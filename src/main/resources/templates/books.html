@@ -12,11 +12,17 @@
 
     <div class="container main-content">
         <div class="col-md-6">
+
             <!--/*/ <th:block th:include="fragments/booklist.html :: list(list=${list}, read=false)">
                 </th:block> /*/-->
  
+               <div th:if="${newbook}"><div id='showMe' class="pyro" ><div class="before"></div>
+    <div class="after"></div></div></div>
+            
+            
             <!--/*/ <th:block th:include="fragments/booklist.html :: list(list=${listread}, read=true)">
                 </th:block> /*/-->
+
         </div>
         <div class="col-md-6">
             <!--/*/ <th:block th:include="fragments/form.html :: form">
