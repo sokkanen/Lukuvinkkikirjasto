@@ -55,6 +55,13 @@ public class BookController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = {"/book/{bookId}"})
+    public String singleBook(Model model, @PathVariable String bookId) throws SQLException {
+        Book book = bookDao.findById(Integer.parseInt(bookId));
+        model.addAttribute("book", book);
+        return "book";
+    }
+
     @RequestMapping(value = {"/", "/books"})
     public String frontPage(Model model, @ModelAttribute Book book) throws SQLException {
         model = bookService.returnModelForBook(model, bookDao, book, false);
