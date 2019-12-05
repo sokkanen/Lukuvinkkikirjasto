@@ -2,6 +2,7 @@ body{
     background: #1a2a6c; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+    line-height:2;
 } 
 
 html, body, input:hover, a {
@@ -42,7 +43,7 @@ li {
     margin-bottom: 10px;
 }
 
-h2 {
+h2, h3, h4 {
     font-family: 'Chewy', cursive;
     
 }
@@ -106,6 +107,11 @@ a.deleteLink:visited {
 }
 
     
+.home-button{
+  margin-top: 20px;
+  float:right;
+  border:1px;
+}
 
 
 #showMe {
