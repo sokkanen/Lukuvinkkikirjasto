@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  */
 public class Book {
 
-    private int id;
+    private String id;
 
     @Size(min = 2, max = 30, message = "Title must be between 2 and 30 characters")
     private String title;
@@ -74,11 +74,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

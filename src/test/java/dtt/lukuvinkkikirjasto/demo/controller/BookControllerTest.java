@@ -64,7 +64,7 @@ public class BookControllerTest extends BaseTest {
         assertTrue(content.contains("pasi"));
 
         Book book = bookDao.findByIsbn("9789521439087");
-        int id = book.getId();
+        String id = book.getId();
         mockMvc.perform(post("/books/delete/" + id)).andReturn();
         res = mockMvc.perform(get("/")).andReturn();
         content = res.getResponse().getContentAsString();
@@ -92,7 +92,8 @@ public class BookControllerTest extends BaseTest {
     public void editingBookMovesDataToTheForm() throws Exception {
         controller.setDao(bookDao);
         mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
-        MvcResult result = mockMvc.perform(get("/books/edit/1")).andReturn();
+        String bookId = bookDao.list().get(0).getId();
+        MvcResult result = mockMvc.perform(get("/books/edit/"+ bookId)).andReturn();
         String content = result.getResponse().getContentAsString();
 
         assertTrue(content.contains("Edit book"));
@@ -103,7 +104,8 @@ public class BookControllerTest extends BaseTest {
     @Test
     public void editingBookWithoutISBNFieldIsEmpty() throws Exception {
         mockMvc.perform(post("/books").param("title", "test").param("author", "nakki")).andReturn();
-        MvcResult result = mockMvc.perform(get("/books/edit/1")).andReturn();
+        String bookId = bookDao.list().get(0).getId();
+        MvcResult result = mockMvc.perform(get("/books/edit/" + bookId)).andReturn();
         String content = result.getResponse().getContentAsString();
 
         assertTrue(content.contains("Edit book"));
@@ -123,7 +125,9 @@ public class BookControllerTest extends BaseTest {
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains("test"));
 
-        mockMvc.perform(post("/books/edit/1").param("title", "testaus").param("author", "nakki")).andReturn();
+        String bookId = bookDao.list().get(0).getId();
+
+        mockMvc.perform(post("/books/edit/" + bookId).param("title", "testaus").param("author", "nakki")).andReturn();
         result = mockMvc.perform(get("/books")).andReturn();
         content = result.getResponse().getContentAsString();
         assertTrue(content.contains("testaus"));
