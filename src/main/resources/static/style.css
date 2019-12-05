@@ -4,8 +4,8 @@ body{
     background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
 } 
 
-body, input:hover, a {
-    cursor: url('unicorn2.png'), auto;	
+html, body, input:hover, a {
+    cursor: url('unicorn2.png'), auto;
 }
 
 body, html {

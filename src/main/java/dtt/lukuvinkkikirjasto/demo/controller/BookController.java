@@ -98,15 +98,7 @@ public class BookController {
             model = bookService.returnModelForBook(model, bookDao, book, false,false);
             return "books";
         }
-        try {
-            if (!book.getIsbn().isEmpty() && book.getTitle().isEmpty()) {
-                BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
-                book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
-                book.setTitle(formatTitle(bookDto.getTitle()));
-            }
-        } catch (IOException e){
-            logger.warn("Error in fetching book information. {}", e.getMessage());
-        }
+        book = ifIsbnFillBookInfo(book);
         book.setRead(false);
         newbookFireworks = new Fireworks();
         model = bookService.returnModelForBook(model, bookDao, book, false,newbookFireworks.isNew());
@@ -151,7 +143,7 @@ public class BookController {
         Book old = bookDao.findByIsbn(book.getIsbn());
         
         if (!Book.validate(book)){
-            bindingResult.rejectValue("isbn", "error.book", "Add correct info");
+            bindingResult.rejectValue("title", "error.book", "Must inlude either Title or valid ISBN");
         }
         
         if (old != null && old.getId() != book.getId()) {
@@ -162,10 +154,9 @@ public class BookController {
             model = bookService.returnModelForBook(model, bookDao, book, true,false);
             return "books";
         }
-
-        boolean succesfulyEdited = bookDao.update(book);
-        if (succesfulyEdited) {
-            
+        book = ifIsbnFillBookInfo(book);
+        boolean successfullyEdited = bookDao.update(book);
+        if (successfullyEdited) {
             return "redirect:/books";
         } else {
             model = bookService.returnModelForBook(model, bookDao, book, true,false);
@@ -179,5 +170,19 @@ public class BookController {
 
     private String formatAuthor(String author) {
         return author.split(":")[0];
+    }
+
+    private Book ifIsbnFillBookInfo(Book book) {
+        try {
+            if (!book.getIsbn().isEmpty()) {
+                BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+                book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
+                book.setTitle(formatTitle(bookDto.getTitle()));
+            }
+            return book;
+        } catch (IOException e){
+            logger.warn("Error in fetching book information. {}", e.getMessage());
+        }
+        return book;
     }
 }
