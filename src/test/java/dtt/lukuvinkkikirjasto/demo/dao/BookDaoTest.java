@@ -88,38 +88,38 @@ public class BookDaoTest extends BaseTest {
     
     @Test
     public void aBookCanBeMarkedAsRead() throws SQLException {
-        bookDao.create(testBook);
-        testBook.setId(1);
-        testBook.setRead(true);
-        bookDao.updateRead(testBook);
-        Book book = bookDao.findByIsbn(testBook.getIsbn());
-        assertEquals("Jorma Kinnunen", book.getAuthor());
+        bookDao.create(new Book("123", "", "", false));
+        Book b = bookDao.list().get(0);
+        b.setRead(true);
+        bookDao.updateRead(b);
+        Book book = bookDao.findByIsbn(b.getIsbn());
+        assertEquals("123", book.getAuthor());
         assertEquals(true, book.isRead());
-        
+
     }
-    
+
     @Test
     public void aBookCanBeUpdatedRight() throws SQLException {
-        bookDao.create(testBook);
-        testBook.setId(1);
-        testBook.setAuthor("Jorma Koo");
-        bookDao.update(testBook);
+        Book b = new Book("Jorma Kinnunen", "Keihäsmies", "9789518830163", false);
+        bookDao.create(b);
+        b = bookDao.list().get(0);
+        b.setAuthor("Jorma Koo");
+        bookDao.update(b);
         List<Book> fromDb = bookDao.list();
         assertEquals("Jorma Koo", fromDb.get(0).getAuthor());
         assertEquals("Keihäsmies", fromDb.get(0).getTitle());
         assertEquals("9789518830163", fromDb.get(0).getIsbn());
         assertFalse(fromDb.get(0).isRead());
-        
     }
     
     @Test
     public void aBookCanBeMarkedAsReadAndEditedAndItStaysAsRead() throws SQLException {
-        bookDao.create(testBook);
-        testBook.setId(1);
-        testBook.setRead(true);
-        bookDao.updateRead(testBook);
-        testBook.setAuthor("Jorma Koo");
-        bookDao.update(testBook);
+        bookDao.create(new Book("Jorma Kinnunen", "Keihäsmies", "9789518830163", false));
+        Book b = bookDao.list().get(0);
+        b.setRead(true);
+        bookDao.updateRead(b);
+        b.setAuthor("Jorma Koo");
+        bookDao.update(b);
         List<Book> fromDb = bookDao.list();
         System.out.println(fromDb);
         assertEquals("Jorma Koo", fromDb.get(0).getAuthor());
