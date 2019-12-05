@@ -61,7 +61,7 @@ public class BookController {
         try {
             Book book = bookDao.findById(Integer.parseInt(bookId));
             if (book.getIsbn().equals("error") || book.getIsbn().equals("")){
-                return "redirect:/book/" + bookId;
+                return "redirect:/books/" + bookId;
             }
             BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
             model.addAttribute("dto", bookDto);
@@ -73,7 +73,7 @@ public class BookController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = {"/book/{bookId}"})
+    @RequestMapping(value = {"/books/{bookId}"})
     public String singleBook(Model model, @PathVariable String bookId) throws SQLException {
         Book book = bookDao.findById(Integer.parseInt(bookId));
         model.addAttribute("book", book);

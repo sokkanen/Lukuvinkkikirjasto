@@ -4,7 +4,7 @@
 <span th:if="${list.size() == 0}" th:text="${read} ? 'You have not marked any books as read yet' : 'You have no unread books'"></span>
 <ul th:unless="${list.size() == 0}">
     <li th:each="book : ${list}">
-        <a class="booklink" th:href="@{'/book/' + ${book.id}}"><b><span th:text="${book.title}">Title</span></b></a>
+        <a class="booklink" th:href="@{'/books/info/' + ${book.id}}"><b><span th:text="${book.title}">Title</span></b></a>
         <span th:if= "${book.author != ''}" th:text="': ' + ${book.author}">Author</span>
         <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
         </th:block> /*/-->
