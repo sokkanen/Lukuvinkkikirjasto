@@ -84,4 +84,47 @@ public class BookDaoTest extends BaseTest {
         assertEquals("Jorma Kinnunen", book.getAuthor());
         assertEquals("9789518830163", book.getIsbn());
     }
+    
+    @Test
+    public void aBookCanBeMarkedAsRead() throws SQLException {
+        bookDao.create(testBook);
+        testBook.setId(1);
+        testBook.setRead(true);
+        bookDao.updateRead(testBook);
+        Book book = bookDao.findByIsbn(testBook.getIsbn());
+        assertEquals("Jorma Kinnunen", book.getAuthor());
+        assertEquals(true, book.isRead());
+        
+    }
+    
+    @Test
+    public void aBookCanBeUpdatedRight() throws SQLException {
+        bookDao.create(testBook);
+        testBook.setId(1);
+        testBook.setAuthor("Jorma Koo");
+        bookDao.update(testBook);
+        List<Book> fromDb = bookDao.list();
+        assertEquals("Jorma Koo", fromDb.get(0).getAuthor());
+        assertEquals("Keihäsmies", fromDb.get(0).getTitle());
+        assertEquals("9789518830163", fromDb.get(0).getIsbn());
+        assertFalse(fromDb.get(0).isRead());
+        
+    }
+    
+    @Test
+    public void aBookCanBeMarkedAsReadAndEditedAndItStaysAsRead() throws SQLException {
+        bookDao.create(testBook);
+        testBook.setId(1);
+        testBook.setRead(true);
+        bookDao.updateRead(testBook);
+        testBook.setAuthor("Jorma Koo");
+        bookDao.update(testBook);
+        List<Book> fromDb = bookDao.list();
+        System.out.println(fromDb);
+        assertEquals("Jorma Koo", fromDb.get(0).getAuthor());
+        assertEquals("Keihäsmies", fromDb.get(0).getTitle());
+        assertEquals("9789518830163", fromDb.get(0).getIsbn());
+        assertEquals(true, fromDb.get(0).isRead());
+        
+    }
 }
