@@ -98,7 +98,7 @@ public class BookController {
             model = bookService.returnModelForBook(model, bookDao, book, false,false);
             return "books";
         }
-        book = ifIsbnFillBookInfo(book);
+        book = bookService.ifIsbnFillBookInfo(book);
         book.setRead(false);
         newbookFireworks = new Fireworks();
         model = bookService.returnModelForBook(model, bookDao, book, false,newbookFireworks.isNew());
@@ -141,56 +141,26 @@ public class BookController {
     @PostMapping("/books/edit/{id}")
     public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
         Book old = bookDao.findByIsbn(book.getIsbn());
-        
-        if (!Book.validate(book)){
+
+        if (!Book.validate(book)) {
             bindingResult.rejectValue("title", "error.book", "Must inlude either Title or valid ISBN");
         }
-        
-        if (old != null && old.getId() != book.getId()) {
+
+        if (old != null && !old.getId().equals(book.getId())) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
 
         if (bindingResult.hasErrors()) {
-            model = bookService.returnModelForBook(model, bookDao, book, true,false);
+            model = bookService.returnModelForBook(model, bookDao, book, true, false);
             return "books";
         }
-        book = ifIsbnFillBookInfo(book);
+        book = bookService.ifIsbnFillBookInfo(book);
         boolean successfullyEdited = bookDao.update(book);
         if (successfullyEdited) {
             return "redirect:/books";
         } else {
-            model = bookService.returnModelForBook(model, bookDao, book, true,false);
+            model = bookService.returnModelForBook(model, bookDao, book, true, false);
             return "books";
         }
-    }
-
-    private String formatTitle(String title) {
-        return title.substring(1,title.length() - 1);
-    }
-
-    private String formatAuthor(String author) {
-        return author.split(":")[0];
-    }
-
-    private Book ifIsbnFillBookInfo(Book book) {
-        try {
-            if (!book.getIsbn().isEmpty()) {
-                BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
-                if (bookDto.getAuthors().size() == 0) {
-                    if (book.getAuthor().isEmpty()) {
-                        throw new IOException("Error, cannot populate book author");
-                    }
-                } else {
-                    book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
-                }
-                if (!bookDto.getTitle().isEmpty()) {
-                    book.setTitle(formatTitle(bookDto.getTitle()));
-                }
-            }
-            return book;
-        } catch (IOException e){
-            logger.warn("Error in fetching book information. {}", e.getMessage());
-        }
-        return book;
     }
 }
