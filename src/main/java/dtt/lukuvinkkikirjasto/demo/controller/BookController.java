@@ -87,6 +87,9 @@ public class BookController {
 
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+        if (!Book.validate(book)){
+            bindingResult.rejectValue("title", "error.book", "Must inlude either Title or valid ISBN");
+        }
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
@@ -94,6 +97,15 @@ public class BookController {
         if (bindingResult.hasErrors()) {
             model = bookService.returnModelForBook(model, bookDao, book, false,false);
             return "books";
+        }
+        try {
+            if (!book.getIsbn().isEmpty() && book.getTitle().isEmpty()) {
+                BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+                book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
+                book.setTitle(formatTitle(bookDto.getTitle()));
+            }
+        } catch (IOException e){
+            logger.warn("Error in fetching book information. {}", e.getMessage());
         }
         book.setRead(false);
         newbookFireworks = new Fireworks();
@@ -159,5 +171,13 @@ public class BookController {
             model = bookService.returnModelForBook(model, bookDao, book, true,false);
             return "books";
         }
+    }
+
+    private String formatTitle(String title) {
+        return title.substring(1,title.length() - 1);
+    }
+
+    private String formatAuthor(String author) {
+        return author.split(":")[0];
     }
 }

@@ -13,10 +13,10 @@ public class Book {
 
     private String id;
 
-    @Size(min = 2, max = 30, message = "Title must be between 2 and 30 characters")
+    @Size(max = 30, message = "Author name can be max 30 characters")
     private String title;
 
-    @Size(max = 40, message = "Author name can be max 40 characters")
+    @Size(max = 30, message = "Author name can be max 30 characters")
     private String author;
 
     @Pattern(regexp = "^$|^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$", message = "Invalid ISBN")
@@ -39,7 +39,6 @@ public class Book {
         } else {
             this.read = read;
         }
-
     }
 
     public boolean isRead() {
@@ -152,7 +151,7 @@ public class Book {
         String title = book.getTitle();
         if (isEmpty(isbn) && !isEmpty(title)) {
             return true;
-        } else if (isEmpty(title)) {
+        } else if (isEmpty(title) && isEmpty(isbn)) {
             return false;
         }
         return validateIsbn10(isbn) || validateIsbn13(isbn);

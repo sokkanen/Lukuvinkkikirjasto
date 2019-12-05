@@ -38,7 +38,6 @@ public class BookDao implements Dao<Book> {
      * @throws java.sql.SQLException
      */
     public void create(Book book) throws SQLException{
-        
         Connection connection = database.getConnection();
         String id = UUID.randomUUID().toString();
         PreparedStatement statement;
@@ -54,8 +53,6 @@ public class BookDao implements Dao<Book> {
         statement.executeUpdate();
         logger.info("Book insertion completed successfully");
 
-      
-        
         statement.close();
         connection.close();
     }
