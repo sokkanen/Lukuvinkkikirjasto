@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -40,16 +41,17 @@ public class BookController {
 
     private BookDao bookDao;
     private Fireworks newbookFireworks = new Fireworks();
-
-    @Autowired
-    IsbnApiCaller isbnApiCaller;
+    private IsbnApiCaller isbnApiCaller;
 
     @Autowired
     private BookService bookService;
 
-    public BookController(BookDao dao) {
+    public BookController(BookDao dao, IsbnApiCaller isbnApiCaller) {
         this.bookDao = dao;
+        this.isbnApiCaller = isbnApiCaller;
+        isbnApiCaller.setRestTemplate(new RestTemplate());
     }
+
     public void setDao(BookDao dao) {
         this.bookDao = dao;
     }
