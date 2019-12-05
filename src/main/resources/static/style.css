@@ -117,7 +117,8 @@ a.deleteLink:visited {
   to   { opacity: 0; }
 }
 
-body {overflow:hidden;}
+body {overflow-x:hidden;}
+
 .explode {
   width:200vw;
   animation:letter_explode 1s 5s forwards;
