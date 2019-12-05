@@ -13,12 +13,6 @@
         <span class="label label-pill"
               th:text="${book.read} ? 'read' : 'unread'"
               th:classappend="${book.read} ? label-success : label-warning"></span>
-        <form th:action="@{'/'}" class="inline" method="GET">
-            <input type="submit"
-                   th:id="returnButton"
-                   value="return"
-                   class="btn btn-outline-info btn-sm"   />
-        </form>
         <br />
         <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span> <br/>
         <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
@@ -26,28 +20,36 @@
     </div>
 <div class="col-md-6">
     <div th:if="${dto}">
-        <h3>Additional information: </h3>
-        <h4 th:text="${dto.title}"></h4>
-        <h5>Authors:</h5>
-        <ul th:each="auth : ${dto.authors}">
-            <li th:text="${auth}"></li>
-        </ul>
-        <h5>Languages:</h5>
-        <ul th:each="lng : ${dto.languages}">
-            <li th:text="${lng}"></li>
-        </ul>
-        <h5>Series:</h5>
+        <h3 th:text="${dto.title}"></h3>
+        <h4>Authors:</h4>
+        <span th:each="auth : ${dto.authors}">
+            <span th:text="${auth}"></span> <br/>
+        </span>
+        <h4>Languages:</h4>
+        <span th:each="lng : ${dto.languages}">
+            <span class="label label-warning" th:text="${lng}"></span>
+
+        </span>
+        <h4 th:unless="${dto.series.size() == 0}">Series:</h4>
         <ul th:each="ser : ${dto.series}">
             <li th:text="${ser}"></li>
         </ul>
-        <h5>Subjects:</h5>
-        <ul th:each="sub : ${dto.subjects}">
-            <li th:text="${sub}"></li>
-        </ul>
-        <h5>Available from:</h5>
-        <ul th:each="lib : ${dto.libraries}">
-            <li th:text="${lib}"></li>
-        </ul>
+        <h4 th:unless="${dto.subjects.size() == 0}">Subjects:</h4>
+        <span th:each="sub : ${dto.subjects}">
+            <span class="label label-primary" th:text="${sub}"></span>
+        </span>
+        <h4 th:unless="${dto.libraries.size() == 0}">Available from:</h4>
+        <h4 th:if="${dto.libraries.size() == 0}">This book is not available from Helmet libraries.</h4>
+        <span th:each="lib : ${dto.libraries}">
+            <span class="label label-info" th:text="${lib}"></span>
+        </span>
+        <br/>
+        <form th:action="@{'/'}" class="inline" method="GET">
+            <input type="submit"
+                   th:id="returnButton"
+                   value="return"
+                   class="btn btn-outline-info btn-sm home-button"   />
+        </form>
     </div>
 </div>
 </div>
