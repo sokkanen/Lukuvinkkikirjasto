@@ -25,7 +25,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -59,7 +58,7 @@ public class BookController {
     @RequestMapping(value = {"/books/info/{bookId}"})
     public String infoPage(Model model, @PathVariable String bookId) throws SQLException {
         try {
-            Book book = bookDao.findById(Integer.parseInt(bookId));
+            Book book = bookDao.findById(bookId);
             if (book.getIsbn().equals("error") || book.getIsbn().equals("")){
                 return "redirect:/books/" + bookId;
             }
@@ -75,7 +74,7 @@ public class BookController {
 
     @RequestMapping(value = {"/books/{bookId}"})
     public String singleBook(Model model, @PathVariable String bookId) throws SQLException {
-        Book book = bookDao.findById(Integer.parseInt(bookId));
+        Book book = bookDao.findById(bookId);
         model.addAttribute("book", book);
         return "book";
     }
@@ -117,14 +116,14 @@ public class BookController {
 
     @PostMapping("/books/delete/{bookId}")
     public String deleteBook(@PathVariable String bookId) throws SQLException {
-        Book book = bookDao.findById(Integer.parseInt(bookId));
+        Book book = bookDao.findById(bookId);
         bookDao.delete(book);
         return "redirect:/";
     }
 
     @PostMapping("/books/editread/{bookId}")
     public String markreadBook(Model model, @PathVariable String bookId) throws SQLException {
-        Book book = bookDao.findById(Integer.parseInt(bookId));
+        Book book = bookDao.findById(bookId);
 
         book.setRead(!book.isRead());
         bookDao.updateRead(book);
@@ -134,7 +133,7 @@ public class BookController {
 
     @GetMapping("/books/edit/{id}")
     public String editBook(Model model, @PathVariable(value = "id") String id) throws SQLException {
-        Book book = bookDao.findById(Integer.parseInt(id));
+        Book book = bookDao.findById(id);
         if (book != null) {
             if (book.getIsbn() == "error") {
                 book.setIsbn("");
