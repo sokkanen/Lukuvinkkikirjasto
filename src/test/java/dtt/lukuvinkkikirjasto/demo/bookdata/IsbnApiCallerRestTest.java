@@ -1,7 +1,5 @@
 package dtt.lukuvinkkikirjasto.demo.bookdata;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -56,9 +54,6 @@ public class IsbnApiCallerRestTest {
         RestTemplate restTemplate = new RestTemplate();
         isbnApiCaller.setRestTemplate(restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        ObjectMapper mapper = new ObjectMapper();
-
-        Book b = new Book("Raimo", "Raimon vuosi", "123-123-123", false);
 
         mockServer.expect(ExpectedCount.once(),
                 requestTo("http://localhost:8080/123-123-123/allInfo"))
