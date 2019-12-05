@@ -19,7 +19,9 @@ public class BookDaoTest extends BaseTest {
     @BeforeAll
     public static void setUp() {
         testBook = new Book("Jorma Kinnunen", "Keihäsmies", "9789518830163", false);
+        testBook.setId("1");
         testBook2 = new Book("Raimo Haakana", "Minä ja Mussolini", "978-1-4028-9462-6",false);
+        testBook2.setId("2");
     }
 
     @Test
@@ -63,15 +65,14 @@ public class BookDaoTest extends BaseTest {
 
     @Test
     public void aBookCanBeDeletedWhenThereAreMultipleBooksInDatabase() throws SQLException {
-        bookDao.create(testBook);
-        bookDao.create(testBook2);
-        testBook.setId(1);
-        testBook2.setId(2);
         bookDao.create(new Book("Darth Vader", "How to love your son", "978-1-40834-737-9",false));
+        Book b = bookDao.list().get(0);
+        bookDao.create(new Book("test1", "Xxx", "",false));
+        bookDao.create(new Book("test2", "Yyy", "",false));
         List<Book> fromDb = bookDao.list();
         assertEquals(3, fromDb.size());
 
-        bookDao.delete(testBook2);
+        bookDao.delete(b);
         fromDb = bookDao.list();
         assertEquals(2, fromDb.size());
     }
