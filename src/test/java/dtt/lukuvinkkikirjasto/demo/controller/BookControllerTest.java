@@ -22,9 +22,12 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AutoConfigureMockMvc
 public class BookControllerTest extends BaseTest {
-    
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,72 +38,77 @@ public class BookControllerTest extends BaseTest {
     public void statusOk() throws Exception {
         mockMvc.perform(get("/")).andExpect(status().isOk());
     }
-    
+
     @Test
     public void responseContainsHeader() throws Exception {
         controller.setDao(bookDao);
         MvcResult res = mockMvc.perform(get("/")).andReturn();
-        
+
         String content = res.getResponse().getContentAsString();
         assertTrue(content.contains("books"));
     }
-    
+
     @Test
     public void postAddsBookToDatabase() throws Exception {
         controller.setDao(bookDao);
-        mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "9789521439087")).andReturn();
-        
-        Book book = bookDao.findByIsbn("9789521439087");
-        
-        assertEquals(book.getIsbn(), "9789521439087");
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
+                .andReturn();
+
+        Book book = bookDao.findByIsbn("9789511290384");
+
+        assertEquals(book.getIsbn(), "9789511290384");
     }
 
     @Test
     public void deleteRemovesBookFromDatabase() throws Exception {
         controller.setDao(bookDao);
-        mockMvc.perform(post("/books").param("title", "test").param("author", "pasi").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
+                .andReturn();
         MvcResult res = mockMvc.perform(get("/")).andReturn();
         String content = res.getResponse().getContentAsString();
-        assertTrue(content.contains("pasi"));
+        assertTrue(content.contains("Ruby"));
 
-        Book book = bookDao.findByIsbn("9789521439087");
+        Book book = bookDao.findByIsbn("9789511290384");
         String id = book.getId();
         mockMvc.perform(post("/books/delete/" + id)).andReturn();
         res = mockMvc.perform(get("/")).andReturn();
         content = res.getResponse().getContentAsString();
 
-        assertFalse(content.contains("pasi"));
+        assertFalse(content.contains("Ruby"));
     }
-    
+
     @Test
     public void cantAddTwoSameISBN() throws Exception {
         controller.setDao(bookDao);
-        
-        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
-        mockMvc.perform(post("/books").param("title", "test").param("author", "kalle").param("isbn", "9789521439087")).andReturn();
-        
-        MvcResult res2 = mockMvc.perform(get("/")).andReturn();
-        
-        String content = res2.getResponse().getContentAsString();
-        
-        assertFalse(content.contains("kalle"));
-        assertTrue(content.contains("nakki"));
+
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
+                .andReturn();
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
+                .andReturn();
+        List<Book> books = bookDao.list();
+        int booksFound = 0;
+        for (Book b : books) {
+            if (b.getIsbn().equals("9789511290384")) {
+                booksFound++;
+            }
+        }
+        assertEquals(1, booksFound);
     }
-    
-        
+
     @Test
     public void editingBookMovesDataToTheForm() throws Exception {
         controller.setDao(bookDao);
-        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
+                .andReturn();
         String bookId = bookDao.list().get(0).getId();
-        MvcResult result = mockMvc.perform(get("/books/edit/"+ bookId)).andReturn();
+        MvcResult result = mockMvc.perform(get("/books/edit/" + bookId)).andReturn();
         String content = result.getResponse().getContentAsString();
 
         assertTrue(content.contains("Edit book"));
-        assertTrue(content.contains("placeholder=\"Title\" value=\"test\""));
-        assertTrue(content.contains("placeholder=\"ISBN\" value=\"9789521439087\""));
+        assertTrue(content.contains("placeholder=\"Title\" value=\"Hello Ruby\""));
+        assertTrue(content.contains("placeholder=\"ISBN\" value=\"9789511290384\""));
     }
-    
+
     @Test
     public void editingBookWithoutISBNFieldIsEmpty() throws Exception {
         mockMvc.perform(post("/books").param("title", "test").param("author", "nakki")).andReturn();
@@ -112,7 +120,7 @@ public class BookControllerTest extends BaseTest {
         assertTrue(content.contains("placeholder=\"Title\" value=\"test\""));
         assertTrue(content.contains("placeholder=\"ISBN\" value=\"\"/>"));
     }
-    
+
     @Test
     public void tryToEditBookThatDoesntExistsRedirectsBack() throws Exception {
         mockMvc.perform(get("/books/edit/100")).andExpect(redirectedUrl("/")).andReturn();
@@ -135,9 +143,11 @@ public class BookControllerTest extends BaseTest {
 
     @Test
     public void tryToEditBookAndAddSameISBNReturnsError() throws Exception {
-        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books").param("title", "test").param("author", "nakki").param("isbn", "9789521439087"))
+                .andReturn();
         mockMvc.perform(post("/books").param("title", "test2").param("author", "nakki2")).andReturn();
-        mockMvc.perform(post("/books/edit/2").param("title", "testaus2").param("author", "nakki5").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(post("/books/edit/2").param("title", "testaus2").param("author", "nakki5").param("isbn",
+                "9789521439087")).andReturn();
         MvcResult result = mockMvc.perform(get("/books")).andReturn();
         String content = result.getResponse().getContentAsString();
         assertFalse(content.contains("testaus"));
@@ -146,11 +156,12 @@ public class BookControllerTest extends BaseTest {
 
     @Test
     public void tryToEditABookThatDoesntExistsReturnsError() throws Exception {
-        mockMvc.perform(post("/books/edit/100").param("title", "test").param("author", "nakki").param("isbn", "9789521439087")).andReturn();
+        mockMvc.perform(
+                post("/books/edit/100").param("title", "test").param("author", "nakki").param("isbn", "9789521439087"))
+                .andReturn();
         MvcResult result = mockMvc.perform(get("/books")).andReturn();
         String content = result.getResponse().getContentAsString();
         assertFalse(content.contains("nakki"));
     }
-    
- 
+
 }
