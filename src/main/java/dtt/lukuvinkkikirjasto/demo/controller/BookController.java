@@ -5,21 +5,27 @@
  */
 package dtt.lukuvinkkikirjasto.demo.controller;
 
+import dtt.lukuvinkkikirjasto.demo.bookdata.BookDto;
 import dtt.lukuvinkkikirjasto.demo.bookdata.IsbnApiCaller;
 import dtt.lukuvinkkikirjasto.demo.dao.BookDao;
 import dtt.lukuvinkkikirjasto.demo.domain.Book;
 import dtt.lukuvinkkikirjasto.demo.domain.Fireworks;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 
 import dtt.lukuvinkkikirjasto.demo.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,6 +36,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class BookController {
+
+    Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private BookDao bookDao;
     private Fireworks newbookFireworks = new Fireworks();
@@ -47,12 +55,20 @@ public class BookController {
         this.bookDao = dao;
     }
 
+    @Cacheable("bookdata")
     @RequestMapping(value = {"/books/info/{bookId}"})
-    public String infoPage(Model model, @ModelAttribute Book book) throws SQLException {
+    public String infoPage(Model model, @PathVariable String bookId) throws SQLException {
         try {
-            isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+            Book book = bookDao.findById(Integer.parseInt(bookId));
+            if (book.getIsbn().equals("error") || book.getIsbn().equals("")){
+                return "redirect:/book/" + bookId;
+            }
+            BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
+            model.addAttribute("dto", bookDto);
+            model.addAttribute("book", book);
+            return "book";
         } catch (IOException e){
-            System.out.println(e.getMessage());
+            logger.warn("Error in fetching book information. {}", e.getMessage());
         }
         return "redirect:/";
     }

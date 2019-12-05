@@ -117,6 +117,13 @@ public class StepDefs extends BaseTest {
         removeTestData();
     }
 
+    @Then("system will show book info: title {string} and author {string}")
+    public void systemWillRespondWithBookInfoNarrow(String title, String author) throws SQLException, IOException {
+        assertTrue(driver.getPageSource().contains(title));
+        assertTrue(driver.getPageSource().contains(author));
+        removeTestData();
+    }
+
     @When("book with title {string} is deleted")
     public void bookWithTitleIsDeleted(String title) {
         WebElement element = driver.findElement(By.id("deleteBook_" + title));
