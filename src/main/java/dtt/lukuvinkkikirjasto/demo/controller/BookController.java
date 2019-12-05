@@ -176,8 +176,16 @@ public class BookController {
         try {
             if (!book.getIsbn().isEmpty()) {
                 BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
-                book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
-                book.setTitle(formatTitle(bookDto.getTitle()));
+                if (bookDto.getAuthors().size() == 0) {
+                    if (book.getAuthor().isEmpty()) {
+                        throw new IOException("Error, cannot populate book author");
+                    }
+                } else {
+                    book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
+                }
+                if (!bookDto.getTitle().isEmpty()) {
+                    book.setTitle(formatTitle(bookDto.getTitle()));
+                }
             }
             return book;
         } catch (IOException e){
