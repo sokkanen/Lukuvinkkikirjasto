@@ -16,6 +16,15 @@ import java.util.List;
 @Service
 public class IsbnApiCaller {
 
+    private RestTemplate restTemplate;
+
+    public IsbnApiCaller(){
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate){
+        this.restTemplate = restTemplate;
+    }
+
     @Autowired
     ObjectMapper mapper;
 
@@ -28,15 +37,25 @@ public class IsbnApiCaller {
 
     public BookDto getBookDataFromIsbn(String isbn) throws IOException {
         String url = baseUrl + isbn + searchParameters;
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(url, String.class);
+        String response = doTheCall(url);
         JsonNode node = mapper.readTree(response);
         return responseParser(node);
     }
 
+    public BookDto getBookDataFromIsbn(String baseUrl, String isbn, String searchParameters) throws IOException {
+        String url = baseUrl + isbn + searchParameters;
+        String response = doTheCall(url);
+        JsonNode node = mapper.readTree(response);
+        return responseParser(node);
+    }
+
+    public String doTheCall(String url) throws IOException{
+        return restTemplate.getForObject(url, String.class);
+    }
+
     public BookDto responseParser(JsonNode node){
         if (node.get("records") == null){
-            return new BookDto("No additional information found, this must be a naughty book. ;)");
+            return new BookDto("Additional information not found");
         }
         final JsonNode firstObject = node.get("records").get(0);
 
