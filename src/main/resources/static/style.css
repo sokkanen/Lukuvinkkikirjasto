@@ -117,11 +117,6 @@ a.deleteLink:visited {
   to   { opacity: 0; }
 }
 
-body {overflow:hidden;}
-.explode {
-  width:200vw;
-  animation:letter_explode 1s 5s forwards;
-}
 @keyframes letter_explode {
     0% {letter-spacing:0.1em;opacity:1;}
     100% {letter-spacing:1em;opacity:0;}

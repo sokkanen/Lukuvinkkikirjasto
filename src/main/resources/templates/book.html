@@ -16,6 +16,12 @@
                 <span class="label label-pill" 
                     th:text="${book.read} ? 'read' : 'unread'"
                     th:classappend="${book.read} ? label-success : label-warning"></span>
+                <form th:action="@{'/'}" class="inline" method="GET">
+                    <input type="submit"
+                           th:id="returnButton"
+                           value="Return"
+                           class="btn btn-outline-info btn-sm"   />
+                </form>
                 <br />
                 <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span> <br/>
                 <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
