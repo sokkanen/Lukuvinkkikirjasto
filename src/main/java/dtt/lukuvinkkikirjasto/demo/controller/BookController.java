@@ -88,6 +88,9 @@ public class BookController {
 
     @PostMapping("/books")
     public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+        if (!Book.validate(book)){
+            bindingResult.rejectValue("title", "error.book", "Must inlude either Title or valid ISBN");
+        }
         if (bookDao.findByIsbn(book.getIsbn()) != null) {
             bindingResult.rejectValue("isbn", "error.book", "Book with this ISBN already added.");
         }
