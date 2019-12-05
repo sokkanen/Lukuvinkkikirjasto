@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -37,12 +39,11 @@ public class BookDao implements Dao<Book> {
      */
     public void create(Book book) throws SQLException{
         Connection connection = database.getConnection();
-         List<Book> books = list();
-        int newId = books.size() == 0 ? 1 : books.get(books.size() - 1).getId() + 1;
+        String id = UUID.randomUUID().toString();
         PreparedStatement statement;
         String sql = "INSERT INTO book (id, author, title, isbn, read_already) VALUES ( ?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(sql);
-        statement.setInt(1, newId);
+        statement.setString(1, id);
         statement.setString(2, book.getAuthor());
         statement.setString(3, book.getTitle());
         statement.setString(4, book.getIsbn());
@@ -62,7 +63,7 @@ public class BookDao implements Dao<Book> {
         PreparedStatement statement;
         String sql = "DELETE FROM book WHERE book.id = ?";
         statement = connection.prepareStatement(sql);
-        statement.setInt(1, book.getId());
+        statement.setString(1, book.getId());
 
         logger.info("Deleting book with id {}", book.getId());
         int affectedRows = statement.executeUpdate();
@@ -89,7 +90,7 @@ public class BookDao implements Dao<Book> {
             statement.setString(2, book.getTitle());
             statement.setString(3, book.getIsbn());
             statement.setBoolean(4, b.isRead());
-            statement.setInt(5, book.getId());
+            statement.setString(5, book.getId());
 
             logger.info("Updating book {} in Database", book.getId());
             statement.executeUpdate();
@@ -115,8 +116,7 @@ public class BookDao implements Dao<Book> {
             statement = connection.prepareStatement(sql);
             
             statement.setBoolean(1, book.isRead());
-            statement.setInt(2, book.getId());
-            
+            statement.setString(2, book.getId());
 
             logger.info("Updating book {} in Database", book.getId());
             statement.executeUpdate();
@@ -218,14 +218,14 @@ public class BookDao implements Dao<Book> {
         return onebook;
     }
 
-    public Book findById(Integer id) throws SQLException {
+    public Book findById(String id) throws SQLException {
         if (id == null) {
             return null;
         }
         Connection conn = database.getConnection();
         
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE id = ?");
-        statement.setInt(1, id);
+        statement.setString(1, id);
         ResultSet res = statement.executeQuery();
         if(!res.next()) {
             return null;
@@ -249,7 +249,7 @@ public class BookDao implements Dao<Book> {
                 rs.getString("isbn"),
                 rs.getBoolean("read_already")
         );
-        book.setId(rs.getInt("id"));
+        book.setId(rs.getString("id"));
         return book;
     }
 
