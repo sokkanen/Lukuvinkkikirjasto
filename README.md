@@ -24,3 +24,4 @@ Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentam
 
 [![CircleCI](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto.svg?style=svg)](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto)
 [![codecov](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto/branch/master/graph/badge.svg)](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto)
+ 
