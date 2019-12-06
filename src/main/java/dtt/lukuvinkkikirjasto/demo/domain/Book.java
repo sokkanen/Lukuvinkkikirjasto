@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
  *
  * @author milla
  */
-public class Book {
+public class Book implements Comparable<Book> {
 
     private String id;
 
@@ -155,5 +155,10 @@ public class Book {
             return false;
         }
         return validateIsbn10(isbn) || validateIsbn13(isbn);
+    }
+
+    @Override
+    public int compareTo(Book other) {
+        return this.getTitle().compareToIgnoreCase(other.getTitle());
     }
 }
