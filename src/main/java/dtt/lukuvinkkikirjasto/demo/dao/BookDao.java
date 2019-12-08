@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -146,6 +147,7 @@ public class BookDao implements Dao<Book> {
             Book book = getBook(resultSet);
             bookList.add(book);
         }
+        bookList = sort(bookList);
         logger.info("Executed a search for all books. Found {} book(s)", bookList.size());
         statement.close();
         resultSet.close();
@@ -166,6 +168,7 @@ public class BookDao implements Dao<Book> {
             Book book = getBook(resultSet);
             bookList.add(book);
         }
+        bookList = sort(bookList);
         logger.info("Executed a search for all books. Found {} book(s)", bookList.size());
         statement.close();
         resultSet.close();
@@ -185,6 +188,7 @@ public class BookDao implements Dao<Book> {
             Book book = getBook(resultSet);
             bookList.add(book);
         }
+        bookList = sort(bookList);
         logger.info("Executed a search for all books. Found {} book(s)", bookList.size());
         statement.close();
         resultSet.close();
@@ -251,6 +255,11 @@ public class BookDao implements Dao<Book> {
         );
         book.setId(rs.getString("id"));
         return book;
+    }
+
+    private ArrayList<Book> sort(ArrayList<Book> books) {
+        Collections.sort(books);
+        return books;
     }
 
 }
