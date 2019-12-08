@@ -43,6 +43,7 @@ public class StepDefs extends BaseTest {
         element.sendKeys(isbn);
         element = driver.findElement(By.id("submit"));
         element.submit();
+        sleep(1);
     }
 
     @Then("system will respond with {string}")
@@ -119,6 +120,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will show book info: title {string} and author {string}")
     public void systemWillRespondWithBookInfoNarrow(String title, String author) throws SQLException, IOException {
+        System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         removeTestData();
