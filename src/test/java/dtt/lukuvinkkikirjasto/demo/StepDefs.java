@@ -106,7 +106,7 @@ public class StepDefs extends BaseTest {
         element = driver.findElement(By.id("isbn"));
         element.sendKeys(isbn);
         element = driver.findElement(By.id("submit"));
-        element.submit();  
+        element.submit();
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
