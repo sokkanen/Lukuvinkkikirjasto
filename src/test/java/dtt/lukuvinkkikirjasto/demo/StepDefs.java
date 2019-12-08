@@ -69,6 +69,14 @@ public class StepDefs extends BaseTest {
         element.submit();
     }
 
+    @When("title is empty, author is empty, ISBN is {string}")
+    public void titleIsEmptyAuthorIsEmptyISBNIs(String isbn) {
+        WebElement element = driver.findElement(By.id("isbn"));
+        element.sendKeys(isbn);
+        element = driver.findElement(By.id("submit"));
+        element.submit();
+    }
+
     @When("title is {string}, author is empty, ISBN is {string}")
     public void titleIsAuthorIsEmptyISBNIs(String title, String isbn) {
         WebElement element = driver.findElement(By.id("title"));
