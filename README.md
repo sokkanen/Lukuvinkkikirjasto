@@ -15,6 +15,7 @@ Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentam
 
 * [Sprint 0](https://docs.google.com/spreadsheets/d/e/2PACX-1vRtArwOkcOSHCPa9aGrmr1WRB6tpawjR36xHHiJ0vmOBMZE7XWPP0Bb2xKf27EJQVuIabL2UxIJRfu1/pubhtml?gid=7&single=true)
 * [Sprint 1](https://docs.google.com/spreadsheets/d/e/2PACX-1vRtArwOkcOSHCPa9aGrmr1WRB6tpawjR36xHHiJ0vmOBMZE7XWPP0Bb2xKf27EJQVuIabL2UxIJRfu1/pubhtml?gid=1341390489&single=true)
+* [Sprint 2](https://docs.google.com/spreadsheets/d/e/2PACX-1vRtArwOkcOSHCPa9aGrmr1WRB6tpawjR36xHHiJ0vmOBMZE7XWPP0Bb2xKf27EJQVuIabL2UxIJRfu1/pubhtml?gid=706110109&single=true)
 
 --- 
 
