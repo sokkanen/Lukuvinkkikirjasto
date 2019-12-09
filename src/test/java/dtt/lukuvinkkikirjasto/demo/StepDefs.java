@@ -47,7 +47,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String string) throws SQLException, IOException {
-        System.out.println(driver.getPageSource());
+        // System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(string));
         removeTestData();
     }
@@ -118,7 +118,8 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
-    public void systemWillRespondWithBookInfo(String title, String author, String isbn) throws SQLException, IOException {
+    public void systemWillRespondWithBookInfo(String title, String author, String isbn)
+            throws SQLException, IOException {
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         assertTrue(driver.getPageSource().contains(isbn));
@@ -127,7 +128,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will show book info: title {string} and author {string}")
     public void systemWillRespondWithBookInfoNarrow(String title, String author) throws SQLException, IOException {
-        System.out.println(driver.getPageSource());
+        // System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         removeTestData();
@@ -143,6 +144,24 @@ public class StepDefs extends BaseTest {
     public void systemDoesNotRespondWithBookTitle(String title) throws SQLException, IOException {
         assertFalse(driver.getPageSource().contains(title));
         removeTestData();
+    }
+
+    @Given("command mark as read is selected")
+    public void commandMarkAsReadIsSelected() {
+        WebElement element = driver.findElement(By.linkText("mark read"));
+        throw new cucumber.api.PendingException();
+    }
+
+    @When("book exists")
+    public void bookExists() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+    @Then("book is marked as read")
+    public void bookIsMarkedAsRead() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
     }
 
     private void sleep(int seconds) {
