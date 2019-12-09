@@ -55,7 +55,7 @@ public class IsbnApiCaller {
 
     public BookDto responseParser(JsonNode node){
         if (node.get("records") == null){
-            return new BookDto("Additional information not found");
+            return new BookDto("'Additional information not found'");
         }
         final JsonNode firstObject = node.get("records").get(0);
 

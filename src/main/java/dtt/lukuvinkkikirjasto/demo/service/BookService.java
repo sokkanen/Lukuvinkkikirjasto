@@ -46,13 +46,19 @@ public class BookService {
         try {
             if (!book.getIsbn().isEmpty()) {
                 BookDto bookDto = isbnApiCaller.getBookDataFromIsbn(book.getIsbn());
-                if (bookDto.getAuthors().size() != 0) {
+                if (bookDto.getAuthors().size() != 0 && !bookDto.getAuthors().isEmpty()) {
                     book.setAuthor(formatAuthor(bookDto.getAuthors().get(0)));
                 }
-                if (!bookDto.getTitle().isEmpty() && book.getTitle().isEmpty()) {
-                    // Additional information not found as title if form title and API title empty
+
+                // Additional information not found as title if form title and API title empty
+                if (book.getTitle().isEmpty() && bookDto.getTitle().equals("'Additional information not found'")) {
+                    book.setTitle(formatTitle(bookDto.getTitle()));
+                } else if (!book.getTitle().isEmpty() && bookDto.getTitle().equals("'Additional information not found'")) {
+                    return book;
+                } else {
                     book.setTitle(formatTitle(bookDto.getTitle()));
                 }
+
             }
             return book;
         } catch (IOException e){

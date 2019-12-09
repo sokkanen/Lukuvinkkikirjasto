@@ -68,6 +68,14 @@ public class StepDefs extends BaseTest {
         element.submit();
     }
 
+    @When("title is empty, author is empty, ISBN is {string}")
+    public void titleIsEmptyAuthorIsEmptyISBNIs(String isbn) {
+        WebElement element = driver.findElement(By.id("isbn"));
+        element.sendKeys(isbn);
+        element = driver.findElement(By.id("submit"));
+        element.submit();
+    }
+
     @When("title is {string}, author is empty, ISBN is {string}")
     public void titleIsAuthorIsEmptyISBNIs(String title, String isbn) {
         WebElement element = driver.findElement(By.id("title"));
@@ -106,7 +114,7 @@ public class StepDefs extends BaseTest {
         element = driver.findElement(By.id("isbn"));
         element.sendKeys(isbn);
         element = driver.findElement(By.id("submit"));
-        element.submit();  
+        element.submit();
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
@@ -119,6 +127,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will show book info: title {string} and author {string}")
     public void systemWillRespondWithBookInfoNarrow(String title, String author) throws SQLException, IOException {
+        System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         removeTestData();
