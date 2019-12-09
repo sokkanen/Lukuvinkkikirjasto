@@ -1,3 +1,16 @@
+body{
+    background: #1a2a6c; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #dc7070, #1fb297, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #dc7070, #1fb297, #fdbb2d);
+    /* background: url(https://ae01.alicdn.com/kf/HTB1wndaaELrK1Rjy0Fjq6zYXFXaD/Capisco-Unicorn-Birthday-Party-Photography-Backdrops-Newborn-Baby-Shower-Photo-Background-Rainbow-Flower-Backdrop-Photo-Studio.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: cover; */
+    line-height:2;
+} 
+
+
 html, body, input:hover, a, button:hover {
     cursor: url('unicorn2.png'), auto;
 }
@@ -104,6 +117,12 @@ a.deleteLink:visited {
     margin-top: 20px;
     float:right;
     border:1px;
+    background-color:#3dc4d2;
+
+}
+
+.read-button {
+  background-color:#3dc4d2;
 }
 
 
