@@ -12,7 +12,21 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/style.css"/>
+        <link rel="stylesheet" type="text/css" href="/style.css"/>
+        <link rel="stylesheet rainbow" type="text/css" href="/rainbow.css" />
+        <link rel="stylesheet unicorn alternate" type="text/css" href="/unicorn.css" id="unicorn"/>
+        <script>
+            var bg = "rainbow";
+            function switchUnicorn () {
+                if (bg == "rainbow") {
+                    unicorn.rel = 'stylesheet';
+                    bg = "unicorn";
+                } else {
+                    unicorn.rel = 'alternate stylesheet';
+                    bg = "rainbow";
+                }
+            }
+        </script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Chewy|Noto+Sans+JP&display=swap" rel="stylesheet">
         <script type="text/javascript" src="/js/jquery.1.11.1.js"></script>

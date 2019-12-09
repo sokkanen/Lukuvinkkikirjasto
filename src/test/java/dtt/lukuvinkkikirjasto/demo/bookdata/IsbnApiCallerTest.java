@@ -65,6 +65,6 @@ public class IsbnApiCallerTest extends BaseTest {
     public void emptyJSONReturnsSpecialBookDto(){
         JsonNode node = objectMapper.createObjectNode();
         BookDto bookDto = isbnApiCaller.responseParser(node);
-        Assert.assertEquals("Additional information not found", bookDto.getTitle());
+        Assert.assertEquals("'Additional information not found'", bookDto.getTitle());
     }
 }
