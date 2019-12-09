@@ -7,20 +7,14 @@
 </head>
 <body>
 <div class="container main-content">
-    <div class="col-md-6">
-        <b><span th:text="${book.title}"></span></b>
-        <span th:if= "${book.author != ''}" th:text="': ' + ${book.author}">Author</span>
-        <span class="label label-pill"
-              th:text="${book.read} ? 'read' : 'unread'"
-              th:classappend="${book.read} ? label-success : label-warning"></span>
-        <br />
-        <span th:if= "${book.isbn !='' and book.isbn !='error'}" th:text="'ISBN: ' + ${book.isbn}">ISBN</span> <br/>
-        <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
-        </th:block> /*/-->
-    </div>
+<div class="col-md-12">
+    <h3 th:if="${dto}" th:text="${dto.title}"></h3>
+    <h3 th:unless="${dto}" th:text="${book.title}"></h3>
+    <br/>
+</div>
+
 <div class="col-md-6">
     <div th:if="${dto}">
-        <h3 th:text="${dto.title}"></h3>
         <h4>Authors:</h4>
         <span th:each="auth : ${dto.authors}">
             <span th:text="${auth}"></span> <br/>
@@ -44,14 +38,27 @@
             <span class="label label-info" th:text="${lib}"></span>
         </span>
         <br/>
-        <form th:action="@{'/'}" class="inline" method="GET">
-            <input type="submit"
-                   th:id="returnButton"
-                   value="return"
-                   class="btn btn-outline-info btn-sm home-button"   />
-        </form>
+
+    </div>
+    <div class="col-md-6" th:unless="${dto}">
+        <h4>Author:</h4>
+        <span th:text="${book.author}"></span>
     </div>
 </div>
+    <div class="col-md-6">
+        <span th:if= "${book.isbn !='' and book.isbn !='error'}"><h4>ISBN: </h4> <span th:text="${book.isbn}"></span></span>
+        <h4>Book options</h4>
+        <!--/*/ <th:block th:include="fragments/book_options.html :: options(book=${book}, read=${book.read})">
+        </th:block> /*/-->
+    </div>
+    <div class="col-md-12">        
+        <form th:action="@{'/'}" class="inline" method="GET">
+        <input type="submit"
+            th:id="returnButton"
+            value="return"
+            class="btn btn-outline-info btn-sm home-button"   />
+        </form>
+    </div>
 </div>
 </body>
 </html>
