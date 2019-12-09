@@ -42,11 +42,15 @@
             return "";
         }
         function setCookie(cname, cvalue) {
-            document.cookie = cname + "=" + cvalue;
+            document.cookie = cname + "=" + cvalue + ";path=/";
+            document.cookie = cname + "=" + cvalue + ";path=/books";
+            document.cookie = cname + "=" + cvalue + ";path=/books/info";
         }
         function setBg() {
             if (getCookie("background") == "unicorn") {
                 unicorn.rel = 'stylesheet';
+            } else if (getCookie("background") == "rainbow") {
+                unicorn.rel = 'alternate stylesheet';
             } else {
                 unicorn.rel = 'alternate stylesheet';
                 setCookie("background", "rainbow")
