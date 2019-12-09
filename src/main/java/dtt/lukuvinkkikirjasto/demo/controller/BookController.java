@@ -88,7 +88,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException {
+    public String saveBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult) throws SQLException, IOException {
         if (!Book.validate(book)){
             bindingResult.rejectValue("title", "error.book", "Must inlude either Title or valid ISBN");
         }
@@ -141,7 +141,7 @@ public class BookController {
     }
 
     @PostMapping("/books/edit/{id}")
-    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException {
+    public String restfullyEditBook(Model model, @Valid @ModelAttribute Book book, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws SQLException, IOException {
         Book old = bookDao.findByIsbn(book.getIsbn());
 
         if (!Book.validate(book)) {
