@@ -5,10 +5,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author milla
- */
 public class Book implements Comparable<Book> {
 
     private String id;
@@ -141,7 +137,7 @@ public class Book implements Comparable<Book> {
 
             return checksum == Integer.parseInt(tempIsbn.substring(12));
         } catch (NumberFormatException nfe) {
-            //to catch invalid ISBN	          
+            //to catch invalid ISBN	
             return false;
         }
     }

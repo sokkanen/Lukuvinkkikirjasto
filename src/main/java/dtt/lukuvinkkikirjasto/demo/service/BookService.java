@@ -29,8 +29,8 @@ public class BookService {
         model.addAttribute("editmode", editmode);
         model.addAttribute("book", book);
         model.addAttribute("newbook", newbook);
-        
-        
+
+
         return model;
     }
 
