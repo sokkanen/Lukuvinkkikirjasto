@@ -1,0 +1,10 @@
+body {
+    background: #1a2a6c; /* fallback for old browsers */
+    background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+    background: -webkit-linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: cover;
+    line-height:2;
+}
