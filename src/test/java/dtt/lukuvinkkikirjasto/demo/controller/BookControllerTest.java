@@ -82,6 +82,22 @@ public class BookControllerTest extends BaseTest {
     }
 
     @Test
+    public void bookWithFalseISBNGivesBookATitle() throws Exception {
+        MvcResult res = mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "0657283339")).andReturn();
+        MvcResult res2 = mockMvc.perform(get("/books")).andReturn();
+        String content = res2.getResponse().getContentAsString();
+        assertTrue(content.contains("Additional information not found"));
+    }
+
+    @Test
+    public void bookWithFalseISBNGivesBookGivenTitle() throws Exception {
+        MvcResult res = mockMvc.perform(post("/books").param("title", "Should be").param("author", "").param("isbn", "0-3988-8523-0")).andReturn();
+        MvcResult res2 = mockMvc.perform(get("/books")).andReturn();
+        String content = res2.getResponse().getContentAsString();
+        assertTrue(content.contains("Should be"));
+    }
+
+    @Test
     public void bookCanBeMarkedReadByPost() throws Exception {
         controller.setDao(bookDao);
         mockMvc.perform(post("/books").param("title", "Title").param("author", "Author").param("isbn", ""))
