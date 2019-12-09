@@ -1,8 +1,8 @@
-body{
+body {
     background: #1a2a6c; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
-    background: url(https://ae01.alicdn.com/kf/HTB1wndaaELrK1Rjy0Fjq6zYXFXaD/Capisco-Unicorn-Birthday-Party-Photography-Backdrops-Newborn-Baby-Shower-Photo-Background-Rainbow-Flower-Backdrop-Photo-Studio.jpg);
+    /*background: url(https://ae01.alicdn.com/kf/HTB1wndaaELrK1Rjy0Fjq6zYXFXaD/Capisco-Unicorn-Birthday-Party-Photography-Backdrops-Newborn-Baby-Shower-Photo-Background-Rainbow-Flower-Backdrop-Photo-Studio.jpg);*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top;

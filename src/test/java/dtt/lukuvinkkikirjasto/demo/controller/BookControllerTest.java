@@ -60,6 +60,71 @@ public class BookControllerTest extends BaseTest {
     }
 
     @Test
+    public void gettingBookInfoWithNoIsbnRedirects() throws Exception {
+        controller.setDao(bookDao);
+        mockMvc.perform(post("/books").param("title", "Title").param("author", "Author").param("isbn", ""))
+                .andReturn();
+        String bookId = bookDao.list().get(0).getId();
+        MvcResult res = mockMvc.perform(get("/books/info/" + bookId)).andReturn();
+        int status = res.getResponse().getStatus();
+        assertEquals(302, status);
+        String location = res.getResponse().getHeader("Location");
+        assertEquals("/books/" + bookId, location);
+    }
+
+    @Test
+    public void bookWithNoTitleAndNoIsbnReturnsError() throws Exception {
+        controller.setDao(bookDao);
+        MvcResult res = mockMvc.perform(post("/books").param("title", "").param("author", "Author").param("isbn", ""))
+                .andReturn();
+        String content = res.getResponse().getContentAsString();
+        assertTrue(content.contains("Must inlude either Title or valid ISBN"));
+    }
+
+    @Test
+    public void bookCanBeMarkedReadByPost() throws Exception {
+        controller.setDao(bookDao);
+        mockMvc.perform(post("/books").param("title", "Title").param("author", "Author").param("isbn", ""))
+                .andReturn();
+        Book book = bookDao.list().get(0);
+        String bookId = book.getId();
+        assertFalse(book.isRead());
+
+        mockMvc.perform(post("/books/editread/" + bookId).param("title", "Title").param("author", "Author").param("isbn", ""))
+                .andReturn();
+        assertTrue(bookDao.findById(bookId).isRead());
+    }
+    @Test
+    public void bookInfoCanBeGetWithNoIsbn() throws Exception {
+        controller.setDao(bookDao);
+        mockMvc.perform(post("/books").param("title", "Title").param("author", "Author").param("isbn", ""))
+                .andReturn();
+        String bookId = bookDao.list().get(0).getId();
+        MvcResult res = mockMvc.perform(get("/books/" + bookId)).andReturn();
+        String content = res.getResponse().getContentAsString();
+        assertTrue(content.contains("Title"));
+        assertTrue(content.contains("Author"));
+    }
+
+    @Test
+    public void bookInfoCanBeGetWithIsbn() throws Exception {
+        controller.setDao(bookDao);
+        String isbn = "9789511290384";
+        mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", isbn))
+                .andReturn();
+        Book book = bookDao.findByIsbn(isbn);
+        String title = book.getTitle();
+        String author = book.getAuthor();
+        String bookId = book.getId();
+        MvcResult res = mockMvc.perform(get("/books/info/" + bookId)).andReturn();
+        String content = res.getResponse().getContentAsString();
+        assertTrue(content.contains(title));
+        assertTrue(content.contains(author));
+        assertTrue(content.contains(isbn));
+    }
+
+
+    @Test
     public void deleteRemovesBookFromDatabase() throws Exception {
         controller.setDao(bookDao);
         mockMvc.perform(post("/books").param("title", "").param("author", "").param("isbn", "9789511290384"))
