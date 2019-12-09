@@ -43,7 +43,6 @@ public class StepDefs extends BaseTest {
         element.sendKeys(isbn);
         element = driver.findElement(By.id("submit"));
         element.submit();
-        sleep(1);
     }
 
     @Then("system will respond with {string}")
