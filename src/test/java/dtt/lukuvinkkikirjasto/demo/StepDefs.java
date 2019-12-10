@@ -146,22 +146,31 @@ public class StepDefs extends BaseTest {
         removeTestData();
     }
 
-    @Given("command mark as read is selected")
-    public void commandMarkAsReadIsSelected() {
-        WebElement element = driver.findElement(By.linkText("mark read"));
-        throw new cucumber.api.PendingException();
+    @When("book with title {string} is marked as read")
+    public void bookWithTitleIsMarkedRead(String title){
+        WebElement element = driver.findElement(By.id("markreadBook_" + title));
+        element.submit();
     }
 
-    @When("book exists")
-    public void bookExists() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @When("book with title {string} is marked as unread")
+    public void bookWithTitleIsMarkedUnread(String title){
+        WebElement element = driver.findElement(By.id("markreadBook_" + title));
+        element.submit();
     }
 
-    @Then("book is marked as read")
-    public void bookIsMarkedAsRead() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+    @Then("system will not show book info: title {string} and {string}")
+    public void systmWillMarkBookAsRead(String title, String read) throws SQLException, IOException{
+        //System.out.println(driver.getPageSource().toString());
+        assertTrue(driver.getPageSource().contains(title));
+        assertFalse(driver.getPageSource().contains(read));
+        removeTestData();
+    }
+
+    @Then("system will show book info: title {string} and {string}")
+    public void systmWillMarkBookAsUnread(String title, String read) throws SQLException, IOException{
+        assertTrue(driver.getPageSource().contains(title));
+        assertTrue(driver.getPageSource().contains(read));
+        removeTestData();
     }
 
     private void sleep(int seconds) {
