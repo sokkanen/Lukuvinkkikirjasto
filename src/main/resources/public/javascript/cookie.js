@@ -25,8 +25,6 @@ function getCookie(cname) {
 }
 function setCookie(cname, cvalue) {
     document.cookie = cname + "=" + cvalue + ";path=/";
-    document.cookie = cname + "=" + cvalue + ";path=/books";
-    document.cookie = cname + "=" + cvalue + ";path=/books/info";
 }
 function setBg() {
     if (getCookie("background") == "unicorn") {
