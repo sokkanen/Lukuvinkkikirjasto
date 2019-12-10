@@ -16,46 +16,11 @@
 
     <link rel="stylesheet rainbow" type="text/css" href="/rainbow.css" />
     <link rel="stylesheet unicorn alternate" type="text/css" href="/unicorn.css" id="unicorn"/>
-    <script>
-        function switchUnicorn () {
-            if (getCookie("background") == "unicorn"){
-                setCookie("background", "rainbow");
-                setBg();
-            } else {
-                setCookie("background", "unicorn");
-                setBg();
-            }
-        }
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i <ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-        function setCookie(cname, cvalue) {
-            document.cookie = cname + "=" + cvalue;
-        }
-        function setBg() {
-            if (getCookie("background") == "unicorn") {
-                unicorn.rel = 'stylesheet';
-            } else {
-                unicorn.rel = 'alternate stylesheet';
-                setCookie("background", "rainbow")
-            }
-        }
-        setBg();
-    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Chewy|Noto+Sans+JP&display=swap" rel="stylesheet">
+    <!-- Background cookie javascript -->
+    <script th:src="@{/javascript/cookie.js}" defer></script>
     <script type="text/javascript" src="/js/jquery.1.11.1.js"></script>
 </head>
 

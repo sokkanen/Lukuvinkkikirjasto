@@ -10,9 +10,11 @@
 
 <body>
 
-    <div class="container main-content">
-        <div class="row">
-            <div class="col-md-6">
+
+<div class="container main-content">
+    <div class="row">
+        <div class="col-md-7">
+
 
                 <th:block th:include="fragments/booklist.html :: list(list=${list}, read=false)">
                 </th:block>
@@ -30,10 +32,11 @@
 
 
 
-            </div>
-            <div class="col-md-6">
-                <th:block th:include="fragments/form.html :: form">
-                </th:block>
+
+        </div>
+        <div class="col-md-5">
+            <th:block th:include="fragments/form.html :: form">
+            </th:block>
 
 
             </div>
