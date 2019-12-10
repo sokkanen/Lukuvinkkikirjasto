@@ -2,10 +2,9 @@
     <h2 th:text="${read} ?'Read books' : 'Unread books'"></h2>
 
     <span th:if="${list.size() == 0}" th:text="${read} ? 'You have not marked any books as read yet' : 'You have no unread books'"></span>
-    <ul th:unless="${list.size() == 0}">
 
 
-        <table class="table">
+        <table class="table" th:unless="${list.size() == 0}">
             <thead>
             <tr>
                 <th scope="col">Title</th>
@@ -22,6 +21,4 @@
             </tr>
             </tbody>
         </table>
-
-    </ul>
 </div>
