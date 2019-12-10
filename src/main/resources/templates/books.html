@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title>Saved books</title>
     <th:block th:include="fragments/head.html :: head">
@@ -10,26 +9,19 @@
 
 <body>
 
-
 <div class="container main-content">
     <div class="row">
         <div class="col-md-7">
 
+            <th:block th:include="fragments/booklist.html :: list(list=${list}, read=false)">
+            </th:block>
 
-                <th:block th:include="fragments/booklist.html :: list(list=${list}, read=false)">
-                </th:block>
-
-                <div th:if="${newbook}">
-                    <div id='showMe' class="pyro">
-                        <div class="before"></div>
-                        <div class="after"></div>
-                    </div>
-                </div>
+            <div th:if="${newbook}"><div id='showMe' class="pyro" ><div class="before"></div>
+                <div class="after"></div></div></div>
 
 
-                <th:block th:include="fragments/booklist.html :: list(list=${listread}, read=true)">
-                </th:block>
-
+            <th:block th:include="fragments/booklist.html :: list(list=${listread}, read=true)">
+            </th:block>
 
 
 
@@ -39,15 +31,13 @@
             </th:block>
 
 
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button style="float:right" class="btn btn-outline-info btn-sm read-button"
-                        onClick=switchUnicorn()>unicorn</button>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button style="float:right" class="btn btn-outline-info btn-sm read-button" onClick=switchUnicorn()>unicorn</button>
             </div>
         </div>
     </div>
+</div>
 </body>
-
 </html>
