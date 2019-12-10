@@ -47,7 +47,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String string) throws SQLException, IOException {
-        System.out.println(driver.getPageSource());
+        // System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(string));
         removeTestData();
     }
@@ -118,7 +118,8 @@ public class StepDefs extends BaseTest {
     }
 
     @Then("system will respond with book info: title {string}, author {string} and ISBN {string}")
-    public void systemWillRespondWithBookInfo(String title, String author, String isbn) throws SQLException, IOException {
+    public void systemWillRespondWithBookInfo(String title, String author, String isbn)
+            throws SQLException, IOException {
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         assertTrue(driver.getPageSource().contains(isbn));
@@ -127,7 +128,7 @@ public class StepDefs extends BaseTest {
 
     @Then("system will show book info: title {string} and author {string}")
     public void systemWillRespondWithBookInfoNarrow(String title, String author) throws SQLException, IOException {
-        System.out.println(driver.getPageSource());
+        // System.out.println(driver.getPageSource());
         assertTrue(driver.getPageSource().contains(title));
         assertTrue(driver.getPageSource().contains(author));
         removeTestData();
@@ -142,6 +143,33 @@ public class StepDefs extends BaseTest {
     @Then("system does not respond with book title {string}")
     public void systemDoesNotRespondWithBookTitle(String title) throws SQLException, IOException {
         assertFalse(driver.getPageSource().contains(title));
+        removeTestData();
+    }
+
+    @When("book with title {string} is marked as read")
+    public void bookWithTitleIsMarkedRead(String title){
+        WebElement element = driver.findElement(By.id("markreadBook_" + title));
+        element.submit();
+    }
+
+    @When("book with title {string} is marked as unread")
+    public void bookWithTitleIsMarkedUnread(String title){
+        WebElement element = driver.findElement(By.id("markreadBook_" + title));
+        element.submit();
+    }
+
+    @Then("system will not show book info: title {string} and {string}")
+    public void systmWillMarkBookAsRead(String title, String read) throws SQLException, IOException{
+        //System.out.println(driver.getPageSource().toString());
+        assertTrue(driver.getPageSource().contains(title));
+        assertFalse(driver.getPageSource().contains(read));
+        removeTestData();
+    }
+
+    @Then("system will show book info: title {string} and {string}")
+    public void systmWillMarkBookAsUnread(String title, String read) throws SQLException, IOException{
+        assertTrue(driver.getPageSource().contains(title));
+        assertTrue(driver.getPageSource().contains(read));
         removeTestData();
     }
 
