@@ -8,11 +8,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 public class LukuvinkkikirjastoApplication {
 
-	public static void main(String[] args) {
-		new SpringApplicationBuilder(LukuvinkkikirjastoApplication.class)
-				.profiles("dev")
-				.properties("selenium:false")
-				.application()
-				.run(args);
-	}
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(LukuvinkkikirjastoApplication.class)
+                .profiles("dev")
+                .properties("selenium:false")
+                .application()
+                .run(args);
+    }
 }

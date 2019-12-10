@@ -18,10 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author milla
- */
 @Repository
 public class BookDao implements Dao<Book> {
 
@@ -73,14 +69,14 @@ public class BookDao implements Dao<Book> {
         statement.close();
         connection.close();
     }
-    
+
     @Override
     public boolean update(Book book) throws SQLException {
         Book b = findById(book.getId());
         if (b == null) {	
             return false;	
         }
-        
+
         ;
         try {
             Connection connection = database.getConnection();
@@ -106,16 +102,16 @@ public class BookDao implements Dao<Book> {
         }
 
     }
-    
-    
+
+
     public boolean updateRead(Book book) throws SQLException {
-        
+
         try {
             Connection connection = database.getConnection();
             PreparedStatement statement;
             String sql = "UPDATE book SET read_already = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
-            
+
             statement.setBoolean(1, book.isRead());
             statement.setString(2, book.getId());
 
@@ -152,10 +148,10 @@ public class BookDao implements Dao<Book> {
         statement.close();
         resultSet.close();
         connection.close();
-        
+
         return bookList;
     }
-    
+
     public List<Book> listRead() throws SQLException {
 
         ArrayList<Book> bookList = new ArrayList();
@@ -173,7 +169,7 @@ public class BookDao implements Dao<Book> {
         statement.close();
         resultSet.close();
         connection.close();
-        
+
         return bookList;
     }
     public List<Book> listUnread() throws SQLException {
@@ -193,17 +189,17 @@ public class BookDao implements Dao<Book> {
         statement.close();
         resultSet.close();
         connection.close();
-        
+
         return bookList;
     }
-    
-    
+
+
     public Book findByIsbn(String isbn) throws SQLException {
         if (isbn.isEmpty()) {
             return null;
         }
         Connection conn = database.getConnection();
-        
+
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE isbn = ?");
         statement.setString(1, isbn);
         ResultSet res = statement.executeQuery();
@@ -214,10 +210,10 @@ public class BookDao implements Dao<Book> {
 
         Book onebook = getBook(res);
         logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
-        
+
         statement.close();
         res.close();
-        
+
         conn.close();
         return onebook;
     }
@@ -227,7 +223,7 @@ public class BookDao implements Dao<Book> {
             return null;
         }
         Connection conn = database.getConnection();
-        
+
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM book WHERE id = ?");
         statement.setString(1, id);
         ResultSet res = statement.executeQuery();
@@ -238,10 +234,10 @@ public class BookDao implements Dao<Book> {
 
         Book onebook = getBook(res);
         logger.info("Execute a search for one book by name. Found {} book", onebook.getIsbn());
-        
+
         statement.close();
         res.close();
-        
+
         conn.close();
         return onebook;
     }

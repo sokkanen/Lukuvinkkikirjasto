@@ -3,11 +3,6 @@ package dtt.lukuvinkkikirjasto.demo.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Dao interface
- *
- * @author milla
- */
 public interface Dao<T> {
 
     void create(T t) throws SQLException;
@@ -16,5 +11,5 @@ public interface Dao<T> {
 
     boolean update(T t) throws SQLException;
     void delete(T t) throws SQLException;
-    
+
 }

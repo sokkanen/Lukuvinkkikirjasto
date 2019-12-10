@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtt.lukuvinkkikirjasto.demo.controller;
 
 import dtt.lukuvinkkikirjasto.demo.bookdata.BookDto;
@@ -30,10 +25,6 @@ import javax.validation.Valid;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- *
- * @author sebserge
- */
 @Controller
 public class BookController {
 
@@ -132,7 +123,7 @@ public class BookController {
             if (book.getIsbn() == "error") {
                 book.setIsbn("");
             }
-            
+
             model = bookService.returnModelForBook(model, bookDao, book, true, false);
 
             return "books";

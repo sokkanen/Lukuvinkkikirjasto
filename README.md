@@ -1,8 +1,8 @@
 # Lukuvinkkikirjasto
 
-Ohjelmistotuotantokurssin (syksy 2019) DROP TABLE teams; -ryhmän miniprojekti. Projekti on toteutettu ketterien menetelmien mukaisesti. 
+Ohjelmistotuotantokurssin (syksy 2019) DROP TABLE teams; -ryhmän miniprojekti. Projekti on toteutettu ketterien menetelmien mukaisesti.
 
-Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentamiseen ja hakemiseen sekä järjestyksessä pitämiseen.   
+Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentamiseen ja hakemiseen sekä järjestyksessä pitämiseen.
 
 [Lukuvinkkikirjaston viimeisin versio](https://dtt-lukuvinkkikirjasto.herokuapp.com/)
 
@@ -25,6 +25,3 @@ Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentam
 
 [![CircleCI](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto.svg?style=svg)](https://circleci.com/gh/sokkanen/Lukuvinkkikirjasto)
 [![codecov](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto/branch/master/graph/badge.svg)](https://codecov.io/gh/sokkanen/Lukuvinkkikirjasto)
- 
-
-
