@@ -19,10 +19,10 @@ Miniprojektissa toteutetaan lukuvinkkikirjasto erilaisten lukuvinkkien tallentam
 
 --- 
 
-### [Definition of Done](https://github.com/sokkanen/Lukuvinkkikirjasto/blob/master/documentation/definition_of_done.md)
+### [Definition of Done](/documentation/definition_of_done.md)
 
 
-### [Loppuraportti](https://github.com/sokkanen/Lukuvinkkikirjasto/blob/links/documentation/loppuraportti.md)
+### [Loppuraportti](/documentation/loppuraportti.md)
 
 ---
 
